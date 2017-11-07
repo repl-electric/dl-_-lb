@@ -423,7 +423,11 @@ def violin(n,*args)
 end
 
 def eek_cc(*args)
-  cc = resolve_synth_opts_hash_or_array(args)
+  cc = if args[0].is_a?(SonicPi::Core::SPMap)
+         args[0]
+       else
+         resolve_synth_opts_hash_or_array(args)
+       end
   cc.keys.each do |k|
     n = case k
         when :mod; 1
@@ -452,7 +456,7 @@ def eek(*args)
   if n
     midi n, vel, *(args << {port: :iac_bus_1} << {channel: 16})
   end
-  eek_cc opts
+  eek_cc(opts)
 end
 
 def space(pat)
