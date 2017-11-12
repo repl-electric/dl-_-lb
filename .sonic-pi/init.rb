@@ -208,7 +208,6 @@ def sop_cc(cc)
   end
 end
 def sop_mode(mode)
-  puts "sop => #{['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]}"
   sop ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]
 end
 def sharp(n,*args)
@@ -403,22 +402,61 @@ end
 end
 
 def piano(n,*args)
-  if n.is_a?(Array)
-    args =  args  << {sustain: n[1]}
-    n = n[0]
-  end
   if n
-    midi n, *(args << {port: :iac_bus_1} << {channel: 14})
+    if n.is_a?(Array) && n[1].is_a?(Symbol)
+      bonus = n[1]
+      n = n[0]
+      at {
+        sleep 1/8.0
+        midi bonus, 60, *(args << {port: :iac_bus_1} << {channel: 14} << {sustain: 1/4.0})
+      }
+    end
+    if n.is_a?(Array)
+      args =  args  << {sustain: n[1]}
+      n = n[0]
+    end
+    if n
+      puts args
+      midi n, *(args << {port: :iac_bus_1} << {channel: 14})
+    end
   end
 end
 
-def violin(n,*args)
+def violin(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
   if n.is_a?(Array)
     args =  args  << {sustain: n[1]}
     n = n[0]
   end
   if n
-    midi n, *(args << {port: :iac_bus_1} << {channel: 15})
+    midi n, vel, *(args << {port: :iac_bus_1} << {channel: 15})
+  end
+  violin_cc(opts)
+end
+
+def violin_cc(*args)
+  cc = if args[0].is_a?(SonicPi::Core::SPMap)
+         args[0]
+       else
+         resolve_synth_opts_hash_or_array(args)
+       end
+  cc.keys.each do |k|
+    n = case k
+        when :form; 10
+        when :mul; 12
+        when :shape; 11
+        when :at; :at
+        else nil
+        end
+    if n
+      if n == :at
+        midi_channel_pressure cc[k]*127.0, channel: 15, port: :iac_bus_1
+      else
+        midi_cc n, cc[k]*127.0, *(args << {port: :iac_bus_1} << {channel: 15})
+      end
+    end
   end
 end
 
