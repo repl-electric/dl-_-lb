@@ -53,6 +53,8 @@ end
 〄=Straw
 ㉿=Straw
 
+use_midi_defaults port: :iac_bus_1
+
 def live(name, *args, &block)
   fx = resolve_synth_opts_hash_or_array(args)
   x = lambda{||
@@ -199,6 +201,7 @@ def sop_cc(cc)
         when :motion; 1
         when :formant; 98
         when :form_amp; 99
+        when :cutoff; 97
         else
           nil
         end
@@ -422,6 +425,10 @@ def piano(n,*args)
   end
 end
 
+def violin_mode(mode)
+  violin ['C-1','Cs-1','B-1'][mode]
+end
+
 def violin(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
@@ -429,6 +436,9 @@ def violin(*args)
   if n.is_a?(Array)
     args =  args  << {sustain: n[1]}
     n = n[0]
+  end
+  if(opts[:mode])
+    violin_mode(opts[:mode])
   end
   if n
     midi n, vel, *(args << {port: :iac_bus_1} << {channel: 15})
@@ -444,7 +454,7 @@ def violin_cc(*args)
        end
   cc.keys.each do |k|
     n = case k
-        when :form; 10
+        when :deform; 10
         when :mul; 12
         when :shape; 11
         when :at; :at
