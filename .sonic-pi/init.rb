@@ -215,6 +215,36 @@ end
 def sop_mode(mode)
   sop ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]
 end
+
+#DUP which is not sidechained against piano
+def sop2_mode(mode)
+  sop ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]
+end
+def sop2_on(n, *args)
+  if n
+    if n.is_a?(Array)
+      args =  args  << {sustain: n[1]}
+      n = n[0]
+    end
+    if args && args[0].is_a?(Numeric)
+      velocity = args[0]
+      args = args[1..-1]
+    else
+      velocity = 30
+    end
+    args_h = resolve_synth_opts_hash_or_array(args)
+    if(args_h[:mode])
+      sop2_mode(args_h[:mode])
+    end
+    if n && ((n != "_") && n != :_)
+      midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 4})
+    end
+  end
+end
+def sop2_off(n, *args)
+  midi_note_off n, *(args << {port: :iac_bus_1} << {channel: 4})
+end
+
 def sharp(n,*args)
   if n
     if n.is_a?(Array)
