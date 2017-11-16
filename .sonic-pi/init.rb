@@ -53,7 +53,11 @@ end
 〄=Straw
 ㉿=Straw
 
+MODE_NOTE = note('Cs0')
 use_midi_defaults port: :iac_bus_1
+D4=:d4;E4=:e4;FS4=:Fs4;GS4=:Gs4;Cs4=:Cs4;A4=:A4;B4=:B4;
+D3=:d3;E3=:e3;FS3=:Fs3;GS3=:Gs3;Cs3=:Cs3;A3=:A3;B3=:B3;
+D2=:d2;E2=:e2;FS2=:Fs2;GS2=:Gs2;Cs2=:Cs2;A2=:A2;B2=:B2;
 
 def live(name, *args, &block)
   fx = resolve_synth_opts_hash_or_array(args)
@@ -163,12 +167,10 @@ def sop(n,*args)
     if(args_h[:mode])
       sop_mode(args_h[:mode])
     end
-    if(args_h[:motion] || args_h[:formant])
-      sop_cc args_h
-    end
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
     end
+    sop_cc args_h
   end
 end
 def sop_on(n, *args)
@@ -258,6 +260,7 @@ def harp(n,*args)
         midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 3})
         dshader(:decay, :iHarp, (note(n)/69.0), 0.0041) if n && note(n)
         dshader(:iBright, velocity/127.0) if velocity
+        puts "#{n} <- [Harp]" unless note(n) < MODE_NOTE
       end
     end
   rescue
@@ -419,7 +422,6 @@ def piano(n,*args)
       n = n[0]
     end
     if n
-      puts args
       midi n, *(args << {port: :iac_bus_1} << {channel: 14})
     end
   end
@@ -442,8 +444,33 @@ def violin(*args)
   end
   if n
     midi n, vel, *(args << {port: :iac_bus_1} << {channel: 15})
+    puts "#{Note.new(n).midi_string} <- [Violin]" unless note(n) < MODE_NOTE
   end
   violin_cc(opts)
+end
+
+def violin_on(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n.is_a?(Array)
+    args =  args  << {sustain: n[1]}
+    n = n[0]
+  end
+  if(opts[:mode])
+    violin_mode(opts[:mode])
+  end
+  if n
+    midi_note_on n, vel, *(args << {port: :iac_bus_1} << {channel: 15})
+    puts "#{Note.new(n).midi_string} <- [Violin]" unless note(n) < MODE_NOTE
+  end
+  violin_cc(opts)
+end
+def violin_off(n,*args)
+  midi_note_off n, *(args << {port: :iac_bus_1} << {channel: 15})
+end
+def violin_x
+  midi_all_notes_off port: :iac_bus_1, channel: 15
 end
 
 def violin_cc(*args)
@@ -507,43 +534,8 @@ def eek(*args)
   eek_cc(opts)
 end
 
-def space(pat)
-  pat = pat.to_a
-  p = knit([pat[0],  3/4.0],3, [pat[1], 1.0],3, [pat[2],2/4.0],3,
-           [pat[3],  3/4.0],1, [pat[4], 1.0],1, [pat[5],2/4.0],1,
-           [pat[6],  3/4.0],1, [pat[7], 1.0],1, [pat[8],2/4.0],1,
-           [pat[9],  3/4.0],1, [pat[10],1.0],1, [pat[11],2/4.0], 1,
-           [pat[12], 3/4.0],1, [pat[13],1.0],1, [pat[14],2/4.0 + (3-3/4.0) - 0.25],1)
-  if pat.count > 15
-    p = p + knit(
-                 [pat[15], 3/4.0],3, [pat[16],1.0],3, [pat[17],2/4.0],3,
-                 [pat[18], 3/4.0],1, [pat[19],1.0],1, [pat[20],2/4.0],1,
-                 [pat[21], 3/4.0],1, [pat[22],1.0],1, [pat[23],2/4.0],1,
-                 [pat[24], 3/4.0],1, [pat[25],1.0],1, [pat[26],2/4.0], 1,
-                 [pat[27], 3/4.0],1, [pat[28],1.0],1, [pat[29],2/4.0 + (3-3/4.0) - 0.25],1)
-  end
-  p
-end
-
-def b_space(pat)
-  q = ring([pat[0],3], [pat[1],3],[pat[2],3],
-           [pat[4],3], [pat[5],3], [pat[6],1],
-           [pat[7],3], [pat[8],2], [pat[9],1],
-           [pat[10],1.0])
-
-  if pat.count > 10
-    q = q + ring([pat[11],3], [pat[12],3],[pat[13],3],
-                 [pat[14],3], [pat[15],3], [pat[16],1],
-                 [pat[17],2],  [pat[18], 0.5, 80],[pat[19], 0.5,100],
-                 [pat[20], 1+1+1+1.0, 70])
-  end
-  q
-end
-
 def sidechain
   midi :A2, port: :iac_bus_1, channel: 12
 end
 
-k1,k2 = Frag[/kick/,9], Mountain[/subkick/,0]
-h1,h2,h3 = Frag[/hat/,8], Frag[/hat/,9],  Frag[/hat/,7]
 puts "Init Complete"
