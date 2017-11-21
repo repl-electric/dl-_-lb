@@ -80,7 +80,6 @@ end
 def form(*args)play_midi *(args << {port: :reaktor_6_virtual_input});end
 def mass(*args)play_midi *(args << {port: :massive_virtual_input});end
 def blof(*args)play_midi *(args << {port: :blofeld});end
-def moog(*args) midi *(args << {port: :iac_bus_1, channel: 11});end
 def stop_midi() midi('C-2', channel: 16);end
 
 def bass(n, *args)
@@ -562,6 +561,16 @@ def eek(*args)
     midi n, vel, *(args << {port: :iac_bus_1} << {channel: 16})
   end
   eek_cc(opts)
+end
+
+def strings(*args)
+  midi *(args << {port: :iac_bus_1, channel: 11})
+end
+def strings_on(*args)
+  midi_note_on *(args << {port: :iac_bus_1, channel: 11})
+end
+def strings_off(*args)
+  midi_note_off *(args << {port: :iac_bus_1, channel: 11})
 end
 
 def sidechain
