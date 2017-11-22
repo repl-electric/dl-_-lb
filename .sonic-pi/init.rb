@@ -572,6 +572,13 @@ end
 def strings_off(*args)
   midi_note_off *(args << {port: :iac_bus_1, channel: 11})
 end
+def strings_x(*args)
+  midi_all_notes_off port: :iac_bus_1, channel: 11
+end
+
+def root(note_seq)
+  note_seq.map{|n| note(n[0])}.compact.sort[0]
+end
 
 def sidechain
   midi :A2, port: :iac_bus_1, channel: 12
