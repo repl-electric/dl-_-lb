@@ -1,0 +1,628 @@
+sop_cc motion: 1.0
+#sop_mode 0
+#sop2_cc motion: 0.1
+#sop2_on :A2, mode: 4
+@align=false
+live_loop :Fall_Into_Your_Screen, sync: :metro do
+  tick
+  #stop
+  score =  (ing
+    [[[:a2 2]]  2]   [[[_ 0.25] ]  2]
+    )
+  s=score.look
+  c=s[0]
+  #eek :a2,   sus: 12, mode: 2
+  #eek :cs3,  sus: 12, mode: 2
+  if spread(1,6).look
+    #rev :b5, 1
+    #eek :Gs3, 10
+  end
+  #with_transpose 0 { piano3 root(c),(ing 127 120).look, sus: 2 }
+  #rev :a6, 15, sus: 12
+  with_transpose -12*0 do
+    #harp root(c),10
+    piano root(c), (ring 35,40).look*1.5, sus: c[0][-1]
+    c.each{|n|tick(:inner);
+      sop n[0], 1.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: (ramp 0.0, 1.1, 12).tick(:innert)#, cutoff: 1.0
+      #piano2 n[0]
+    }
+    puts (ramp 0.0, 1.1, 32).look(:innert)
+    with_transpose 12*0  do
+      #violin root(c), 127*1.0, mode: 1#, defon: 0.0, at: 0.0 #, sus: 1 , form: 0.0, shape: 0.0, mul: 4, at: 1.0
+    end
+    strings c[0][-2], 35
+    sleep (s[-1])*1
+    yes{
+    if spread(1,3).look
+      with_fx :gverb, room: 200.0, mix: 0.8, release: 8, spread: 0.9 do
+        with_fx :slicer, phase: 1/8.0 do
+          smp Drip[/effect/].look, amp: 0.4, cutoff: 100, rate: -0.125, attack: 0.5
+        end
+      end
+    end
+    }
+    sleep (s[-1])*1
+  end
+end
+
+#yes  { vioshot(:fs4, :off) }
+no  { vioshot(:a5, :on) }
+#yes { vioshot_x }
+#:gs    :b   :d
+#piano G#3
+#midi_note_on :a1, channel: 5
+
+live_loop :percussion, sync: :metro do
+  sync :entry if @align
+  d1,d2,d3,d4 = *Drip[/cymbal/,[0,2,3,4]]
+  with_fx :echo, mix: 1*(ring 0.025+rand*0.1,0.055+rand*0.1,0.03,0.02,0.01).look, phase: (ring 1/4.0, 1/8.0).look do
+    s1 = Drip[/snare/,/resin/].tick(:i);
+    t1 = Tape[/snare/].tick(:i);
+    c1 = Tape[/cymbal/].tick(:i);
+    c2 = Tape[/cymbal/].tick(:i);
+    c3 = Tape[/cymbal/].tick(:i);
+    d1c = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/c#01.wav";
+    d1d = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/d01.wav";
+    d1e = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/e01.wav";
+    d1f = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/f#01.wav";
+    d1g = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/g#01.wav";
+    d1a = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/a-01.wav";
+    d1b = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/b01.wav";
+    8.times{
+      m1 = Mountain[/microperc/,[0,0,7,0,0,7]].look;
+      with_swing 0.01,2 do
+        tick
+        zz=Drip[/fx/,[_,_,_,_,_,_,_,_,_,_,_,42]].look(:pp)
+        f  =(ing :reverb :reverb :echo).look(:pp)
+        dd = Tape[/_high/,[20,49,49,50,52,56,
+                    20,49,49,50,52,56]].look(:pp)
+        h1=Tape[/_high/,[50,49]].look(:pp)
+        pp = (ing
+          _ _ _ _    _ _ _ _     _ _ _ _    _ _ _ _
+          _ _ _ _    _ _ d1 _    _ _ _ _   _ _ _ _
+          ).look
+
+        ppz =(ing
+          _ _ _ _     _ _ _ _    _ _ _ _   _ _ _ _
+          h1 _ _ _    _ _ _ _    _ _ _ _   _ _ _ _
+          _ _ _ _    _ _ _ _    _ _ _ _   _ _ _ _
+          _ _ _ _    _ _ _ _     _ _ _ _   _ _ _ _
+          _ _ _ _     _ _ _ _
+          ).look
+        #pp=_
+        if pp
+          tick(:pp)
+          fx = :none
+          cutoff_bump=(pp.is_a?(Array) ? 15 : rand_i(10))
+          accent = (pp.is_a?(Array) ? 0.7 : 0.4)*1
+          if pp && pp.is_a?(Hash)
+            fx = pp.values[0]
+            pp = pp.keys[0]
+          end
+          with_fx(fx, phase: 1/3.0, decay: 1.5, room: 250, spread: 0.8, damp: 0.5,pre_damp:0.5,release:6){
+            if ppz
+              with_fx :slicer, phase: 1/4.0 do
+                smp h1, amp: 1.0, attack: (ing 0.03,0.01).look, rate: (ing 0.25 0.25 0.125 0.125).look(:pp)
+              end
+            end
+            yes do
+              fuzz = rand(0.05)
+              if (pp != dd && pp != h1)
+                with_fx (ing :slicer,:krush,:bitcrusher,:echo).tick(:pfx), mix: 0.5, phase: 1/4.0, decay: 2 {
+                  smp pp, amp: accent+5.0, attack: 0.0, start: 0.1-fuzz, rate: (knit -0.25,32,-0.25,32,
+                    -0.5-fuzz, 1,-0.5,31,
+                    -0.25-fuzz,1,-0.25,31).look
+                }
+              end
+              smp pp, amp: (3+accent+(rand*0.1))*1,
+              rate: -2*(knit 1.1,4, 1.0,2).look, pan: (ing
+                0.25 0.25 -0.25 -0.25  0.25 -0.25
+                0.5  0.5  -0.25 -0.25  0.25 -0.5
+                0.5  0.5  -0.25 -0.25  0.25 -0.5
+                  ).look, cutoff: (ing 110,80).look+cutoff_bump, cutoff: (ramp 40,127,256*4).tick(:aaashoo2t)
+              end
+          }
+        end
+        sleep 1/8.0
+    end
+    }
+  end
+end
+
+@cp||=nil
+live_loop :It_is_Dark_in_here, sync: :sudden do;z,zs,z2,z3,v=nil;tick
+  live_loop :Fall_Into_Your_Screen {stop}
+  #stop
+  zs=(ing
+      :D4 :D4 :D4 :D4  _ _ _ _
+      :E4  _ _ _       _ _ _ _
+      :D4  _ _ _       _ _ _ _
+      :B4  _ _ _       _ _ _ _
+      :Fs4 _ _ _       _ _ _ _
+      :E4  _ _ _       _ _ _ _
+      :A3  _ _ _       _ _ _ _
+      :A3  _ _ _       _ _ _ _
+      )
+    zs=(ing
+      _ _ [:Gs4 3] [:Gs4 1] _ _   _ _ [:E4 3]  _ _ _
+      _ _ _  _ _ _
+      _ _ [:E4 3]  [:E4 1] _ _    _ _ [:Cs4 3]  _ _ _
+      _ _ _  _ _ _
+      _ _ [:A4 6]   _ _ _  _ _ _  _ _ [:B4 6]   _ _ _ _ _ _
+      _ _ _  _ _ _
+      _ _ [:Fs4 2] _ _ _   _ _ [:Gs4 2]  _ _ _   _ _ _ _ _ _
+      _ _ [:Fs4 1] _ [:Fs4 1] _
+      _ _ [:Fs4 2] _ _ _     _ _ [:Fs4 2] _ _ _
+      _ _ _ [:Fs4 2] _ _     _ _ [:A3 2]  _ _ _
+      _ _ _ _ _ _     _ _ _  _ _ _
+      _ _ _ _ _ _
+      )
+    zs=(ing
+      :d4 :cs4 _ :a3 _ :e4 _ :A4 :A4 :A4 :A4 :A4
+      :d4 :cs4 _ :a3 _ :b3 _ :A4 :A4 :A4 :Fs4 :A4
+      )
+    z=zs.look
+    #z=_
+    if z
+      #eek_cc mode: 0
+      harp z#[0], (ing 60 60 60  50 50 40  60 60 60  50 50 40).look*1.1, sus: z[1]
+      piano z, 20+(ing 70 65 55).look * 1.3, sus: 4/2.0
+    end
+
+    if spread(1,12*2).look
+      #musicbox z,1, sus: 4
+    end
+
+  sleep 1/2.0
+  no{
+    r=1
+    with_transpose   0 { zero chord(zs.look(offset: 1),ct(zs.look(offset: 1)))[1],  r, sus: 12 } if spread(1,2).rotate(1).look
+    #with_transpose -12 { zero chord(zs.look(offset: 1),ct(zs.look(offset: 1)))[2],  r, sus: 12}  if spread(1,2).rotate(1).look
+    #with_transpose  12 { zero chord(zs.look(offset: 1),ct(zs.look(offset: 1)))[0],  r, sus: 12}  if spread(1,2).rotate(0).look
+    #with_transpose   0 { zero :a5, 20, sus: 12} if spread(1,2).rotate(0).look
+    #zero_cc more: 0.5, filter: 0.2, shape: 0.8, spread: 0.8
+    cue :zero if spread(1,2).rotate(0).look
+  }
+  sleep 1/2.0
+  #eek z, sus: 6, mode:2 if spread(1,3).look
+  sleep 1/4.0
+end
+
+zero_cc noise: 0.0, wet: .8, pulse: .0, more: .8
+
+live_loop :sssng do
+  sync :zero
+  16.times{
+    tick
+    i=(ing 1.0 _ _ 0.5 _ _ 0.25 _ 1.0  _ _   0.5 _ _ 0.125 _).look
+    if i
+      smp Tape[/_high/,49], amp: i, pan: (ing -0.125 0.125).look, finish: (ine 0.2 1.0 100).look, start: (ine 0.0 0.8 100).look
+    end
+    sleep 1/8.0
+  }
+end
+
+live_loop :kick, sync: :drums do
+  p=Dust[/perc/, /conga/] #MagicDust[/perc/,/stone/,[4..8]].look #*Dust[/perc/, [7,7]]
+  k3 = Tape[/tom/,23]
+  k2 = Tape[/tom/,22]
+  k7 = Tape[/tom/,24]
+  k4 = Mountain[/kick/,4]
+  k5 = Lo[/kick/,15]
+  k8 = Lo[/kick/,2]
+  k6 = Drip[/orig_fx_12/,0]
+  km = Lo[/kick/,/mid/]
+  d1c = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/c#01.wav";
+  d1d = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/d01.wav";
+  d1e = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/e01.wav";
+  d1f = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/f#01.wav";
+  d1g = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/g#01.wav";
+  d1a = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/a-01.wav";
+  d1b = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/b01.wav";
+  tc = Tape[/cymbals/]
+  ts = Tape[/snares/]
+  tt = Tape[/toms/]
+  df = Drip[/fx/]
+  kt = Lo[/kick/,/thin/]
+  t1 = CineAmbi[/One shots/,/tom/,2]
+  8.times{
+    tick
+    k1,k2,k3 = Frag[/kick/,9], Mountain[/subkick/,0], (knit Dust[/kick/,24],3, Dust[/kick/,25],3).look
+    kd = Lo[/kick/,/dark/].look
+    kk = Lo[/kick/,/clicky/].look
+    kp = Lo[/kick/,/phat/].look
+    cc = Drip[/cymbal/].look
+    m1 = Mountain[/microperc/]
+    dg=Drip[/fx/,/grind/,8]
+    #k1 = Tape[/drum/,7]
+    p1,p2,p3,p4 = *Crystal[/cymbal/,[32,18,12,13]]
+    d1,d2,d3,d4 = *Drip[/cymbal/,[0,2,3,4]]
+    d5 = Drip[/cymbal/,10]
+    f3 = Drip[/fx/,/12/,14]
+    f2 = Drip[/fx/,/88/,0]
+    f1 = [
+      #Drip[/Drip_orig_fx_08/,0],
+      "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/D-01.wav",
+      "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/D01.wav",
+      "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/E01.wav"][2]
+    cs = (0..17).map{|n| Crystal[/cymbal/].tick(:i)}
+    c=Crystal[/cymbal/]
+    cf=Crystal[/fx/]
+    page1=(ing
+      _ _ _        _ _ _   _ _ _        _ _ _
+      m1[1] _ _    _ _ _    _ _ _        _ _ _
+      _ _ _        [m1[6]] m1[7] _   _ _ _        _ _ _)
+    page2=(ing
+      _ _ _            _ _ _
+      _ _ _            _ _ _
+      m1[7] _ _        _ _ _
+      _ _ _            _ _ _
+      _ _ _            _ _ _
+      _ _ _            _ _ _)
+    page3=(ing
+      _ _ _            _ _ _
+      _ _ _            _ _ _
+      m1[6] _ _        _ _ _
+      _ _ _            _ _ _
+      _ _ _            _ _ _
+      _ m1[1] [m1[1]]  m1[1] [m1[3]] _
+
+      _ _ _            _ _ _
+      _ _ _            _ _ _
+      m1[6] _ _        _ _ _
+      _ _ _            _ _ _
+      _ _ _            _ _ _
+      _ _ [m1[1]]      _ [m1[3]] _)
+    pp=(knit page1.look, page1.count*2, page2.look, page2.count*2, page3.look, page3.count*2).look
+    pp=_
+    if pp
+      with_fx :lpf, mix: 0.9 do
+        drum_machine(pp)
+      end
+    end
+
+    #smp tc.take(12).look, amp: 0.5+rand*0.1, rate: (ing 0.85,1.0, 1.0).look if spread(1,12*2).look
+
+    k=(ing
+      [kt[1]] _ k7 _  ts[8] _ _ _       k1 _ _ _   _ _ _ _
+      k1 _ _ _        _ _ _ _           k4 _ _ _   _ _ _ k7
+      k1 _ _ _        %l{tc[6]} _ _ _   k4 _ _ _   _ _ _ k7
+      k1 _ _ _        _ _ _ _           k5 _ %l{tc[6]} _   _ _ [f1 0.99] _
+      kt[4] _ k7 _    _ _ _ _           k1 _ _ _   _ _ _ _
+      k1 _ _ _        _ _ _ _           k4 _ _ _   _ _ _ k7
+      k1 _ _ _        %l{tc[6]} _ _ _   k4 _ _ _   _ _ _ k7
+      k1 _ _ _        k4 _ _ _          k5 _ %e{tc[6]} _   _ _ [f1 0.99] _)
+
+    k=(ing
+      [kt[1]] _ _ _  ts[8] _ _ _      k1 _ _ _   _ _ _ _
+      k1 _ _ _       _ _ _ _          k4 _ _ _   _ _ _ k7
+      k1 _ _ _       %l{tc[6]} _ _ _  k4 _ _ _   _ _ _ k7
+      k1 _ _ _       _ _ _ _          k5 _ %l{tc[6]} _   _ _ [f1 0.99] _
+      kt[4] _ _ _    _ _ _ _          k1 _ _ _   _ _ _ _
+      k1 _ _ _       _ _ _ _          k4 _ _ _   _ _ _ k7
+      k1 _ _ _       %l{tc[6]} _ _ _  k4 _ _ _   _ _ _ k7
+      k1 _ _ _       _ _ _ _          k5 _ %e{tc[6]} _   _ _ [f1 0.99] _)
+
+    k=k.map{|s| look % 32 == 0 ? s : _ }
+    #sop_mode (ing 0 1 2 3 4 5 6).look#, motion: (ing 0.0,1.0).look
+    #sop_mode(0) if !k
+
+    k2=(ing
+      # [kt[1]] _ k7 _   _ _ %l{k5} _   _ _ k1 _   _ k5 _ _
+      # k1 _ k7 _        _ _ %l{k4} _   _ _ k4 _   _ k5 _ _
+      # k1 _ k7 _        _ _ %l{k5} _   _ _ k1 _   _ k5 _ _
+      # k1 _ k7 _        _ _ %l{k4} _   _ _ k4 _   _ k5 _ _
+      [kt[1]] _ _ _   ts[2] _ ts[9] _     k4 _ tt[9] _  ts[3] _ _ _
+      k1  _ _ _       ts[2] _ ts[9] _     k4 _ _ _   %h{ts[3]} _ _ k7
+      k1  _ _ _       ts[2] _ ts[9] _     k4 _ _ _   %h{ts[3]} _ _ k7
+      k1  _ _ _       ts[2] _ ts[9] _     [k4] _ _ _   ts[3] _ _ _
+      )
+
+    kdark = Lo[/kick/,/dark/]
+    kphat = Lo[/kick/,/phat/]
+    kz=(ing
+      [kt[1]] _ _ k1    _ _ _ k7  _ _ _ _   k1 _ k1 _
+      kt[1] _ _   k1    _ _ _ k7  _ _ _ _   k1 _ k1 _
+      kt[1] _ _   k1    _ _ _ k7  _ _ _ _   k1 _ k1 _
+      kt[1] _ _ _       _ _ _ k7  _ _ _ _   k1 _ k1 _
+      )
+
+    #k=(ing k1 _ _ _   _ _ _ _)
+
+    with_swing 0.08{
+      hs=(knit
+        (ing [Tape[/hi/,26]] _  _ _   tc[17] _  _ _).look, 8*2,
+        (ing Tape[/hi/,26] _  _ _   tc[17] _  _ _).look, 8*1,
+        (ing tc[17] _  _  tc[9]     [Tape[/hi/,26]] Tape[/hi/,34]  _ _).look, 8*1
+        ).look
+      accent=0.4
+      if hs && hs.is_a?(Array)
+        hs = hs[0]
+        accent+=0.1+rand(0.09)
+      end
+      #smp hs, amp: accent
+      }
+    s=(ing
+      2 _ _ _ 5 _ _ _     5 _ _ _      _ _ _ _
+      5 _ _ _   _ _ _ _   5 _ [2] 3    _ [5] 5 5
+      ).look
+    accent=110
+    s=_
+    if s && s.is_a?(Array)
+      s = s[0]
+      #eek :gs5, 90, sus: 1/8.0, mode: 0
+      accent=10+rand_i(5)
+    end
+    if spread(1,6).look
+      #eek :e5, 50, sus: 1/8.0, mode: 0
+      #eek_cc mode: 2
+    end
+    if s#spread(2,12).rotate(4).look
+      mt (ing s).look, accent
+    end
+
+    if (s=(ing
+        [5] _   5 _
+        5   _   5 _
+        5   _   5 _
+        5   [5] 5 _
+          ).look)
+      accent=85
+      if s && s.is_a?(Array)
+        s = s[0]
+        accent=120
+      end
+      #mt s,accent
+    end
+
+    c5 = Tape[/cymbal/,[7,7,7,7]].look
+    s=(ing
+      c5 _ c5 _  c5 _ [c5] c5    c5 _ c5 _  c5 _ c5 _
+      c5 _ c5 _  c5 _ c5 _       c5 _ c5 _  c5 _ [c5] _
+      c5 _ _ _   c5 _ _ _         c5 _ _ _   _ _ _ _
+      c5 _ c5 _  c5 _ _ _         c5 _ c5 _  c5 _ [c5] _
+      ).look
+    s=(ing
+      _ _ c5 _   _ _ _ _         _ _ _ _   _ _ _ _
+      _ _ c5 _   _ [c5] c5 _     _ _ _ _   _ _ _ _
+      _ _ c5 _   _ _ _ _         _ _ _ _   _ [c5] c5 _
+      ).look
+    accent = 0.5
+    if s.is_a?(Array)
+      accent = 0.8
+      s = s[0]
+    end
+    no{
+    s=_
+    with_swing 0.02 {
+      smp s, amp: accent*0.5+(ing
+        0.5 0 0.125 0 0.5 0 0.8 0.5
+        0.5 0 0.125 0 0.8 0 0.125 0
+        0.125 0 0.125 0 0.8 0 0.125 0
+        0.125 0 0.125 0 0.125 0 0.8 0).look, pan: 0.0125, cutoff: (line 100, 127,64).look, pan: Math.sin(vt*13)/1.5
+      }
+    }
+
+    k2=(ing
+      kt[1] _ k7 _  ts[8] _ _ _       _ _ _ _   _ _ _ _
+      _ _ _ _       _ _ _ _           _ _ _ _   _ _ _ k7
+      _ _ _ _      %l{tc[6]} _ _ _    _ _ _ _   _ _ _ k7
+      _ _ _ _       _ _ _ _           _ _ %l{tc[6]} _   _ _ [f1 0.99] _
+      _ _ k7 _   _ _ _ _              _ _ _ _   _ _ _ _
+      _ _ _ _       _ _ _ _           _ _ _ _   _ _ _ k7
+      _ _ _ _       %l{tc[6]} _ _ _   _ _ _ _   _ _ _ k7
+      _ _ _ _  _ _ _ _                _ _ %e{tc[6]} _   _ _ [f1 0.99] _)
+
+    p=_
+    if spread(7*2,11*3).look && p
+      with_fx :hpf do
+        #smp tt[8], amp: 0.125
+      end
+      #(knit true,48,false,48).look ? tick(:i) : look(:i)
+      #smp tt.look(:i), amp: (line 0.9, 1.0,128).look, rate: 0.25
+    end
+    if spread(4,31).look && p
+      #(knit true,32,false,0).look ? tick(:i2) : look(:i2)
+      #smp Mountain[/microperc/,5], amp: 0.5
+    end
+
+    dx = Drip[/fx/,/orig/].shuffle.look  #24
+    r = (ing d1a,d1d,d1e,d1f).look
+    k2=(ing
+      _ _ _ _                          _ _ _ _
+      _ _ _ _                          _ _ _ _
+      [ts[49]] _ _ ts[12]              _ _ _ _
+
+      _ _ _ _                          _ _ _ _
+      _ _ _ _                          _ _ _ _
+      ts[7] _ _ _                      _ _ _ _
+
+      _ _ _ _                         _ _ _ _
+      _ _ _ _                          _ _ _ _
+      tt[49] _ _ ts[12]                _ _ _ _
+
+      _ _ _ _                          _ _ _ _
+      _ _ _ _                          _ _ _ _
+      ts[7] _ _ _                      _ _ _ _
+      )
+
+    kp=k2.look
+    fx=:lpf
+    accent = (ing 0.2 0.2 0.3 0.5).look
+    attack = 0.0
+    r = 1.0
+    if kp && kp.is_a?(Array)
+      kp = kp[0]
+      accent=accent*1.5
+    end
+    if kp && kp.is_a?(Hash)
+      fx = kp.values[0]
+      kp = kp.keys[0]
+    end
+    if kp==dx
+      #eek :Gs3
+      r=[-0.125, 0.125].choose
+      attack=0.1
+      fx=:slicer
+    end
+
+    no{ with_swing 0.01{with_fx(fx, phase: (ing 1/4.0,1/4.0,1/8.0).look){ smp kp, amp: 6*accent, rate: r, attack: attack if kp}} }
+
+    k=k.look
+    k=_
+
+    midi(:c3, 60+(rand_i 10), channel: 2) if k == [kt[1]] #|| k.look == k4 || k == [kt[1]]
+
+    no{
+      if spread(1,64).rotate(-64+(8*2)).look   #4*1/8
+        rev :a5, 110
+      end
+      if k && spread(1,64).look
+        cue(:sudden)
+        violin_x
+        strings_x
+        sync :entry
+      end
+    }
+    sidechain if k && spread(1,4).look
+    condi = 1
+    r= 1
+    fx=:none
+    accent=1
+    if k.is_a?(Array) && k.count == 1
+      accent = 1.1
+      k=k[0]
+    end
+    if k && k.is_a?(Hash)
+      fx = k.values[0]
+      k=k.keys[0]
+    end
+    if k.is_a?(Array)
+      condi = k[1]
+      k = k[0]
+      r= [1.0].choose
+    end
+    if rand(1.0) <= condi
+      with_fx :krush, mix: dice(6) > 5 ? 0.15 : 0.0 do
+        if k == f1
+          r = 0.25
+        end
+        with_fx fx, phase: 4/8.0 do
+          smp k, amp: 2*accent*1.1*(knit 0.8,4, 0.6,4, 0.7,4, 0.6,4).look, finish: 1.0 , rate: r, v: 0.2, attack: (knit 0.0,12, 0.02,4, 0.0,8).look#,  rate: (knit 1,(6*4)-4, 0.85,4, 1,(6*4)-4, 0.75,4).look
+        end
+      end
+    end
+    sleep 1/8.0
+  }
+end
+
+with_fx :none, mix: 0 do
+  sync :entry if @align
+  live_loop :drums, sync: :metro do
+    #stop
+    with_fx :level, amp: 0.5 do
+      with_fx :reverb, mix: 0.4, room: 0.5, mix_slide: 0.5 do |r_fx|
+        t1 = CineAmbi[/One shots/,/tom/,2]
+        p=Dust[/perc/, /conga/] #MagicDust[/perc/,/stone/,[4..8]].look #*Dust[/perc/, [7,7]]
+        k3 = Tape[/tom/,23]
+        k2 = Tape[/tom/,22]
+        k7 = Tape[/tom/,24]
+        k4 = Mountain[/kick/,4]
+        k5 = Lo[/kick/,15]
+        k6 = Drip[/orig_fx_12/,0]
+        #k1 = Tape[/drum/,7]
+        p1,p2,p3,p4 = *Crystal[/cymbal/,[32,18,12,13]]
+        d1,d2,d3,d4 = *Drip[/cymbal/,[0,2,3,4]]
+        d5 = Drip[/cymbal/,10]
+        f3 = Drip[/fx/,/12/,14]
+        f2 = Drip[/fx/,/88/,0]
+        c1 = CineAmbi[/one shot/,/cymbal/,1]
+        c3 = CineAmbi[/one shot/,/cymbal/,3]
+        c2 = CineAmbi[/one shot/,/cymbal/,6]
+        c4 = CineAmbi[/one shot/,/cymbal/,0]
+        s1,s2 = Mountain[/stick/,[4,2]]
+        c1 = CineAmbi[/one shot/,/cymbal/,8]
+        c4 = CineAmbi[/one shot/,/cymbal/,13]
+        s1 = Tape[/cymbal/,8]
+        c4 = Tape[/cymbal/,20]
+        oc1 = CineAmbi[/one shot/,/cymbal/,5]
+        t1 = Tape[/tom/,0]
+        cd1 =  Drip[/fx/,/12/,1]
+
+        8.times{
+          tick
+          k1,k2,k3 = Frag[/kick/,9], Mountain[/subkick/,0], (knit Dust[/kick/,24],3, Dust[/kick/,25],3).look
+          f1 = [Drip[/Drip_orig_fx_08/,0]].choose
+          t1 = Tape[/tom/,[28,28,22]].look
+          p1=Analog[/click/].look
+
+          if spread(1,16).look
+            accent = spread(1,32).look ? 30 : 20
+            #eek (ring :A1, :E2).tick(:in), accent, sus: 1, at: rand(1.0), mod: rand(1.0), mode: 2
+          end
+
+          p1=d1
+          ffx =(ing :hpf).look
+          pp=(ing
+            [p1] _ _ _   _ _ p1 _
+            _ _ p1 _
+            _ _ _ _      _ _ {p1=>ffx} _
+            _ _ [p1] _
+            ).look
+
+          pxp=(ing
+            [p1] _
+            p1 _ _ _
+            _ p1 _ _
+            _ _ p1 _
+            _ _ _ p1
+            _ _ p1
+            _ _ p1
+            ).look
+          pp=_
+          if pp
+            accent = pp.is_a?(Array) ? 1.0 : 0.8
+            cutoff_bump = rand_i(5)
+            fx = :none
+            if pp && pp.is_a?(Hash)
+              fx = pp.values[0]
+              pp = pp.keys[0]
+            end
+            with_fx(fx){
+              smp pp, cutoff: (line 110, 115, 6*4).look, attack: (line 0.02, 0.0,6*2).look, amp: accent*(line 1.0,0.9,6*8).look+10, start: 0.5, rate: -0.25*(knit 1,(6*4)-4, 0.85,4, 1,(6*4)-4, 0.75,4).look, pan: (ing 0.25 0.25 -0.25 0.25).look, cutoff: 110-cutoff_bump#, cutoff: (ramp 40, 120,256*3).tick(:fireandice)
+            }
+            if spread(1,6).look
+              #smp MagicDust[:clack, [0,2,3,6]].tick(:insider), amp: 0.5*1, pan: (ring 0.25,-0.25).look(:inside)
+            end
+          end
+          if pp && spread(3,7).look
+            #smp Junk[/RedShaker/,18..22].tick(:i), amp: 0.2, pan: (ing 0.25,-0.25).tick(:ingit)
+          end
+
+          sleep 1/8.0
+          control r_fx, mix: rand(0.5)
+        }
+      end
+    end
+  end
+end
+
+live_loop :sixteen, sync: :drums do
+  tick
+  c1 = CineElec[/one shots/,/pepper/]
+  c1 = Tape[/_high/,49]
+  s=(ing
+    _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _             _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _
+    _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _             _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ c1
+    _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _             _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _
+    _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _             _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _
+    ).look
+  if s
+    #smp Words[/beaut/], start: 0.0, finish: 1.0, rate: 1.0, amp: 1.5
+    with_fx (knit :none, 3*128, :echo, 128).look do
+      smp s, amp: 0.5, rate: (knit 1,2, 0.85,2, 1,2, 0.75,2).tick(:active)
+    end
+  end
+  sleep 1/16.0
+end
+live_loop(:metro) do; sleep 1.0 end
