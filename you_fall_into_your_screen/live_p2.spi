@@ -1,0 +1,110 @@
+live_loop :Fall_Out_Of_Your_Screen, sync: :metro do
+  tick
+  live_loop :It_is_Dark_in_here{stop}
+
+  #  stop
+  score =  (ing  #15.25
+     [[[:b2 2]  [:d5 2]   [:fs3 2]]           2]    [[[_ 0.25] ]  2]
+     [[[:fs2 2] [:a4 2]   [:cs3 2]]           2]    [[[_ 0.25] ]  2]
+     [[[:a2 2]  [:b4 2]   [:e4 2]]            2]
+     [[[:d3 2]  [:fs5 2]  [:a3 2]  [[:cs5 2] [:e4 2]].choose] 2]    [[[_ 0.25] ]  2]
+     [[[:e2 2]  [:gs4 2]  [:b3 2]]  2]
+     [[[:b2 2]  [:d5 2]   [:fs3 2] [:cs4 2]]  2]    [[[_ 0.25] ]  2]
+     [[[:fs4 2] [:A4 2]   [:Cs3 2] ]  2]            [[[_ 0.25+0.75] ]  2]
+
+#      :gs4 :cs4 _ :a3 _ :e4 _ :A4 :A4 :A4 :A4 :A4
+#      :gs4 :cs4 _ :a3 _ :b3 _ :A4 :A4 :A4 :Fs4 :A4
+
+    # simple 2
+#    [[[:b2 2]  [:D5 2]   [:fs3 2]]          2] [[[_ 0.25] ]  2]
+#    [[[:fs2 2] [:A4 2]   [:Cs3 2] ]         2] [[[_ 0.25] ]  2]
+#    [[[:a2 2]  [:b4 2]   [:e4 2]]           2]
+#    [[[:e2 2]  [:gs4 2]  [:b3 2]]  2]
+
+#    [[[:a2 2] [:Cs4 2] [:E3 2]]  2]
+#    [[[:gs4 0.25]]  0.5]
+#    [[[:cs3  2] [:E4 2] [:Gs3 2]  ]  2]
+#    [[[:fs3 0.25]]  0.5]
+    )
+  cue :entry
+  s=score.look
+  c=s[0]
+  if spread(1,1).look
+    musicbox c[0][0], sus: 12
+  end
+  at {
+    #sop :a5,      sus: 2
+    #eek :a3,      sus: 12, mode: 2
+    #sleep 1
+    #eek :cs5,     sus: 12, mode: 2
+    #sleep 1
+    #piano2 :e4,120, sus: 12
+    #sleep 1
+  }
+  if spread(1,6).look
+    #rev :b5, 1
+    #eek :Gs3, 10
+  end
+  with_transpose 0 {
+    #piano3 root(c),(ing 127 120).look,sus: 2
+  }
+  #rev :a6, 15, sus: 12
+
+  if !c[0][0]
+    eek (ing :e4 :gs4 :e4 :b4 _ _).look, (ing 100 120).look(:missing), sus: 3.0, at: 0.0, mod: 0.0
+  end
+
+  with_transpose -12 {piano2 c[1], 60, sus: 2 }
+
+  with_transpose -12*0 do
+    #harp root(c),10
+    #piano3 root(c), (ring 35,40).look*1.3, sus: c[0][-1]
+
+    c.each{|n|tick(:inner);
+      sop2 n[0],2.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: 1.0, phase: 0, comp: 0
+      #piano2 n[0]
+    }
+
+    #c.each{|n| piano n, (ring 60,60).look*1.3, sus: 2}
+    pf=0.2
+    i=(method :piano)
+    i.call(c[0], 60*pf, sus: 4)
+    i.call(c[1], 50*pf, sus: 4)
+    i.call(c[2], 55*pf, sus: 4)
+    i.call(c[3], 70*pf, sus: 2)
+    i.call(c[4], 30*pf, sus: 8)
+    i.call(c[5], 30*pf, sus: 8)
+
+    with_transpose 12*0  do
+      violin root(c), 127*1.0, mode: 1, sustain: s[-1]#, defon: 0.0, at: 0.0 #, sus: 1 , form: 0.0, shape: 0.0, mul: 4, at: 1.0
+    end
+    #sleep s[-1]
+    strings c[0][-2], 35
+    if spread(1,3).look
+      with_fx :gverb, room: 200.0, mix: 0.8, release: 8, spread: 0.9 do
+        with_fx :slicer, phase: 1/8.0 do
+          #smp Drip[/effect/].look, amp: 0.4, cutoff: 100, rate: -0.125, attack: 0.5
+        end
+      end
+    end
+    #sop_mode (ing 0 1 2 3 4 5 6).look#, motion: (ing 0.0,1.0).look
+    8.times{
+      tick(:in2)
+      piano (ing
+             :a5 _ :a4 _    _   :b5  :a4 _
+             :a5 _ :a4 _    _   :b5  :a4 _
+             :a5 _ :fs5 _   _   :fs5 :a4 _
+             :a5 _ :e5 _    _   :cs6 :a4 _
+             :a5 _ :a4 _   :e5  :b5  :a4 _
+             :a5 _ :a4 _    _   :b5  :a4 _
+             :a5 _ :a4 _    _   :b5  :a4 _
+             :a5 _ :a4 _    _   :b5  :a4 _
+             :a5 _ :a4 _    _   :b5  :a4 _
+             :a5 _ :a4 _    _   :b5  :a4 _
+             :a5 _ :a4 _    _   :b5  :a4 _
+             :a5 _ :a4 _    :e6 :b5  :a4 _
+             ).look(:in2), (ing 90 90 80 80 70 70 60 60).look(:in2)*1.0
+      sleep (s[-1])/8.0
+    }
+  end
+end
