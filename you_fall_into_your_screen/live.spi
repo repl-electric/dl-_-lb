@@ -3,7 +3,7 @@ use_bpm 63.5
 #use_bpm 60
 
 #set_volume! 1.0
-sop_cc motion: 1.0
+sop_cc motion: 0.1
 #sop_mode 0
 #sop2_cc motion: 0.1
 #sop2_on :A2, mode: 4
@@ -12,7 +12,8 @@ live_loop :Fall_Into_Your_Screen, sync: :metro do
   tick
 #  stop
   score =  (ing
-     [[[:a1 2]]  2]   [[[_ 0.25] ]  2]
+    [[[:a2 2] [:Cs4 2] [:E3 2]]  2]   [[[_ 0.25] ]  2]
+    [[[:cs2 2] [:e4 2] ]  2]          [[[_ 0.25] ]  2]
 #    [[[:b3 2]   [:d3 2] [:fs3 2]]  2]   [[[_ 0.25] ]  2]
 #    [[[_ 2]   [:e4 2]  [:a3 2]]  2]     #  [[[_ 0.25] ]  2]
 #    [[[_ 2]   [:fs4 2] [:a3 2]]  2]     [[[_ 0.5] ]  2]
@@ -29,15 +30,14 @@ live_loop :Fall_Into_Your_Screen, sync: :metro do
   end
   #with_transpose 0 { piano3 root(c),(ing 127 120).look, sus: 2 }
   #rev :a6, 15, sus: 12
-  #harp root(c),10
   #piano root(c), (ring 35,40).look*1.5, sus: c[0][-1]
   c.each{|n|tick(:inner);
-    sop n[0], 2.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: (ramp 0.0, 1.1, 12).tick(:innert)#, cutoff: 1.0
+    #sop n[0], 2.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: (ramp 0.0, 1.1, 12).tick(:innert)#, cutoff: 1.0
     #piano3 n[0]
   }
   #violin root(c), 127*1.0, mode: 1#, sus: 2.0#, defon: 0.0, at: 0.0 #, sus: 1 , form: 0.0, shape: 0.0, mul: 4, at: 1.0
-  #broken root(c)+12*1, 30, motion: 0.4 #, sus: 1.5
-  strings c[0][-2], 35
+  #broken root(c)+12*0, 30, motion: 0.4 #, sus: 1.5
+  #strings c[0][-2], 35
   #sleep (s[-1])*1
   yes{
     if spread(1,3).look
@@ -51,11 +51,8 @@ live_loop :Fall_Into_Your_Screen, sync: :metro do
   sleep (s[-1])*1
 end
 
-#yes  { vioshot(:fs4, :off) }
-no  { vioshot(:a5, :on) }
+no   { vioshot(:a5, :on) }
 #yes { vioshot_x }
-#:gs    :b   :d
-#piano G#3
 #midi_note_on :a1, channel: 5
 
 live_loop :percussion, sync: :metro do
@@ -191,10 +188,10 @@ live_loop :sssng do
 end
 
 live_loop :kick, sync: :drums do
-  p=Dust[/perc/, /conga/]; k3 = Tape[/tom/,23]; k2 = Tape[/tom/,22]; k7 = Tape[/tom/,24]; k4 = Mountain[/kick/,4]; k5 = Lo[/kick/,15]; k8 = Lo[/kick/,2]; k6 = Drip[/orig_fx_12/,0]; km = Lo[/kick/,/mid/]; d1c = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/c#01.wav"; d1d = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/d01.wav"; d1e = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/e01.wav"; d1f = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/f#01.wav"; d1g = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/g#01.wav"; d1a = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/a-01.wav"; d1b = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_cymbals/b01.wav"; tc = Tape[/cymbals/]; ts = Tape[/snares/]; tt = Tape[/toms/]; df = Drip[/fx/]; kt = Lo[/kick/,/thin/]; t1 = CineAmbi[/One shots/,/tom/,2];
+  p=Dust[/perc/, /conga/]; k7 = Tape[/tom/,24]; k4 = Mountain[/kick/,4]; k5 = Lo[/kick/,15]; km = Lo[/kick/,/mid/]; tc = Tape[/cymbals/]; ts = Tape[/snares/]; tt = Tape[/toms/]; df = Drip[/fx/]; kt = Lo[/kick/,/thin/]; t1 = CineAmbi[/One shots/,/tom/,2];
   8.times{
     tick
-    k1,k2,k3 = Frag[/kick/,9], Mountain[/subkick/,0], (knit Dust[/kick/,24],3, Dust[/kick/,25],3).look; kd = Lo[/kick/,/dark/].look; kk = Lo[/kick/,/clicky/].look; kp = Lo[/kick/,/phat/].look; cc = Drip[/cymbal/].look; m1 = Mountain[/microperc/]; dg=Drip[/fx/,/grind/,8]; p1,p2,p3,p4 = *Crystal[/cymbal/,[32,18,12,13]]; d1,d2,d3,d4 = *Drip[/cymbal/,[0,2,3,4]]; d5 = Drip[/cymbal/,10]; f3 = Drip[/fx/,/12/,14]; f2 = Drip[/fx/,/88/,0]; f1 = ["/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/D-01.wav", "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/D01.wav", "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/E01.wav"][2]; cs = (0..17).map{|n| Crystal[/cymbal/].tick(:i)}; c=Crystal[/cymbal/]; cf=Crystal[/fx/]; c1 =  (knit Analog[/clapraw/].look,8,Analog[/clap1/].look,8,Analog[/clap2/].look,8,Analog[/clap3/].look,16).look; c2 =  (knit Frag[/coil/,-31],16).look; c3 =  (knit Frag[/coil/,/f#/,[2,2]].look,16).look; c2 = Analog[/click/].look; c3 = Tape[/snare/,9]; c2 = Tape[/snare/,10]; c4 = Tape[/snare/,11]; c5 = Tape[/cymbal/,[7,7,7,7]].look; c1 = Analog[/clapraw/,0]; c2 = Analog[/04 clap1/,0]; c3 = Analog[/04 clap2/,0]; c4 = Analog[/04 clap3/,0]; c5 = Analog[/13 clap/,0]; c6 = Analog[/13 clap/,1]; c7 = Analog[/13 clap/,2];
+    k1,k2 = Frag[/kick/,9], Mountain[/subkick/,0]; kd = Lo[/kick/,/dark/].look; kk = Lo[/kick/,/clicky/].look; kp = Lo[/kick/,/phat/].look; cc = Drip[/cymbal/].look; m1 = Mountain[/microperc/]; f1 = ["/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/D-01.wav", "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/D01.wav", "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/E01.wav"][2]; cs = (0..17).map{|n| Crystal[/cymbal/].tick(:i)}; c=Crystal[/cymbal/]; cf=Crystal[/fx/]; c1 = (knit Analog[/clapraw/].look,8,Analog[/clap1/].look,8,Analog[/clap2/].look,8,Analog[/clap3/].look,16).look; c1 = Analog[/clapraw/,0]; c2 = Analog[/04 clap1/,0]; c3 = Analog[/04 clap2/,0]; c4 = Analog[/04 clap3/,0]; c5 = Analog[/13 clap/,0]; c6 = Analog[/13 clap/,1]; c7 = Analog[/13 clap/,2];
     #smp tc.take(12).look, amp: 0.5+rand*0.1, rate: (ing 0.85,1.0, 1.0).look if spread(1,12*2).look
 
     k=(ing
@@ -322,7 +319,6 @@ live_loop :kick, sync: :drums do
     end
 
     dx = Drip[/fx/,/orig/].shuffle.look  #24
-    r = (ing d1a,d1d,d1e,d1f).look
     k2=(ing
       _ _ _ _                          _ _ _ _
       _ _ _ _                          _ _ _ _
