@@ -32,7 +32,7 @@ live_loop :Fall_Into_Your_Screen, sync: :metro do
   #harp root(c),10
   #piano root(c), (ring 35,40).look*1.5, sus: c[0][-1]
   c.each{|n|tick(:inner);
-    sop n[0], 2.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: (ramp 0.0, 1.1, 12).tick(:innert), cutoff: 1.0
+    sop n[0], 2.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: (ramp 0.0, 1.1, 12).tick(:innert)#, cutoff: 1.0
     #piano3 n[0]
   }
   #violin root(c), 127*1.0, mode: 1#, sus: 2.0#, defon: 0.0, at: 0.0 #, sus: 1 , form: 0.0, shape: 0.0, mul: 4, at: 1.0
@@ -63,13 +63,8 @@ live_loop :percussion, sync: :metro do
 
   with_fx :echo, mix: 1*(ring 0.025+rand*0.1,0.055+rand*0.1,0.03,0.02,0.01).look, phase: (ring 1/4.0, 1/8.0).look do
     8.times{
-      m1 = Mountain[/microperc/,[0,0,7,0,0,7]].look;
       with_swing 0.01,2 do
         tick
-        zz = Drip[/fx/,[_,_,_,_,_,_,_,_,_,_,_,42]].look(:pp)
-        f  = (ing :reverb :reverb :echo).look(:pp)
-        dd = Tape[/_high/,[20,49,49,50,52,56, 20,49,49,50,52,56]].look(:pp)
-        h1 = Tape[/_high/,[50,49]].look(:pp)
         pp = (ing
           _ _ _ _    _ _ _ _     _ _ _ _    _ _ _ _
           _ _ _ _    _ _ d1 _    _ _ _ _   _ _ _ _
@@ -86,13 +81,11 @@ live_loop :percussion, sync: :metro do
           end
           with_fx(fx, phase: 1/3.0, decay: 1.5, room: 250, spread: 0.8, damp: 0.5,pre_damp:0.5,release:6){
             fuzz = rand(0.05)
-            if (pp != dd && pp != h1)
-              with_fx (ing :slicer,:krush,:bitcrusher,:echo).tick(:pfx), mix: 0.5, phase: 1/4.0, decay: 2 {
-                smp pp, amp: accent+5.0, attack: 0.0, start: 0.1-fuzz, rate: (knit -0.25,32,-0.25,32,
-                  -0.5-fuzz, 1,-0.5,31,
-                  -0.25-fuzz,1,-0.25,31).look
-              }
-            end
+            with_fx (ing :slicer,:krush,:bitcrusher,:echo).tick(:pfx), mix: 0.5, phase: 1/4.0, decay: 2 {
+              smp pp, amp: accent+5.0, attack: 0.0, start: 0.1-fuzz, rate: (knit -0.25,32,-0.25,32,
+                -0.5-fuzz, 1,-0.5,31,
+                -0.25-fuzz,1,-0.25,31).look
+            }
             smp pp, amp: (3+accent+(rand*0.1))*1,
             rate: -2*(knit 1.1,4, 1.0,2).look, pan: (ing
               0.25 0.25 -0.25 -0.25  0.25 -0.25
