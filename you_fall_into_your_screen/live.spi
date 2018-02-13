@@ -445,22 +445,14 @@ live_loop :sixteen, sync: :drums do
   tick
   c1 = CineElec[/one shots/,/pepper/]
   c1 = Tape[/_high/,49]
-  s=(ing
-    _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _             _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _
-    _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _             _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ c1
-    _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _             _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _
-    _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _             _ _ _ _   _ _ _ _   _ _ _ _   _ _ _ _
-    ).look
+  s = spread(1,128).rot(-8*8 + 1).look
   if s
-    no{
-      with_fx :pitch_shift, time_dis: 0.5, pitch_dis: 0.0 do
-        smp Words[/beaut/], start: 0.1, finish: 0.8, rate: 1.0, amp: 1.0
-      end}
-
+    #smp Words[/beaut/], start: 0.1, finish: 0.8, rate: 1.0, amp: 1.0
     with_fx (knit :none, 3*128, :echo, 128).look do
-      smp s, amp: 0.5, rate: (knit 1,2, 0.85,2, 1,2, 0.75,2).tick(:active)
+      smp c1, amp: 0.5, rate: (knit 1,2, 0.85,2, 1,2, 0.75,2).tick(:active)
     end
   end
   sleep 1/16.0
 end
+
 live_loop(:metro) do; sleep 1.0 end
