@@ -1,12 +1,6 @@
-use_bpm 63.5
-#use_bpm_mul 4
-#use_bpm 60
-
-#set_volume! 1.0
+use_bpm 63.5;#set_volume! 1.0
 sop_cc motion: 0.1
 #sop_mode 0
-#sop2_cc motion: 0.1
-#sop2_on :A2, mode: 4
 
 live_loop :Fall_Into_Your_Screen, sync: :metro do
   tick
@@ -188,20 +182,21 @@ live_loop :sssng do
 end
 
 live_loop :kick, sync: :drums do
-  p=Dust[/perc/, /conga/]; k7 = Tape[/tom/,24]; k4 = Mountain[/kick/,4]; k5 = Lo[/kick/,15]; km = Lo[/kick/,/mid/]; tc = Tape[/cymbals/]; ts = Tape[/snares/]; tt = Tape[/toms/]; df = Drip[/fx/]; kt = Lo[/kick/,/thin/]; t1 = CineAmbi[/One shots/,/tom/,2];
+  k1,k2,k3,k4 = Frag[/kick/,9], Mountain[/subkick/,0], Mountain[/kick/,4], Lo[/kick/,15];
+  p=Dust[/perc/, /conga/]; t1 = Tape[/tom/,24]; km = Lo[/kick/,/mid/]; tc = Tape[/cymbals/]; ts = Tape[/snares/]; tt = Tape[/toms/]; df = Drip[/fx/]; kt = Lo[/kick/,/thin/]; m1 = Mountain[/microperc/]; f1 = ["/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/D-01.wav", "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/D01.wav", "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/E01.wav"][2]; c=Crystal[/cymbal/]; cf=Crystal[/fx/]; c1 = Analog[/clapraw/,0]; c2 = Analog[/04 clap1/,0]; c3 = Analog[/04 clap2/,0]; c4 = Analog[/04 clap3/,0]; c5 = Analog[/13 clap/,0]; c6 = Analog[/13 clap/,1]; c7 = Analog[/13 clap/,2];
   8.times{
     tick
-    k1,k2 = Frag[/kick/,9], Mountain[/subkick/,0]; kd = Lo[/kick/,/dark/].look; kk = Lo[/kick/,/clicky/].look; kp = Lo[/kick/,/phat/].look; cc = Drip[/cymbal/].look; m1 = Mountain[/microperc/]; f1 = ["/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/D-01.wav", "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/D01.wav", "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/E01.wav"][2]; cs = (0..17).map{|n| Crystal[/cymbal/].tick(:i)}; c=Crystal[/cymbal/]; cf=Crystal[/fx/]; c1 = (knit Analog[/clapraw/].look,8,Analog[/clap1/].look,8,Analog[/clap2/].look,8,Analog[/clap3/].look,16).look; c1 = Analog[/clapraw/,0]; c2 = Analog[/04 clap1/,0]; c3 = Analog[/04 clap2/,0]; c4 = Analog[/04 clap3/,0]; c5 = Analog[/13 clap/,0]; c6 = Analog[/13 clap/,1]; c7 = Analog[/13 clap/,2];
+    kd = Lo[/kick/,/dark/].look; kk = Lo[/kick/,/clicky/].look; kp = Lo[/kick/,/phat/].look; cc = Drip[/cymbal/].look; cs = (0..17).map{|n| Crystal[/cymbal/].tick(:i)}; c1 = (knit Analog[/clapraw/].look,8,Analog[/clap1/].look,8,Analog[/clap2/].look,8,Analog[/clap3/].look,16).look; c5=Tape[/cymbal/,[7,7,7,7]].look
     #smp tc.take(12).look, amp: 0.5+rand*0.1, rate: (ing 0.85,1.0, 1.0).look if spread(1,12*2).look
 
     k=(ing
       [kt[1]] _ _ _  ts[8] _ _ _      k1 _ _ _   _ _ _ _
-      k1 _ _ _       _ _ _ _          k4 _ _ _   _ _ _ k7
-      k1 _ _ _       %l{tc[6]} _ _ _  k4 _ _ _   _ _ _ k7
+      k1 _ _ _       _ _ _ _          k3 _ _ _   _ _ _ t1
+      k1 _ _ _       %l{tc[6]} _ _ _  k3 _ _ _   _ _ _ t1
       k1 _ _ _       _ _ _ _          k1 _ %l{tc[6]} _   _ _ [f1 0.99] _
       _ _ _ _        ts[8] _ _ _      k1 _ _ _   _ _ _ _
-      k1 _ _ _       _ _ _ _          k4 _ _ _   _ _ _ k7
-      k1 _ _ _       %l{tc[6]} _ _ _  k4 _ _ _   _ _ _ k7
+      k1 _ _ _       _ _ _ _          k3 _ _ _   _ _ _ t1
+      k1 _ _ _       %l{tc[6]} _ _ _  k3 _ _ _   _ _ _ t1
       k1 _ _ _       _ _ _ _          k1 _ %e{tc[6]} _   _ _ [f1 0.99] _
       )
 
@@ -211,19 +206,19 @@ live_loop :kick, sync: :drums do
     #sop_mode(0) if !k
 
     kz=(ing
-      [kt[1]] _ _ _   ts[2] _ ts[9] _     k4 _ tt[9] _  ts[3] _ _ _
-      k1  _ _ _       ts[2] _ ts[9] _     k4 _ _ _   %h{ts[3]} _ _ k7
-      k1  _ _ _       ts[2] _ ts[9] _     k4 _ _ _   %h{ts[3]} _ _ k7
-      k1  _ _ _       ts[2] _ ts[9] _     [k4] _ _ _   ts[3] _ _ _
+      [kt[1]] _ _ _   ts[2] _ ts[9] _     k3 _ tt[9] _  ts[3] _ _ _
+      k1  _ _ _       ts[2] _ ts[9] _     k3 _ _ _   %h{ts[3]} _ _ t1
+      k1  _ _ _       ts[2] _ ts[9] _     k3 _ _ _   %h{ts[3]} _ _ t1
+      k1  _ _ _       ts[2] _ ts[9] _     [k3] _ _ _   ts[3] _ _ _
       )
 
     kdark = Lo[/kick/,/dark/]
     kphat = Lo[/kick/,/phat/]
     kz=(ing
-      [kt[1]] _ _ k1    _ _ _ k7  _ _ _ _   k1 _ k1 _
-      kt[1] _ _   k1    _ _ _ k7  _ _ _ _   k1 _ k1 _
-      kt[1] _ _   k1    _ _ _ k7  _ _ _ _   k1 _ k1 _
-      kt[1] _ _ _       _ _ _ k7  _ _ _ _   k1 _ k1 _
+      [kt[1]] _ _ k1    _ _ _ t1  _ _ _ _   k1 _ k1 _
+      kt[1] _ _   k1    _ _ _ t1  _ _ _ _   k1 _ k1 _
+      kt[1] _ _   k1    _ _ _ t1  _ _ _ _   k1 _ k1 _
+      kt[1] _ _ _       _ _ _ t1  _ _ _ _   k1 _ k1 _
       )
 
     no{
@@ -293,7 +288,7 @@ live_loop :kick, sync: :drums do
       accent = 0.8
       s = s[0]
     end
-    no{
+    yes{
     with_swing 0.02 {
       smp s, amp: accent*0.5+(ing
           0.5 0 0.125 0 0.5 0 0.8 0.5
@@ -375,14 +370,14 @@ live_loop :kick, sync: :drums do
       #mt 13, (line 100,127, 128).tick(:blah)
     end
 
-    #midi(:c3, 60+(rand_i 10), channel: 2) if k == [kt[1]] #|| k.look == k4 || k == [kt[1]]
+    #midi(:c3, 60+(rand_i 10), channel: 2) if k == [kt[1]] #|| k.look == k3 || k == [kt[1]]
     kick_machine k, amp: 1.0*accent*1.1*(knit 0.8,4, 0.6,4, 0.7,4, 0.6,4).look, v: 0.2 #, attack: (knit 0.0,12, 0.02,4, 0.0,8).look#,  rate: (knit 1,(6*4)-4, 0.85,4, 1,(6*4)-4, 0.75,4).look)
     sidechain if k && spread(1,4).look
     sleep 1/8.0
   }
 end
 
-live_loop :drums, sync: :metro do
+live_loop :rev_percussion, sync: :metro do
   c1,c2,c3,c4 = *Drip[/cymbal/,[0,2,3,4]];
   with_fx :level, amp: 0.5 do
     with_fx :reverb, mix: 0.4, room: 0.5, mix_slide: 0.5 do |r_fx|
