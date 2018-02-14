@@ -1,14 +1,14 @@
-require "/Users/josephwilk/Workspace/repl-electric/do_ob/2018/jan/sample_map"
+load "/Users/josephwilk/Workspace/repl-electric/do_ob/2018/jan/sample_map.rb"
 use_bpm 63.5;#set_volume! 1.0
-sop_cc motion: 1.0
+sop_cc motion: 0.2
 #sop_mode 0
 
-live_loop :Fall_Into_Your_Screen, sync: :metro do
+live_loop :Fall_into_your_screen, sync: :unsyncable do
   tick
   #stop
   pause = [[[_, 0.25]], 2]
   score =  (ing
-    [[[:a1 2]]  2]  pause
+    [[[:a1 2]] 2] pause
     )
   s=score.look
   c=s[0]
@@ -26,14 +26,14 @@ live_loop :Fall_Into_Your_Screen, sync: :metro do
     #piano3 n[0]
   }
   #violin root(c), 127*1.0, mode: 1#, sus: 2.0#, defon: 0.0, at: 0.0 #, sus: 1 , form: 0.0, shape: 0.0, mul: 4, at: 1.0
-  #broken root(c)+12*0, 30, motion: 0.4 #, sus: 1.5
+  broken root(c)+12*0, 1, motion: 0.4#, sus: 4.0, mode: 0
   #strings c[0][-2], 35
   #sleep (s[-1])*1
-  yes{
+  no{
     if spread(1,3).look
       with_fx :gverb, room: 200.0, mix: 0.8, release: 8, spread: 0.9 do
         with_fx :slicer, phase: 1/8.0 do
-          #smp Drip[/effect/].look, amp: 0.4, cutoff: 100, rate: -0.125, attack: 0.5
+          smp Drip[/effect/].look, amp: 0.4, cutoff: 100, rate: -0.125, attack: 0.5
         end
       end
     end
@@ -41,11 +41,11 @@ live_loop :Fall_Into_Your_Screen, sync: :metro do
   sleep (s[-1])*1
 end
 
-#yes { vioshot(:a5, :off) }
+#yes { vioshot(:a5, :on) }
 #yes { vioshot_x }
 #midi_note_on :a1, channel: 5
 
-live_loop :percussion, sync: :metro do
+live_loop :Burbling_breaths, sync: :unsyncable do
   with_fx :echo, mix: 1*(ring 0.025+rand*0.1,0.055+rand*0.1,0.03,0.02,0.01).look, phase: (ring 1/4.0, 1/8.0).look do
     8.times{
       with_swing 0.01,2 do
@@ -86,7 +86,7 @@ live_loop :percussion, sync: :metro do
         _ _   _ _   [5] _   _ _   _ _  _ _  5 _  _ _
         _ _   _ _   [5] _   _ _   5 _  _ _  5 _  _ _
        ).look
-      s2 = (ing _ _  _ _   2 _   _ _).look
+      s2=(ing _ _  _ _   2 _   _ _).look
       s2=(ing
         _ _ 2 _     2 _ 3 _    _ _ 2 _   3 _ _ _
         _ _ 2 _     3 _ 2 _    _ _ 2 _   2 _ _ _
@@ -115,8 +115,8 @@ live_loop :percussion, sync: :metro do
   end
 end
 
-live_loop :It_is_Dark_in_here, sync: :sudden do;z,zs=nil;tick
-  live_loop :Fall_Into_Your_Screen {stop}
+live_loop :Terminal_cursor, sync: :sudden do;z,zs=nil;tick
+  live_loop :Fall_into_your_screen {stop}
   #stop
   zs=(ing
     :d4 :cs4 _ :a3 _ :e4 _ :A4 :A4 :A4 :A4 :A4
@@ -128,23 +128,7 @@ live_loop :It_is_Dark_in_here, sync: :sudden do;z,zs=nil;tick
     harp z
     piano z, 0+(ing 70 65 55).look * 1.0, sus: 4/2.0
   end
-  if zs.look(offset: 1) == :a3 && look % 24 < 12
-    n=[:cs3, :e3]
-    n.each{|n| piano n, 40, sus: 6}
-  end
-  if zs.look(offset: 1) == :a3 && look % 24 >= 12
-    n=[:cs3, :e3]
-    n.each{|n| piano n, 40, sus: 6}
-  end
-  if zs.look(offset: 1) == :b3
-    n=[:d3, :fs3].shuffle
-    at{piano n[0], 50, sus: 6; sleep 1/16.0; piano n[1], 45, sus: 6 }
-  end
-  if zs.look(offset: 1) == :e4
-#    n=[:a2, :cs4, :e3].each{|n| piano n, 40, sus: 6}
-  end
 
-  #musicbox z,1, sus: 4 if spread(1,12*2).look
   sleep 1/2.0
   no{
     v=1
@@ -158,12 +142,11 @@ live_loop :It_is_Dark_in_here, sync: :sudden do;z,zs=nil;tick
   sleep 1/2.0
   #eek z, sus: 6, mode:2 if spread(1,3).look
   sleep 1/4.0
-  #stop
 end
 
-zero_cc noise: .0, wet: .8, pulse: .1, more: .1
+zero_cc noise: 0.01, wet: .8, pulse: .1, more: .1
 
-live_loop :sssng do
+live_loop :Drip do
   sync :zero
   16.times{
     tick
@@ -175,42 +158,53 @@ live_loop :sssng do
   }
 end
 
-live_loop :kick, sync: :metro do
+live_loop :Thump, sync: :unsyncable do
   8.times{
     tick
     DC = Drip[/cymbal/].look; CS = (0..17).map{|n| Crystal[/cymbal/].tick(:i)};
     C1 = (knit Analog[/clapraw/].look,8,Analog[/clap1/].look,8,Analog[/clap2/].look,8,Analog[/clap3/].look,16).look
 
     #smp TC.take(12).look, amp: 0.5+rand*0.1, rate: (ing 0.85,1.0, 1.0).look if spread(1,12*2).look
+    #24
 
     k=(ing
       [KT[1]] _ _ _  TS[8] _ _ _      K1 _ _ _   _ _ _ _
       K1 _ _ _       _ _ _ _          K3 _ _ _   _ _ _ T1
       K1 _ _ _       %l{TC[6]} _ _ _  K3 _ _ _   _ _ _ T1
       K1 _ _ _       _ _ _ _          K1 _ %l{TC[6]} _   _ _ [F1 0.99] _
-      _ _ _ _        TS[8] _ _ _      K1 _ _ _   _ _ _ _
+      K1 _ _ _       TS[8] _ _ _      K1 _ _ _   _ _ _ _
       K1 _ _ _       _ _ _ _          K3 _ _ _   _ _ _ T1
       K1 _ _ _       %l{TC[6]} _ _ _  K3 _ _ _   _ _ _ T1
       K1 _ _ _       _ _ _ _          K1 _ %e{TC[6]} _   _ _ [F1 0.99] _
       )
 
     #smp c2 if spread(1,16).look
-    k=k.map{|s| look % 32 == 0 ? _ : _ }
-    #sop_mode (ing 0 1 2 3 4 5 6).look#, motion: (ing 0.0,1.0).look
+    #k=k.map{|s| look % 32 == 0 ? _ : _ }
+    #sop2_mode (ing 0 1 2 3 4 5 6).look#, motion: (ing 0.0,1.0).look
     #sop_mode(0) if !k
 
-    k=(ing
+    kz=(ing
       [KT[1]] _ _ _   TS[2] _ TS[9] _     K3 _ TT[9] _  TS[3] _ _ _
       K1  _ _ _       TS[2] _ TS[9] _     K3 _ _ _   %h{TS[3]} _ _ T1
       K1  _ _ _       TS[2] _ TS[9] _     K3 _ _ _   %h{TS[3]} _ _ T1
       K1  _ _ _       TS[2] _ TS[9] _     [K3] _ _ _   TS[3] _ _ _
+
+      K1  _ _ _       TS[2] _ TS[9] _     K3 _ _ _   %h{TS[3]} _ _ T1
+      K1  _ _ _       TS[2] _ TS[9] _     K3 _ _ _   %h{TS[3]} _ _ T1
+      K1  _ _ _       TS[2] _ TS[9] _     [K3] _ _ _   TS[3] _ _ _
+      KT[1] _ _ _     TS[2] _ TS[9] _     K3 _ TT[9] _  TS[3] _ _ _
+
+      K1  _ _ _       TS[2] _ TS[9] _     K3 _ _ _   %h{TS[3]} _ _ T1
+      K1  _ _ _       TS[2] _ TS[9] _     K3 _ _ _   %h{TS[3]} _ _ T1
+      K1  _ _ _       TS[2] _ TS[9] _     [K3] _ _ _   TS[3] _ _   _
+      K1  _ _ _       TS[2] _ TS[9] _     K3 _ TS[15] _   %e{TC[6]} _ _ _
       )
 
     kz=(ing
       [KT[1]] _ _ K1    _ _ _ T1  _ _ _ _   K1 _ K1 _
-      KT[1] _ _   K1    _ _ _ T1  _ _ _ _   K1 _ K1 _
-      KT[1] _ _   K1    _ _ _ T1  _ _ _ _   K1 _ K1 _
-      KT[1] _ _ _       _ _ _ T1  _ _ _ _   K1 _ K1 _
+      K1 _ _   K1    _ _ _ T1  _ _ _ _   K1 _ K1 _
+      K1 _ _   K1    _ _ _ T1  _ _ _ _   K1 _ K1 _
+      K1 _ _ _       _ _ _ T1  _ _ _ _   K1 _ K1 _
       )
 
     no{
@@ -225,7 +219,7 @@ live_loop :kick, sync: :metro do
         hs = hs[0]
         accent+=0.1+rand(0.09)
       end
-      smp hs, amp: accent
+      smp hs, amp: accent * 1.5
       }
     }
     s=(ing
@@ -239,11 +233,13 @@ live_loop :kick, sync: :metro do
       #eek :gs5, 90, sus: 1/8.0, mode: 0
       accent=10+rand_i(5)
     end
+    accent=110
     if spread(1,6).look
       #eek :e5, 50, sus: 1/8.0, mode: 0
       #eek_cc mode: 2
     end
     if s
+      accent=110
       mt (ing s).look, accent
     end
 
@@ -254,7 +250,7 @@ live_loop :kick, sync: :metro do
         5   [5] 5 _
           ).look)
       accent=85
-      s=_
+      #s=_
       if s && s.is_a?(Array)
         s = s[0]
         accent=120
@@ -290,20 +286,6 @@ live_loop :kick, sync: :metro do
         pan: 0.0125, cutoff: (line 100, 127,64).look, pan: Math.sin(vt*13)/1.5
       }
     }
-    p=_
-    if p
-      if spread(7*2,11*3).look
-        with_fx :hpf do
-          #smp tt[8], amp: 0.125
-        end
-        #(knit true,48,false,48).look ? tick(:i) : look(:i)
-        #smp tt.look(:i), amp: (line 0.9, 1.0,128).look, rate: 0.25
-      end
-      if spread(4,31).look
-        #(knit true,32,false,0).look ? tick(:i2) : look(:i2)
-        #smp Mountain[/microperc/,5], amp: 0.5
-      end
-    end
 
     k2=(ing
       _ _ _ _                          _ _ _ _
@@ -335,7 +317,7 @@ live_loop :kick, sync: :metro do
     no{
     with_swing(0.01) do
       with_fx(fx, phase: (ring 1/4.0,1/4.0,1/8.0).look){
-        smp kp, amp: 6*accent, rate: r, attack: attack if kp
+        smp kp, amp: 8*accent, rate: r, attack: attack if kp
       }
     end
     }
@@ -361,13 +343,13 @@ live_loop :kick, sync: :metro do
     end
 
     #midi(:c3, 60+(rand_i 10), channel: 2) if k == [kt[1]] #|| k.look == k3 || k == [kt[1]]
-    kick_machine k, amp: 1.0*accent*1.1*(knit 0.8,4, 0.6,4, 0.7,4, 0.6,4).look, v: 0.2 #, attack: (knit 0.0,12, 0.02,4, 0.0,8).look#,  rate: (knit 1,(6*4)-4, 0.85,4, 1,(6*4)-4, 0.75,4).look)
+    kick_machine k, accent: 1.6, amp: 5.0*accent*1.1*(knit 0.8,4, 0.6,4, 0.7,4, 0.6,4).look, v: 0.2 #, attack: (knit 0.0,12, 0.02,4, 0.0,8).look#,  rate: (knit 1,(6*4)-4, 0.85,4, 1,(6*4)-4, 0.75,4).look)
     sidechain if k && spread(1,4).look
     sleep 1/8.0
   }
 end
 
-live_loop :rev_percussion, sync: :metro do
+live_loop :Broken_breaths, sync: :unsyncable do
   c1,c2,c3,c4 = *Drip[/cymbal/,[0,2,3,4]];
   with_fx :level, amp: 0.5 do
     with_fx :reverb, mix: 0.4, room: 0.5, mix_slide: 0.5 do |r_fx|
@@ -422,9 +404,9 @@ live_loop :rev_percussion, sync: :metro do
   end
 end
 
-live_loop :sixteen, sync: :metro do
+live_loop :not_looping_and_no, sync: :unsyncable do
   tick
-  C1 = CineElec[/one shots/,/pepper/]
+  #C1 = CineElec[/one shots/,/pepper/]
   C1 = Tape[/_high/,49]
   s = spread(1,128).rot(-8*8 + 1).look
   if s
@@ -436,4 +418,4 @@ live_loop :sixteen, sync: :metro do
   sleep 1/16.0
 end
 
-live_loop(:metro) do; sleep 1.0 end
+live_loop(:unsyncable) do; sleep 1.0 end
