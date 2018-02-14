@@ -1,19 +1,14 @@
 require "/Users/josephwilk/Workspace/repl-electric/do_ob/2018/jan/sample_map"
 use_bpm 63.5;#set_volume! 1.0
-sop_cc motion: 0.1
+sop_cc motion: 1.0
 #sop_mode 0
 
 live_loop :Fall_Into_Your_Screen, sync: :metro do
   tick
-#  stop
+  #stop
+  pause = [[[_, 0.25]], 2]
   score =  (ing
-    [[[:a2 2] [:Cs4 2] [:E3 2]]  2]   [[[_ 0.25] ]  2]
-    [[[:cs2 2] [:e4 2] ]  2]          [[[_ 0.25] ]  2]
-#    [[[:b3 2]   [:d3 2] [:fs3 2]]  2]   [[[_ 0.25] ]  2]
-#    [[[_ 2]   [:e4 2]  [:a3 2]]  2]     #  [[[_ 0.25] ]  2]
-#    [[[_ 2]   [:fs4 2] [:a3 2]]  2]     [[[_ 0.5] ]  2]
-#    [[[:fs3 2]  [:a4 2] [:cs3 2]]  2]   [[[_ 0.25] ]  2]
-
+    [[[:a1 2]]  2]  pause
     )
   s=score.look
   c=s[0]
@@ -46,7 +41,7 @@ live_loop :Fall_Into_Your_Screen, sync: :metro do
   sleep (s[-1])*1
 end
 
-#yes   { vioshot(:a5, :off) }
+#yes { vioshot(:a5, :off) }
 #yes { vioshot_x }
 #midi_note_on :a1, channel: 5
 
@@ -59,7 +54,7 @@ live_loop :percussion, sync: :metro do
           _ _ _ _    _ _ _ _     _ _ _ _    _ _ _ _
           _ _ _ _    _ _ D1 _    _ _ _ _   _ _ _ _
           ).look
-        #pp=_
+        pp=_
         if pp
           tick(:pp)
           fx = :none
@@ -200,7 +195,7 @@ live_loop :kick, sync: :metro do
       )
 
     #smp c2 if spread(1,16).look
-    #k=k.map{|s| look % 32 == 0 ? _ : _ }
+    k=k.map{|s| look % 32 == 0 ? _ : _ }
     #sop_mode (ing 0 1 2 3 4 5 6).look#, motion: (ing 0.0,1.0).look
     #sop_mode(0) if !k
 
@@ -218,13 +213,13 @@ live_loop :kick, sync: :metro do
       KT[1] _ _ _       _ _ _ T1  _ _ _ _   K1 _ K1 _
       )
 
-    yes{
+    no{
     with_swing 0.08{
       hs=(knit
-        (ing [Tape[/hi/,26]] _  _ _   TC[17] _  _ _).look, 8*2,
-        (ing Tape[/hi/,26] _ _ _      TC[17] _  _ _).look, 8*1,
-        (ing TC[17] _  _  TC[9]       [Tape[/hi/,26]] Tape[/hi/,34]  _ _).look, 8*1
-        ).look
+          (ing [Tape[/hi/,26]] _  _ _   TC[17] _  _ _).look, 8*2,
+          (ing Tape[/hi/,26] _ _ _      TC[17] _  _ _).look, 8*1,
+          (ing TC[17] _  _  TC[9]       [Tape[/hi/,26]] Tape[/hi/,34]  _ _).look, 8*1
+         ).look
       accent=0.4
       if hs && hs.is_a?(Array)
         hs = hs[0]
@@ -329,7 +324,6 @@ live_loop :kick, sync: :metro do
       )
 
     kp=k2.look
-    kp=_
     fx=:lpf
     accent = (ing 0.2 0.2 0.3 0.5).look
     attack = 0.0
@@ -346,13 +340,13 @@ live_loop :kick, sync: :metro do
     end
     }
     k=k.look
-    #k=_
+    k=_
     no{
       if spread(1,64).rot(-64+(8*2)).look   #4*1/8
         rev :d5, 60
       end
       if k && spread(1,64).rot(0).look
-        #smp k1, amp: 5
+        #smp K1, amp: 5
         #sync :Fall_Into_Your_Screen
         sop :fs4, sus: 4.0
         cue(:sudden)
