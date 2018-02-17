@@ -1,13 +1,13 @@
-load "/Users/josephwilk/Workspace/repl-electric/do_ob/2018/jan/sample_map.rb"
-use_bpm 63.5;#set_volume! 1.0
-sop_cc motion: 1.0
+load "/Users/josephwilk/Workspace/repl-electric/do_ob/2018/jan/sample_map.rb";use_bpm 63.5;#set_volume! 1.0
+sop_cc motion: 0.1
 #sop_mode 0
 REST=[[[_, 0.25]], 2]
 live_loop :Fall_into_your_screen, sync: :unsyncable do
   tick
   #stop
   score =  (ing
-    [[[:a1 2]] 2] REST
+    [[[:a2  2] [:CS4 2] [:E3 2]] 2] REST
+    [[[:cs2 2] [:e3 2]  [:fs4 2]] 2] REST
     )
   s=score.look
   c=s[0]
@@ -47,7 +47,7 @@ end
 live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
   with_fx :echo, mix: 1*(ring 0.025+rand*0.1,0.055+rand*0.1,0.03,0.02,0.01).look, phase: (ring 1/4.0, 1/8.0).look do
     8.times{
-      with_swing 0.01,2 do
+      #with_swing 0.01,2 do
         tick
         pp = (ing
           _ _ _ _    _ _ _ _     _ _ _ _    _ _ _ _
@@ -78,7 +78,7 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
               ).look, cutoff: (ing 110,80).look+cutoff_bump, cutoff: (ramp 40,127,256*4).tick(:aaashoo2t)
           }
         end
-      end
+      #end
       s = (ing
         _ _   _ _   [5] _   _ _   _ _  _ _  5 _  _ _
         _ _   _ _   [5] _   5 _   _ _  _ _  5 _  _ _
@@ -87,16 +87,29 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
        ).look
       s2=(ing _ _  _ _   2 _   _ _).look
       s2=(ing
-        _ _ 2 _     2 _ 3 _    _ _ 2 _   3 _ _ _
-        _ _ 2 _     3 _ 2 _    _ _ 2 _   2 _ _ _
-        _ _ 2 _     2 _ 3 _    _ _ 2 _   3 _ _ _
-        _ _ 2 _     3 _ 2 _    _ _ 3 _   3 _ _ _
-        ).look
-      s=_
-      s2=_
-      mt s, accent=(line 90, 100, 16*4).look, 120 if s
-      mt s2, accent=85,110 if s2
-      mt_cc morph: ((line 0.0, 1.0,8*16)+(line 1.0, 0.0, 16*8)).look
+        _ _ _ _     _ _ 3 _    _ _ _ _   3 _ _ _
+        _ _ _ _     3 _ _ _    _ _ _ _   _ _ _ _
+        _ _ _ _     _ _ 3 _    _ _ _ _   3 _ _ _
+        _ _ _ _     3 _ _ _    _ _ 3 _   3 _ _ _
+        )
+      s1 = (ing
+        _ _   _ _   [5] _   _ _   _ _  _ _  5 _  _ _
+        _ _   _ _   [5] _   5 _   _ _  _ _  5 _  _ _
+        _ _   _ _   [5] _   _ _   _ _  _ _  5 _  _ _
+        _ _   _ _   [5] _   _ _   _ _  _ _  5 _  _ _
+        )
+      s3 = (ing
+        _ _   _ _   [5] _   _ _  5  _  _ _  5 _  _ _
+        _ _   _ _   [5] _   _ _  5  _  _ _  5 _  _ _
+        _ _   _ _   [5] _   _ _  5  _  _ _  5 _  _ _
+        _ _   _ _   [5] _   _ _  5  _  _ _  5 _  _ _
+        )
+      #s=_
+      #s2=_
+      s=(knit s1,16*4,s3,16*4).look
+      mt s.look,  accent=(line 90, 100, 16*4).look, 120 if s
+      mt s2.look, accent=85,110 if s2
+      mt_cc morph: ((line 0.0, 1.0,16*16)+(line 1.0, 0.0, 16*16)).look
       sleep 1/8.0
     }
   end
@@ -313,7 +326,7 @@ live_loop :Thump, sync: :unsyncable do
     end
     }
     k=k.look
-    k=_
+    #k=_
     no{
       if spread(1,64).rot(-64+(8*2)).look   #4*1/8
         rev :d5, 60
