@@ -2,12 +2,12 @@ load "/Users/josephwilk/Workspace/repl-electric/do_ob/2018/jan/sample_map.rb"
 use_bpm 63.5;#set_volume! 1.0
 sop_cc motion: 1.0
 #sop_mode 0
+REST=[[[_, 0.25]], 2]
 live_loop :Fall_into_your_screen, sync: :unsyncable do
   tick
   #stop
-  pause = [[[_, 0.25]], 2]
   score =  (ing
-    [[[:a1 2]] 2] pause
+    [[[:a1 2]] 2] REST
     )
   s=score.look
   c=s[0]
@@ -19,14 +19,14 @@ live_loop :Fall_into_your_screen, sync: :unsyncable do
   end
   #with_transpose 0 { piano3 root(c),(ing 127 120).look, sus: 2 }
   #rev :a6, 15, sus: 12
-  #piano root(c), (ring 35,40).look*1.5, sus: c[0][-1]
+  piano root(c), (ring 35,40).look*1.5, sus: c[0][-1]
   c.each{|n|tick(:inner);
-    #sop n[0], 2.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: (ramp 0.0, 1.1, 12).tick(:innert), cutoff: 1.0
+    sop n[0], 2.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: (ramp 0.0, 1.1, 12).tick(:innert)#, cutoff: 1.0
     #piano3 n[0]
   }
-  #violin root(c), 127*1.0, mode: 1#, sus: 1.0, defon: 0.0, at: 1.0
+  violin root(c), 127*1.0, mode: 1#, sus: 1.0, defon: 0.0, at: 1.0
   #broken root(c)+12*1, 5, motion: 0.4, mode: 0#, sus: 4.0, mode: 0
-  #strings c[0][-2], 35
+  strings c[0][-2], 35
   sleep (s[-1])*1
   no{
     if spread(1,3).look
