@@ -1,19 +1,17 @@
-use_bpm 63.5;#set_volume! 1.0
+REST=[[[_, 0.25]], 2];use_bpm 63.5;#set_volume! 1.0
 live_loop :Fall_out_of_your_screen, sync: :unsyncable do
   tick
-  live_loop :Terminal_cursor{stop}
-  pause = [[[_, 0.25]],2]
-  # stop
+  live_loop :Within_the_letters{stop}
   score =  (ing  #15.25
-     [[[:b2 2]  [:d5 2]   [:fs3 2]]           2]                  pause
-     [[[:fs2 2] [:a4 2]   [:cs3 2]]           2]                  pause
-     [[[:a2 2]  [:b4 2]   [:e4 2]]            2]
-     [[[:d3 2]  [:fs5 2]  [:a3 2]  [[:cs5 2] [:e4 2]].choose] 2]  pause
-     [[[:e2 2]  [:gs4 2]  [:b3 2]]  2]
-     [[[:b2 2]  [:d5 2]   [:fs3 2] [:cs4 2]]  2]                  pause
-     [[[:fs4 2] [:A4 2]   [:Cs3 2] ]  2]                          pause
+    [[[:b2 2]  [:d5 2]   [:fs3 2]]           2]                  REST
+    [[[:fs2 2] [:a4 2]   [:cs3 2]]           2]                  REST
+    [[[:a2 2]  [:b4 2]   [:e4 2]]            2]
+    [[[:d3 2]  [:fs5 2]  [:a3 2]  [[:cs5 2] [:e4 2]].choose] 2]  REST
+    [[[:e2 2]  [:gs4 2]  [:b3 2]]  2]
+    [[[:b2 2]  [:d5 2]   [:fs3 2] [:cs4 2]]  2]                  REST
+    [[[:fs4 2] [:A4 2]   [:Cs3 2] ]  2]                          REST
     )
-  cue :entry
+  cue :kernel_panic
   s=score.look
   c=s[0]
   if spread(1,1).look
@@ -75,7 +73,6 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do
       end
     end
     #sop_mode (ing 0 1 2 3 4 5 6).look#, motion: (ing 0.0,1.0).look
-    yes{
     8.times{
       tick(:in2)
       piano (ing
@@ -93,7 +90,6 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do
              :a5 _ :a4 _    :e6 :b5  :a4 _
              ).look(:in2), (ing 90 90 80 80 70 70 60 60).look(:in2)*1.0
       sleep (s[-1])/8.0
-      }
     }
   end
 end
