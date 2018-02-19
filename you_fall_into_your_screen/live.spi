@@ -1,4 +1,25 @@
 load "/Users/josephwilk/Workspace/repl-electric/do_ob/2018/jan/sample_map.rb";use_bpm 63.5;#set_volume! 1.0
+
+    def mt(n, vel, vel2)
+      if n
+        if n.is_a?(Array)
+          n = n[0]
+          vel=vel2+rand_i(5)
+        end
+        note = [
+          :C2, :cs2, :d2, :ds2, :e2, :f2, :fs2, :g2, :gs2, :a2, :as2, :b2,
+          :C6, :cs6, :d6, :ds6, :e6, :f6, :fs6, :g6][n]
+
+        # note = [
+        #   :C2, :cs2, :d2, :ds2, :e2, :f2, :fs2, :g2,
+        #   :C6, :cs6, :d6, :ds6, :e6, :f6, :fs6, :g6][n]
+
+
+        midi note, vel, channel: 2, port: :iac_bus_1
+      end
+    end
+
+
 sop_cc motion: 0.1
 #sop_mode 0
 REST=[[[_, 0.25]], 2]
@@ -79,20 +100,19 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
           }
         end
       #end
-      s = (ing
-        _ _   _ _   [5] _   _ _   _ _  _ _  5 _  _ _
-        _ _   _ _   [5] _   5 _   _ _  _ _  5 _  _ _
-        _ _   _ _   [5] _   _ _   _ _  _ _  5 _  _ _
-        _ _   _ _   [5] _   _ _   5 _  _ _  5 _  _ _
-       ).look
-      s2=(ing _ _  _ _   2 _   _ _).look
-      s2=(ing
+      t=(ing
         _ _ _ _     _ _ 3 _    _ _ _ _   3 _ _ _
         _ _ _ _     3 _ _ _    _ _ _ _   _ _ _ _
         _ _ _ _     _ _ 3 _    _ _ _ _   3 _ _ _
         _ _ _ _     3 _ _ _    _ _ 3 _   3 _ _ _
         )
       s1 = (ing
+        _ _   _ _   [5] _   _ _   _ _  _ _  5 _  _ _
+        _ _   _ _   [5] _   5 _   _ _  _ _  5 _  _ _
+        _ _   _ _   [5] _   _ _   _ _  _ _  5 _  _ _
+        _ _   _ _   [5] _   _ _   5 _  _ _  5 _  _ _
+       )
+      s2 = (ing
         _ _   _ _   [5] _   _ _   _ _  _ _  5 _  _ _
         _ _   _ _   [5] _   5 _   _ _  _ _  5 _  _ _
         _ _   _ _   [5] _   _ _   _ _  _ _  5 _  _ _
@@ -104,16 +124,18 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
         _ _   _ _   [5] _   _ _  5  _  _ _  5 _  _ _
         _ _   _ _   [5] _   _ _  5  _  _ _  5 _  _ _
         )
+      s=(knit s2,16*4,s3,16*4, s1,16*4).look
       #s=_
-      #s2=_
-      s=(knit s1,16*4,s3,16*4).look
-      mt s.look,  accent=(line 90, 100, 16*4).look, 120 if s
-      mt s2.look, accent=85,110 if s2
+      #t1=_
+      mt s.look,  accent=(line 90, 100, 16*4).look, 120
+      mt t.look, accent=82,110
       mt_cc morph: ((line 0.0, 1.0,16*16)+(line 1.0, 0.0, 16*16)).look
       sleep 1/8.0
     }
   end
 end
+
+#mt_cc morph: 0.0
 
 live_loop :Within_the_letters, sync: :light_source do;z,zs=nil;tick
   live_loop :Fall_into_your_screen {stop}
