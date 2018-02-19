@@ -1,25 +1,5 @@
 load "/Users/josephwilk/Workspace/repl-electric/do_ob/2018/jan/sample_map.rb";use_bpm 63.5;#set_volume! 1.0
 
-    def mt(n, vel, vel2)
-      if n
-        if n.is_a?(Array)
-          n = n[0]
-          vel=vel2+rand_i(5)
-        end
-        note = [
-          :C2, :cs2, :d2, :ds2, :e2, :f2, :fs2, :g2, :gs2, :a2, :as2, :b2,
-          :C6, :cs6, :d6, :ds6, :e6, :f6, :fs6, :g6][n]
-
-        # note = [
-        #   :C2, :cs2, :d2, :ds2, :e2, :f2, :fs2, :g2,
-        #   :C6, :cs6, :d6, :ds6, :e6, :f6, :fs6, :g6][n]
-
-
-        midi note, vel, channel: 2, port: :iac_bus_1
-      end
-    end
-
-
 sop_cc motion: 0.1
 #sop_mode 0
 REST=[[[_, 0.25]], 2]
