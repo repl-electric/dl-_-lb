@@ -717,6 +717,21 @@ module ReplElectric
       }
     end
 
+    def eq(cc)
+      cc.keys.each do |k|
+        n = case k
+            when :lo; 7
+            when :hi; 9
+            when :mi; 8
+            else
+              nil
+            end
+        if n
+          midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 1
+        end
+      end
+    end
+
     def ct(t)
       am={ :gs=>:minor,:cs=>:minor,:a=>:major,:b=>:minor,:e=>:major,:fs=>:minor,:d=>:major}
       am[(t[0..-2].downcase.to_sym)] if t
