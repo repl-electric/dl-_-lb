@@ -156,6 +156,15 @@ module ReplElectric
             when :formant; 98
             when :form_amp; 99
             when :cutoff; 97
+            when :drive; 101
+            when :bass; 102
+            when :fm; 103
+            when :mod; 104
+            when :mul; 105
+            when :atk; 106
+            when :wav; 107
+            when :oct; 108
+            when :charge; 109
             else
               nil
             end
@@ -258,7 +267,7 @@ module ReplElectric
             midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 3})
             dshader(:decay, :iHarp, (note(n)/69.0), 0.0041) if n && note(n)
             dshader(:iBright, velocity/127.0) if velocity
-            puts "#{SonicPi::Note.new(n).midi_string} <- [Harp]" unless note(n) < MODE_NOTE
+            puts "#{SonicPi::Note.new(n).midi_string} <- [Piano]" unless note(n) < MODE_NOTE
           end
         end
       rescue
@@ -417,6 +426,9 @@ module ReplElectric
           midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 9})
         end
       end
+    end
+    def zero_off(n,*args)
+      midi_note_off n, port: :iac_bus_1, channel: 9
     end
     def zero_x
       midi_all_notes_off port: :iac_bus_1, channel: 9
@@ -688,8 +700,14 @@ module ReplElectric
           vel=vel2+rand_i(5)
         end
         note = [
-          :C2, :cs2, :d2, :ds2, :e2, :f2, :fs2, :g2,
+          :C2, :cs2, :d2, :ds2, :e2, :f2, :fs2, :g2, :gs2, :a2, :as2, :b2,
           :C6, :cs6, :d6, :ds6, :e6, :f6, :fs6, :g6][n]
+
+        # note = [
+        #   :C2, :cs2, :d2, :ds2, :e2, :f2, :fs2, :g2,
+        #   :C6, :cs6, :d6, :ds6, :e6, :f6, :fs6, :g6][n]
+
+
         midi note, vel, channel: 2, port: :iac_bus_1
       end
     end
@@ -715,21 +733,6 @@ module ReplElectric
       with_transpose 12{
         method("violin_#{fn.to_s}").call("#{n.to_s}", 4)
       }
-    end
-
-    def eq(cc)
-      cc.keys.each do |k|
-        n = case k
-            when :lo; 7
-            when :hi; 9
-            when :mi; 8
-            else
-              nil
-            end
-        if n
-          midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 1
-        end
-      end
     end
 
     def ct(t)
@@ -779,7 +782,7 @@ module ReplElectric
         k=_
       elsif k == kt[1]
         n=:as4
-        v=100
+        v=95
         k=_
       elsif k == k5
         n=:c4
@@ -805,6 +808,21 @@ module ReplElectric
           with_fx fx, phase: 4/8.0 do
             smp k, *(args << {finish: fin} << {rate: r})
           end
+        end
+      end
+    end
+
+    def eq(cc)
+      cc.keys.each do |k|
+        n = case k
+            when :lo; 7
+            when :hi; 9
+            when :mi; 8
+            else
+              nil
+            end
+        if n
+          midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 1
         end
       end
     end
