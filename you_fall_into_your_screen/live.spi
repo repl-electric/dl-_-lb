@@ -1,12 +1,12 @@
 load "/Users/josephwilk/Workspace/repl-electric/do_ob/2018/jan/support/sample_map.rb";use_bpm 63.5
 sop_cc motion: 1.0
-#sop_mode 0
+
 live_loop :Fall_into_your_screen, sync: :unsyncable do
   tick
   #stop
-  score =  (ing
+  score = (ing
     [[[:a1 2]] 2] REST
-    )
+  )
   s=score.look
   c=s[0];zzz=s[-1]
   #eek :a1,  sus: 12, mode: 2
@@ -23,8 +23,8 @@ live_loop :Fall_into_your_screen, sync: :unsyncable do
   }
   #violin root(c), 127*1.0, mode: 1#, sus: 1.0, defon: 0.0, at: 1.0
   strings c[0][-2], 35
-  sleep zzz
-  broken root(c)+12*0, 10, motion: 0.1, mode: 0#, sus: 4.0, mode: 0
+  #sleep zzz
+  #broken root(c)+12*0, 10, motion: 0.1, mode: 0#, sus: 4.0, mode: 0
   no{
     if spread(1,3).look
       with_fx :gverb, room: 200.0, mix: 0.8, release: 8, spread: 0.9 do
@@ -106,14 +106,14 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
       s=_
       t=_
       mt s.look,  accent=(line 90, 100, 16*4).look, 120
-      mt t.look, accent=70,110
+      #mt t.look, accent=70,110
       #mt_cc morph: ((line 0.0, 1.0,16*16)+(line 1.0, 0.0, 16*16)).look
       sleep 1/8.0
     }
   end
 end
 
-#mt_cc morph: 0.0
+mt_cc morph: 0.3
 
 live_loop :Within_the_letters, sync: :light_source do;z,zs=nil;tick
   with_bpm 50.0 do #63.5
@@ -175,8 +175,6 @@ live_loop :Thump, sync: :unsyncable do
     C1 = (knit Analog[/clapraw/].look,8,Analog[/clap1/].look,8,Analog[/clap2/].look,8,Analog[/clap3/].look,16).look
 
     #smp TC.take(12).look, amp: 0.5+rand*0.1, rate: (ing 0.85,1.0, 1.0).look if spread(1,12*2).look
-    #24
-
     k=(ing
       [KT[1]] _ _ _  TS[8] _ _ _      K1 _ _ _   _ _ _ _
       K1 _ _ _       _ _ _ _          K3 _ _ _   _ _ _ T1
@@ -187,9 +185,8 @@ live_loop :Thump, sync: :unsyncable do
       K1 _ _ _       %l{TC[6]} _ _ _  K3 _ _ _   _ _ _ T1
       K1 _ _ _       _ _ _ _          K1 _ %e{TC[6]} _   _ _ [F1 0.99] _
       )
-
     #smp c2 if spread(1,16).look
-    #k=k.map{|s| look % 32 == 0 ? _ : _ }
+    k=k.map{|s| look % 32 == 0 ? s : _ }
     #sop2_mode (ing 0 1 2 3 4 5 6).look#, motion: (ing 0.0,1.0).look
     #sop_mode(0) if !k
 
@@ -249,10 +246,8 @@ live_loop :Thump, sync: :unsyncable do
       mt s, accent=110, 120
     end
     if (s=(ing
-        [5] _   5 _
-        5   _   5 _
-        5   _   5 _
-        5   [5] 5 _
+        [5] _   5 _   5   _   5 _
+        5   _   5 _   5   [5] 5 _
           ).look)
       s=_
       mt s,accent=85, 120 if s
@@ -315,19 +310,17 @@ live_loop :Thump, sync: :unsyncable do
     no{
     with_swing(0.01) do
       with_fx(fx, phase: (ring 1/4.0,1/4.0,1/8.0).look){
-        smp kp, amp: 8*accent, rate: r, attack: attack if kp
+        smp kp, amp: 4*accent, rate: r, attack: attack if kp
       }
     end
     }
     k=k.look
-    k=_
+    #k=_
     no{
       if spread(1,64).rot(-64+(8*2)).look   #4*1/8
         rev :e5, 60
       end
       if k && spread(1,64).rot(0).look
-        #smp K1, amp: 5
-        #sync :Fall_Into_Your_Screen
         sop :fs4, sus: 4.0
         cue(:light_source)
         violin_x;strings_x;zero_x
@@ -336,11 +329,11 @@ live_loop :Thump, sync: :unsyncable do
     }
 
     if spread(1,128).rot(-12).look
-      #mt 13, (line 100,127, 128).tick(:blah),127
+      #mt 17, (line 100,127, 128).tick(:blah),127
     end
 
-    #midi(:c3, 60+(rand_i 10), channel: 2) if k == [kt[1]] #|| k.look == k3 || k == [kt[1]]
-    kick_machine k, accent: 1.0, amp: 3.0*accent*(knit 0.8,4, 0.6,4, 0.7,4, 0.6,4).look, v: 0.2
+    #midi(:c3, 60+(rand_i 10), channel: 2) if k == [KT[1]] #|| k.look == k3 || k == [kt[1]]
+    kick_machine k, accent: 1.0, amp: 2.8*accent*(knit 0.8,4, 0.6,4, 0.7,4, 0.6,4).look, v: 0.2
     sidechain if k && spread(1,4).look
     sleep 1/8.0
   }
