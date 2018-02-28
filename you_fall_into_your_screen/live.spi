@@ -322,16 +322,8 @@ live_loop :Its_all_just_text_in_a_file, sync: :unsyncable do
           accent = spread(1,32).look ? 30 : 20
           #eek (ring :A1, :E2).tick(:in), accent, sus: 1, at: rand(1.0), mod: rand(1.0), mode: 2
         end
-
         ffx =(ing :hpf).look
         pp=(ing
-          [c1] _ _ _   _ _ c1 _
-          _ _ c1 _
-          _ _ _ _      _ _ {c1=>ffx} _
-          _ _ [c1] _
-          ).look
-
-        pxp=(ing
           [c1] _
           c1 _ _ _
           _ c1 _ _
@@ -340,6 +332,13 @@ live_loop :Its_all_just_text_in_a_file, sync: :unsyncable do
           _ _ c1
           _ _ c1
           ).look
+        pp=(ing
+          [c1] _ _ _   _ _ c1 _
+          _ _ c1 _
+          _ _ _ _      _ _ {c1=>ffx} _
+          _ _ [c1] _
+          ).look
+
         pp=_
         if pp
           accent = pp.is_a?(Array) ? 1.0 : 0.8
