@@ -3,12 +3,12 @@ qbitsea_cc drive: 0.50
 qbitsea_cc charge: 0.50
 qbitsea_cc fm: 0.00
 qbitsea_cc wav: 0.00
-qbitsea_cc atk: 0.08
-qbitsea_cc mod: 1.00
+qbitsea_cc atk: 0.5
+qbitsea_cc mod: 0.95
 qbitsea_cc motion: 0.036
 qbitsea_cc formant: 0.50
 qbitsea_cc mul: 0.00
-qbitsea_cc bass: 0.09
+qbitsea_cc bass: 0.10
 
 #qbitsea_cc width: 0.50
 #qbitsea_cc center: 0.15
