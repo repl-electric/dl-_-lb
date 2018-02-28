@@ -245,8 +245,8 @@ live_loop :Clock, sync: :unsyncable do
       s = s[0]
     end
     no{
-    with_swing 0.02 {
-      smp s, amp: accent*0.5+(ing
+      with_swing 0.02 {
+        smp s, amp: accent*0.5+(ing
           0.5 0 0.125 0 0.5 0 0.8 0.5
           0.5 0 0.125 0 0.8 0 0.125 0
           0.125 0 0.125 0 0.8 0 0.125 0
