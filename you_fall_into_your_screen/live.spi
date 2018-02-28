@@ -7,8 +7,7 @@ live_loop :Fall_into_your_screen, sync: :unsyncable do
   score = (ing
     [[[:a1 2]] 2] REST
   )
-  s=score.look
-  c=s[0];zzz=s[-1]
+  s=score.look;c=s[0];zzz=s[-1]
   #eek :a1,  sus: 12
   #eek :cs2, sus: 12
   if spread(1,6).look
@@ -22,9 +21,9 @@ live_loop :Fall_into_your_screen, sync: :unsyncable do
     #bitsea n[0], 2.0*(ing 80 70 85 70).look(:in), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: (ramp 0.0, 1.0, 12).tick(:in)#, cutoff: 1.0
   }
   #null root(c), 127*1.0, mode: 1
-  strings c[0][-2], 35
-  #sleep zzz
-  corrupt root(c)+12*0, 10, motion: 0.1, mode: 0
+  #strings c[0][-2], 35
+  sleep zzz
+  #corrupt root(c)+12*0, 10, motion: 0.1, mode: 0
   #verb_slice Drip[/effect/].look if spread(1,3).look
   sleep zzz
 end
@@ -42,7 +41,7 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
         _ _ _ _    _ _ _ _     _ _ _ _    _ _ _ _
         _ _ _ _    _ _ D1 _    _ _ _ _   _ _ _ _
         ).look
-      #pp=_
+      pp=_
 
       dust_pat(pp){|accent|
         fuzz = rand(0.05)
@@ -89,13 +88,13 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
       t=_
       mt s.look, accent=(line 90, 100, 16*4).look, 120
       mt t.look, accent=70,110
-      #mt_cc morph: ((line 0.0, 1.0,16*16)+(line 1.0, 0.0, 16*16)).look
+      mt_cc morph: ((line 0.0, 1.0,16*16)+(line 1.0, 0.0, 16*16)).look
       sleep 1/8.0
     }
   end
 end
 
-mt_cc morph: 0.3
+#mt_cc morph: 0.3
 
 live_loop :Within_the_letters, sync: :light_source do;z,zs=nil;tick
   with_bpm 50.0 do #63.5
@@ -165,7 +164,7 @@ live_loop :Clock, sync: :unsyncable do
       K1 _ _ _       %l{TC[6]} _ _ _  K3 _ _ _   _ _ _ T1
       K1 _ _ _       _ _ _ _          K1 _ %e{TC[6]} _   _ _ [F1 0.99] _
       )
-    #smp c2 if spread(1,16).look
+    #smp C1, cutoff: 70 if spread(1,16).look
     k=k.map{|s| look % 32 == 0 ? s : _ }
     #qbitsea_mode (ing 0 1 2 3 4 5 6).look#, motion: (ing 0.0,1.0).look
     #bitsea_mode(0) if !k
@@ -253,41 +252,42 @@ live_loop :Clock, sync: :unsyncable do
       }
     }
 
-    k2=(ing
-      _ _ _ _                          _ _ _ _
-      _ _ _ _                          _ _ _ _
-      [TS[49]] _ _ TS[12]              _ _ _ _
+    p=(ing
+      _ _ _ _                _ _ _ _
+      _ _ _ _                _ _ _ _
+      [TS[49]] _ _ TS[12]    _ _ _ _
 
-      _ _ _ _                          _ _ _ _
-      _ _ _ _                          _ _ _ _
-      TS[7] _ _ _                      _ _ _ _
+      _ _ _ _                _ _ _ _
+      _ _ _ _                _ _ _ _
+      TS[7] _ _ _            _ _ _ _
 
-      _ _ _ _                         _ _ _ _
-      _ _ _ _                          _ _ _ _
-      TT[49] _ _ TS[12]                _ _ _ _
+      _ _ _ _                _ _ _ _
+      _ _ _ _                _ _ _ _
+      TT[49] _ _ TS[12]      _ _ _ _
 
-      _ _ _ _                          _ _ _ _
-      _ _ _ _                          _ _ _ _
-      TS[7] _ _ _                      _ _ _ _
+      _ _ _ _                _ _ _ _
+      _ _ _ _                _ _ _ _
+      TS[7] _ _ _            _ _ _ _
       )
 
-    kp=k2.look
+    p=p.look
     fx=:lpf
     accent = (ing 0.2 0.2 0.3 0.5).look
     attack = 0.0
     r = 1.0
-    if kp && kp.is_a?(Array)
-      kp = kp[0]
+    if p && p.is_a?(Array)
+      p = p[0]
       accent=accent*1.5
     end
     no{
-    with_swing(0.01) do
-      with_fx(fx, phase: (ring 1/4.0,1/4.0,1/8.0).look){
-        smp kp, amp: 4*accent, rate: r, attack: attack if kp
-      }
-    end
+      with_swing(0.01) do
+        with_fx(fx, phase: (ring 1/4.0,1/4.0,1/8.0).look){
+          smp p, amp: 4*accent, rate: r, attack: attack
+        }
+      end
     }
     k=k.look
+
     k=_
     no{
       if spread(1,64).rot(-64+(8*2)).look   #4*1/8
@@ -369,8 +369,9 @@ live_loop :should_not_loop_and_no, sync: :unsyncable do
   tick
   #C1 = CineElec[/one shots/,/pepper/]
   C1 = Tape[/_high/,49]
-  s = spread(1,128).rot(-8*8 + 1).look
-  if s
+  p = spread(1,128).rot(-8*8 + 1).look
+  p=_
+  if p
     #smp Words[/beaut/], start: 0.1, finish: 0.8, rate: 1.0, amp: 1.0
     with_fx (knit :none, 3*128, :echo, 128).look do
       smp C1, amp: 0.5, rate: (knit 1,2, 0.85,2, 1,2, 0.75,2).tick(:active)
