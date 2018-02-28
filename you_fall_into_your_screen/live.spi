@@ -90,6 +90,24 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
       mt s.look, accent=(line 90, 100, 16*4).look, 115
       #mt t.look, accent=70,110
       mt_cc morph: ((line 0.0, 1.0,16*16)+(line 1.0, 0.0, 16*16)).look
+
+      s=(ing
+        2 _ _ _ 5 _ _ _     5 _ _ _      _ _ _ _
+        5 _ _ _   _ _ _ _   5 _ [2] 3    _ [5] 5 5
+        ).look
+      accent=110
+      #s=_
+      if s
+        mt s, accent=105, 115
+      end
+      if (s=(ing
+            [5] _   5 _   5   _   5 _
+            5   _   5 _   5   [5] 5 _
+            ).look)
+        s=_
+        mt s,accent=85, 120 if s
+      end
+
       sleep 1/8.0
     }
   end
@@ -209,22 +227,6 @@ live_loop :Clock, sync: :unsyncable do
       smp hs, amp: accent * 1.5
       }
     }
-    s=(ing
-      2 _ _ _ 5 _ _ _     5 _ _ _      _ _ _ _
-      5 _ _ _   _ _ _ _   5 _ [2] 3    _ [5] 5 5
-      ).look
-    accent=110
-    s=_
-    if s
-      mt s, accent=105, 115
-    end
-    if (s=(ing
-        [5] _   5 _   5   _   5 _
-        5   _   5 _   5   [5] 5 _
-          ).look)
-      s=_
-      mt s,accent=85, 120 if s
-    end
 
     s=(ing
       C5 _ C5 _  C5 _ [C5] C5    C5 _ C5 _  C5 _ C5 _
