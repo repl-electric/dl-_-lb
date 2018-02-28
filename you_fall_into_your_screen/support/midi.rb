@@ -8,7 +8,7 @@ module ReplElectric
       begin
         if n
           if n.is_a?(Array)
-            args = args << {sustain: n[1]}
+            args = args << {sus: n[1]}
             n = n[0]
           end
           if args && args[0].is_a?(Numeric)
@@ -35,7 +35,7 @@ module ReplElectric
       begin
         if n
           if n.is_a?(Array)
-            args = args << {sustain: n[1]}
+            args = args << {sus: n[1]}
             n = n[0]
           end
           if args && args[0].is_a?(Numeric)
@@ -75,7 +75,7 @@ module ReplElectric
       midi_all_notes_off port: :iac_bus_1, channel: 5
     end
 
-    def sop(n,*args)
+    def bitsea(n,*args)
       if n
         if n.is_a?(Array)
           args =  args  << {sustain: n[1]}
@@ -89,15 +89,15 @@ module ReplElectric
         end
         args_h = resolve_synth_opts_hash_or_array(args)
         if(args_h[:mode])
-          sop_mode(args_h[:mode])
+          bitsea_mode(args_h[:mode])
         end
         if n && ((n != "_") && n != :_)
           midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
         end
-        sop_cc args_h
+        bitsea_cc args_h
       end
     end
-    def sop_on(n, *args)
+    def bitsea_on(n, *args)
       if n
         if n.is_a?(Array)
           args =  args  << {sustain: n[1]}
@@ -111,7 +111,7 @@ module ReplElectric
         end
         args_h = resolve_synth_opts_hash_or_array(args)
         if(args_h[:mode])
-          sop_mode(args_h[:mode])
+          bitsea_mode(args_h[:mode])
         end
         if n && ((n != "_") && n != :_)
           midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
@@ -119,11 +119,11 @@ module ReplElectric
       end
     end
 
-    def sop_off(n, *args)
+    def bitsea_off(n, *args)
       midi_note_off n, *(args << {port: :iac_bus_1} << {channel: 10})
     end
 
-    def sop_cc(cc)
+    def bitsea_cc(cc)
       cc.keys.each do |k|
         n = case k
             when :motion; 1
@@ -140,16 +140,15 @@ module ReplElectric
         end
       end
     end
-    def sop_mode(mode)
-      sop ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]
+    def bitsea_mode(mode)
+      bitsea ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]
     end
 
-    #DUP which is not sidechained against piano
-    def sop2_mode(mode)
-      sop ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]
+    def qbitsea_mode(mode)
+      qbitsea ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]
     end
 
-    def sop2_cc(cc)
+    def qbitsea_cc(cc)
       cc.keys.each do |k|
         n = case k
             when :motion; 1
@@ -165,6 +164,9 @@ module ReplElectric
             when :wav; 107
             when :oct; 108
             when :charge; 109
+            when :width; 110
+            when :center; 111
+            when :head; 112
             else
               nil
             end
@@ -174,10 +176,10 @@ module ReplElectric
       end
     end
 
-    def sop2_on(n, *args)
+    def qbitsea_on(n, *args)
       if n
         if n.is_a?(Array)
-          args =  args  << {sustain: n[1]}
+          args =  args  << {sus: n[1]}
           n = n[0]
         end
         if args && args[0].is_a?(Numeric)
@@ -188,21 +190,21 @@ module ReplElectric
         end
         args_h = resolve_synth_opts_hash_or_array(args)
         if(args_h[:mode])
-          sop2_mode(args_h[:mode])
+          qbitsea_mode(args_h[:mode])
         end
         if n && ((n != "_") && n != :_)
           midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 4})
         end
       end
     end
-    def sop2_off(n, *args)
+    def qbitsea_off(n, *args)
       midi_note_off n, *(args << {port: :iac_bus_1} << {channel: 4})
     end
 
-    def sop2(n,*args)
+    def qbitsea(n,*args)
       if n
         if n.is_a?(Array)
-          args =  args  << {sustain: n[1]}
+          args =  args  << {sus: n[1]}
           n = n[0]
         end
         if args && args[0].is_a?(Numeric)
@@ -213,19 +215,19 @@ module ReplElectric
         end
         args_h = resolve_synth_opts_hash_or_array(args)
         if(args_h[:mode])
-          sop2_mode(args_h[:mode])
+          qbitsea_mode(args_h[:mode])
         end
         if n && ((n != "_") && n != :_)
           midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 4})
         end
-        sop2_cc args_h
+        qbitsea_cc args_h
       end
     end
 
     def sharp(n,*args)
       if n
         if n.is_a?(Array)
-          args =  args  << {sustain: n[1]}
+          args =  args  << {sus: n[1]}
           n = n[0]
         end
         if args && args[0].is_a?(Numeric)
@@ -241,16 +243,16 @@ module ReplElectric
       end
     end
 
-    def harp_mode(mode)
-      harp ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1'][mode]
+    def operator_mode(mode)
+      operator ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1'][mode]
     end
 
-    def harp(n,*args)
+    def operator(n,*args)
       begin
         if n
           velocity = 30
           if n.is_a?(Array)
-            args =  args  << {sustain: n[1]}
+            args =  args  << {sus: n[1]}
             n = n[0]
           end
           if args && args[0].is_a?(Numeric)
@@ -259,15 +261,15 @@ module ReplElectric
           end
           if n && ((n != "_") && n != :_)
             args_h = resolve_synth_opts_hash_or_array(args)
-            harp_cc(args_h)
+            operator_cc(args_h)
             if(args_h[:mode])
-              harp_mode(args_h[:mode])
+              operator_mode(args_h[:mode])
             end
 
             midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 3})
             dshader(:decay, :iHarp, (note(n)/69.0), 0.0041) if n && note(n)
             dshader(:iBright, velocity/127.0) if velocity
-            puts "#{SonicPi::Note.new(n).midi_string} <- [Piano]" unless note(n) < MODE_NOTE
+            puts "#{SonicPi::Note.new(n).midi_string} <- [Operator]" unless note(n) < MODE_NOTE
           end
         end
       rescue
@@ -275,12 +277,12 @@ module ReplElectric
       end
     end
 
-    def harp_on(n,*args)
+    def operator_on(n,*args)
       begin
         if n
           velocity = 30
           if n.is_a?(Array)
-            args =  args  << {sustain: n[1]}
+            args =  args  << {sus: n[1]}
             n = n[0]
           end
           if args && args[0].is_a?(Numeric)
@@ -289,9 +291,9 @@ module ReplElectric
           end
           if n && ((n != "_") && n != :_)
             args_h = resolve_synth_opts_hash_or_array(args)
-            harp_cc(args_h)
+            operator_cc(args_h)
             if(args_h[:mode])
-              harp_mode(args_h[:mode])
+              operator_mode(args_h[:mode])
             end
 
             midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 3})
@@ -304,11 +306,11 @@ module ReplElectric
       end
     end
 
-    def harp_off(n)
+    def operator_off(n)
       midi_note_off n, {port: :iac_bus_1,  channel: 3}
     end
 
-    def musicbox(n,*args)
+    def bistable(n,*args)
       begin
         if n
           velocity = 30
@@ -322,7 +324,7 @@ module ReplElectric
           end
           if n && ((n != "_") && n != :_)
             args_h = resolve_synth_opts_hash_or_array(args)
-            harp_cc(args_h)
+            bistable_cc(args_h)
 
             midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 13})
           end
@@ -331,14 +333,11 @@ module ReplElectric
         puts $!.backtrace
       end
     end
-    def magicbox(n,*args)
-      musicbox(n,*args)
-    end
 
-    def harp_cc(cc)
+    def bistable_cc(cc)
       cc.keys.each do |k|
         if k == :mode
-          harp_mode(cc[k])
+          bistable_mode(cc[k])
         else
           n = case k
               when :cutoff; 4
@@ -403,7 +402,7 @@ module ReplElectric
       opts         = current_midi_defaults.merge(opts)
       n, vel = *params
       if n.is_a?(Array)
-        params =  params  << {sustain: n[1]}
+        params =  params  << {sus: n[1]}
         n = n[0]
       end
       midi n, vel, *(args << {port: :iac_bus_1} << {channel: 9})
@@ -413,7 +412,7 @@ module ReplElectric
     def zero_on(n, *args)
       if n
         if n.is_a?(Array)
-          args =  args  << {sustain: n[1]}
+          args =  args  << {sus: n[1]}
           n = n[0]
         end
         if args && args[0].is_a?(Numeric)
@@ -434,7 +433,7 @@ module ReplElectric
       midi_all_notes_off port: :iac_bus_1, channel: 9
     end
 
-    def piano(n,*args)
+    def cpu1(n,*args)
       if n
         if n.is_a?(Array) && n[1].is_a?(Symbol)
           bonus = n[1]
@@ -445,7 +444,7 @@ module ReplElectric
           }
         end
         if n.is_a?(Array)
-          args =  args  << {sustain: n[1]}
+          args =  args  << {sus: n[1]}
           n = n[0]
         end
         if n
@@ -454,7 +453,7 @@ module ReplElectric
       end
     end
 
-    def piano2(n,*args)
+    def cpu2(n,*args)
       if n
         if n.is_a?(Array) && n[1].is_a?(Symbol)
           bonus = n[1]
@@ -465,7 +464,7 @@ module ReplElectric
           }
         end
         if n.is_a?(Array)
-          args =  args  << {sustain: n[1]}
+          args =  args  << {sus: n[1]}
           n = n[0]
         end
         if n
@@ -474,16 +473,15 @@ module ReplElectric
       end
     end
 
-    def violin_mode(mode)
-      violin ['C-1','Cs-1','B-1'][mode]
+    def null_mode(mode)
+      null ['C-1','Cs-1','B-1'][mode]
     end
 
-    def broken_mode(mode)
-      broken ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]
+    def corrupt_mode(mode)
+      corrupt ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]
     end
 
-
-    def broken_cc(*args)
+    def corrupt_cc(*args)
       cc = if args[0].is_a?(SonicPi::Core::SPMap)
              args[0]
            else
@@ -509,67 +507,67 @@ module ReplElectric
       end
     end
 
-    def broken(*args)
+    def corrupt(*args)
       params, opts = split_params_and_merge_opts_array(args)
       opts         = current_midi_defaults.merge(opts)
       n, vel = *params
       if n.is_a?(Array)
-        args =  args  << {sustain: n[1]}
+        args =  args  << {sus: n[1]}
         n = n[0]
       end
       if(opts[:mode])
-        broken_mode(opts[:mode])
+        corrupt_mode(opts[:mode])
       end
       if n
         midi n, vel, *(args << {port: :iac_bus_1} << {channel: 7})
-        puts "#{SonicPi::Note.new(n).midi_string} <- [Broken]" unless note(n) < MODE_NOTE
+        puts "#{SonicPi::Note.new(n).midi_string} <- [Corrupt]" unless note(n) < MODE_NOTE
       end
-      broken_cc(opts)
+      corrupt_cc(opts)
     end
 
-    def violin(*args)
+    def null(*args)
       params, opts = split_params_and_merge_opts_array(args)
       opts         = current_midi_defaults.merge(opts)
       n, vel = *params
       if n.is_a?(Array)
-        args =  args  << {sustain: n[1]}
+        args =  args  << {sus: n[1]}
         n = n[0]
       end
       if(opts[:mode])
-        violin_mode(opts[:mode])
+        null_mode(opts[:mode])
       end
       if n
         midi n, vel, *(args << {port: :iac_bus_1} << {channel: 15})
-        puts "#{SonicPi::Note.new(n).midi_string} <- [Violin]" unless note(n) < MODE_NOTE
+        puts "#{SonicPi::Note.new(n).midi_string} <- [Null]" unless note(n) < MODE_NOTE
       end
-      violin_cc(opts)
+      null_cc(opts)
     end
 
-    def violin_on(*args)
+    def null_on(*args)
       params, opts = split_params_and_merge_opts_array(args)
       opts         = current_midi_defaults.merge(opts)
       n, vel = *params
       if n.is_a?(Array)
-        args =  args  << {sustain: n[1]}
+        args =  args  << {sus: n[1]}
         n = n[0]
       end
       if(opts[:mode])
-        violin_mode(opts[:mode])
+        null_mode(opts[:mode])
       end
       if n
         midi_note_on n, vel, *(args << {port: :iac_bus_1} << {channel: 15})
-        puts "#{SonicPi::Note.new(n).midi_string} <- [Violin]" unless note(n) < MODE_NOTE
+        puts "#{SonicPi::Note.new(n).midi_string} <- [Null]" unless note(n) < MODE_NOTE
       end
-      violin_cc(opts)
+      null_cc(opts)
     end
-    def violin_off(n,*args)
+    def null_off(n,*args)
       midi_note_off n, *(args << {port: :iac_bus_1} << {channel: 15})
     end
-    def violin_x
+    def null_x
       midi_all_notes_off port: :iac_bus_1, channel: 15
     end
 
-    def violin_cc(*args)
+    def null_cc(*args)
       cc = if args[0].is_a?(SonicPi::Core::SPMap)
              args[0]
            else
@@ -629,11 +627,17 @@ module ReplElectric
       opts         = current_midi_defaults.merge(opts)
       n, vel = *params
       if n.is_a?(Array)
-        args =  args  << {sustain: n[1]}
-        n = n[0]
+        if !n[1].is_a?(Symbol)
+          args =  args  << {sus: n[1]}
+          n = n[0]
+        end
       end
       if n
-        midi n, vel, *(args << {port: :iac_bus_1} << {channel: 16})
+        if n.is_a?(Array)
+          n.each{|n_note| midi n_note, vel, *(args << {port: :iac_bus_1} << {channel: 16})}
+        else
+          midi n, vel, *(args << {port: :iac_bus_1} << {channel: 16})
+        end
       end
       eek_cc(opts)
     end
@@ -654,12 +658,12 @@ module ReplElectric
       midi_all_notes_off port: :iac_bus_1, channel: 11
     end
 
-    def piano3(*args)
+    def cpu3(*args)
       params, opts = split_params_and_merge_opts_array(args)
       opts         = current_midi_defaults.merge(opts)
       n, vel = *params
       if n.is_a?(Array)
-        args =  args  << {sustain: n[1]}
+        args =  args  << {sus: n[1]}
         n = n[0]
       end
       if n
@@ -680,7 +684,7 @@ module ReplElectric
       opts         = current_midi_defaults.merge(opts)
       n, vel = *params
       if n.is_a?(Array)
-        args =  args  << {sustain: n[1]}
+        args =  args  << {sus: n[1]}
         n = n[0]
       end
       if n
@@ -726,12 +730,12 @@ module ReplElectric
 
     def vioshot_x()
       strings_x
-      violin_x
+      null_x
     end
     def vioshot(n,fn)
       method("strings_#{fn.to_s}").call("#{n.to_s}", 4)
       with_transpose 12{
-        method("violin_#{fn.to_s}").call("#{n.to_s}", 4)
+        method("null_#{fn.to_s}").call("#{n.to_s}", 4)
       }
     end
 
@@ -827,6 +831,18 @@ module ReplElectric
       end
     end
 
+    def drip_effect(s,*args)
+      args_h = resolve_synth_opts_hash_or_array(args)
+      with_fx :gverb, room: 200.0, mix: 0.8, release: 8, spread: 0.9 do
+        with_fx :slicer, phase: (args_h[:phase]||1/8.0) do
+          smp s,
+          amp: (args_h[:amp] || 0.4),
+          cutoff: (args_h[:cutoff] || 100), rate: -0.125,
+          attack: (args_h[:atk] || 0.5)
+        end
+      end
+    end
+
     def drum_machine(zzk)
       if zzk && zzk.is_a?(String)
         accent = zzk.is_a?(Array) ? 0.7 : 0.3
@@ -844,7 +860,7 @@ module ReplElectric
             :C5,  :Cs5,  :D5,  :Ds5,  :E5,  :F5,  :Fs5,  :G5,  :Gs5, :A5,  :as5, :B5
             )[n]
           #Designed#4 Cube
-          midi n,accent*1.0, channel: 2, sustain: 4 # (line 50, 120,32).look,
+          midi n,accent*1.0, channel: 2, sus: 4 # (line 50, 120,32).look,
         end
       end
     end
