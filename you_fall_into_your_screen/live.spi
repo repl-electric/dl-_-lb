@@ -43,6 +43,7 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
         _ _ _ _    _ _ D1 _    _ _ _ _   _ _ _ _
         ).look
       #pp=_
+
       dust_pat(pp){|accent|
         fuzz = rand(0.05)
         with_fx (ing :slicer,:krush,:bitcrusher,:echo).tick(:pfx), mix: 0.5, phase: 1/4.0, decay: 2 {
@@ -58,7 +59,6 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
           0.5  0.5  -0.25 -0.25  0.25 -0.5
           ).look, cutoff: (ramp 40,127,256*4).tick(:aaashoo2t)
       }
-
       t=(ing
         _ _ _ _     _ _ 3 _    _ _ _ _   3 _ _ _
         _ _ _ _     3 _ _ _    _ _ _ _   _ _ _ _
@@ -83,11 +83,12 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
         _ _   _ _   [5] _   _ _  5  _  _ _  5 _  _ _
         _ _   _ _   [5] _   _ _  5  _  _ _  5 _  _ _
         )
+
       s=(knit s2,16*4,s3,16*4, s1,16*4).look
       s=_
       t=_
-      mt s.look,  accent=(line 90, 100, 16*4).look, 120
-      #mt t.look, accent=70,110
+      mt s.look, accent=(line 90, 100, 16*4).look, 120
+      mt t.look, accent=70,110
       #mt_cc morph: ((line 0.0, 1.0,16*16)+(line 1.0, 0.0, 16*16)).look
       sleep 1/8.0
     }
@@ -214,13 +215,6 @@ live_loop :Clock, sync: :unsyncable do
       ).look
     accent=110
     s=_
-    if s && s.is_a?(Array)
-      #eek :gs5, 90, sus: 1/8.0, mode: 0
-    end
-    if spread(1,6).look
-      #eek :e5, 50, sus: 1/8.0, mode: 0
-      #eek_cc mode: 2
-    end
     if s
       mt s, accent=110, 120
     end
