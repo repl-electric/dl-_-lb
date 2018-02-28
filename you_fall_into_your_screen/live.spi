@@ -224,7 +224,7 @@ live_loop :Clock, sync: :unsyncable do
         hs = hs[0]
         accent+=0.1+rand(0.09)
       end
-      smp hs, amp: accent * 1.5
+      smp hs, amp: accent * 1.1
       }
     }
 
