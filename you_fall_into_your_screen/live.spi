@@ -272,6 +272,7 @@ live_loop :Clock, sync: :unsyncable do
       )
 
     p=p.look
+    p=_
     fx=:lpf
     accent = (ing 0.2 0.2 0.3 0.5).look
     attack = 0.0
@@ -280,13 +281,13 @@ live_loop :Clock, sync: :unsyncable do
       p = p[0]
       accent=accent*1.5
     end
-    no{
+    if p
       with_swing(0.01) do
         with_fx(fx, phase: (ring 1/4.0,1/4.0,1/8.0).look){
           smp p, amp: 4*accent, rate: r, attack: attack
         }
       end
-    }
+    end
     k=k.look
 
     k=_
