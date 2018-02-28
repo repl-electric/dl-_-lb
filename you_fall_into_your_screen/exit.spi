@@ -20,19 +20,12 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do
     #rev :b5, 1
     #eek :Gs3, 10
   end
-  with_transpose 0 {
-    #cpu3 root(c),(ing 127 120).look,sus: 2
-  }
   #rev :a6, 15, sus: 12
-
   if !c[0][0]
     eek (ing :e4 :gs4 :e4 :b4 _ _).look, (ing 100 120).look(:missing), sus: 3.0, at: 0.0, mod: 0.0
   end
 
   with_transpose -12 {cpu2 c[1], 60, sus: 2 }
-
-  #operator root(c),10
-  #cpu3 root(c), (ring 35,40).look*1.3, sus: c[0][-1]
 
   c.each_tick(:inner){|n|
     qbitsea n[0],2.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: 1.0, phase: 0, comp: 0
