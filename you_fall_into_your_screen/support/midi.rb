@@ -831,7 +831,23 @@ module ReplElectric
       end
     end
 
-    def drip_effect(s,*args)
+    def dust_pat(pp,&block)
+      if pp
+        fx = :none
+        cutoff_bump=(pp.is_a?(Array) ? 15 : rand_i(10))
+        accent = (pp.is_a?(Array) ? 0.7 : 0.4)*1
+        if pp && pp.is_a?(Hash)
+          fx = pp.values[0]
+          pp = pp.keys[0]
+        end
+        with_fx(fx, phase: 1/3.0, decay: 1.5, room: 250, spread: 0.8, damp: 0.5,pre_damp:0.5,release:6) do
+          block.(accent)
+        end
+        pp
+      end
+    end
+
+    def verb_slice(s,*args)
       args_h = resolve_synth_opts_hash_or_array(args)
       with_fx :gverb, room: 200.0, mix: 0.8, release: 8, spread: 0.9 do
         with_fx :slicer, phase: (args_h[:phase]||1/8.0) do
