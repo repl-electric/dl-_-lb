@@ -1,3 +1,4 @@
+REST=[[[nil, 0.25]], 2]
 KT = Lo[/kick/,/thin/]
 KK = Lo[/kick/,/clicky/]
 K1,K2,K3,K4=Frag[/kick/,9], Mountain[/subkick/,0], Mountain[/kick/,4], Lo[/kick/,15]
