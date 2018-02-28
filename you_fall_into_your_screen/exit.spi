@@ -41,9 +41,7 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do
   i.call(c[5], 30*pf, sus: 8)
 
   null root(c), 127*1.0, mode: 1#, sus: s[-1]
-
   strings c[0][-2], 35
-  #qbitsea_mode (ing 0 1 2 3 4 5 6).look#, motion: (ing 0.0,1.0).look
   8.times{tick(:in2);
     cpu1 (ing
           :a5 _ :a4 _    _   :b5  :a4 _
