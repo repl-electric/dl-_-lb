@@ -250,7 +250,7 @@ module ReplElectric
     def operator(n,*args)
       begin
         if n
-          velocity = 30
+          velocity = 40
           if n.is_a?(Array)
             args =  args  << {sus: n[1]}
             n = n[0]
