@@ -1,5 +1,5 @@
-load "/Users/josephwilk/Workspace/repl-electric/do_ob/2018/jan/support/sample_map.rb";use_bpm 63.5
-sop_cc motion: 1.0
+load "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/you_fall_into_your_screen/support/sample_map.rb";use_bpm 63.5
+bitsea_cc motion: 1.0
 
 live_loop :Fall_into_your_screen, sync: :unsyncable do
   tick
@@ -9,31 +9,23 @@ live_loop :Fall_into_your_screen, sync: :unsyncable do
   )
   s=score.look
   c=s[0];zzz=s[-1]
-  #eek :a1,  sus: 12, mode: 2
-  #eek :cs2, sus: 12, mode: 2
+  #eek :a1,  sus: 12
+  #eek :cs2, sus: 12
   if spread(1,6).look
     #rev :b5, 1
     #eek :Gs3, 10
   end
-  #with_transpose 0 { piano3 root(c),(ing 127 120).look, sus: 2 }
+  #with_transpose 0 { cpu3 root(c),(ing 127 120).look, sus: 2 }
   #rev :a6, 15, sus: 12
-  #piano root(c), (ring 35,40).look*1.5, sus: c[0][-1]
+  #cpu1 root(c), (ring 35,40).look*1.5, sus: c[0][-1]
   c.each_tick(:in){|n|
-    #sop n[0], 2.0*(ing 80 70 85 70).look(:in), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: (ramp 0.0, 1.0, 12).tick(:in)#, cutoff: 1.0
+    #bitsea n[0], 2.0*(ing 80 70 85 70).look(:in), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: (ramp 0.0, 1.0, 12).tick(:in)#, cutoff: 1.0
   }
-  #violin root(c), 127*1.0, mode: 1#, sus: 1.0, defon: 0.0, at: 1.0
+  #null root(c), 127*1.0, mode: 1
   strings c[0][-2], 35
   #sleep zzz
-  #broken root(c)+12*0, 10, motion: 0.1, mode: 0#, sus: 4.0, mode: 0
-  no{
-    if spread(1,3).look
-      with_fx :gverb, room: 200.0, mix: 0.8, release: 8, spread: 0.9 do
-        with_fx :slicer, phase: 1/8.0 do
-          smp Drip[/effect/].look, amp: 0.4, cutoff: 100, rate: -0.125, attack: 0.5
-        end
-      end
-    end
-  }
+  corrupt root(c)+12*0, 10, motion: 0.1, mode: 0
+  #drip_effect Drip[/effect/].look if spread(1,3).look
   sleep zzz
 end
 
@@ -125,8 +117,8 @@ live_loop :Within_the_letters, sync: :light_source do;z,zs=nil;tick
       )
     z=zs.look
     #z=_
-    harp z
-    piano z, 10+(ing 70 65 55).look * 1.0, sus: 4/2.0
+    operator z
+    cpu1 z, 10+(ing 70 65 55).look * 1.0, sus: 4/2.0
 
     sleep 1/2.0
     yes{
@@ -140,16 +132,16 @@ live_loop :Within_the_letters, sync: :light_source do;z,zs=nil;tick
       cue :zero if spread(1,2).rot(0).look
     }
     sleep 1/2.0
-    #broken z-12, 10
+    #corrupt z-12, 10
   #eek z, sus: 6, mode:2 if spread(1,3).look
     no{
       if z == :d4
         64.times{|n|
           sleep 0.25/2.0
-          broken :e5, 10, sus: 0.125 if n % 8 == 0
+          corrupt :e5, 10, sus: 0.125 if n % 8 == 0
           sleep 0.25/2.0
           zero_cc noise: (line 0.0, 1.0,31).tick
-          broken (ing :e4 :e4 :e4 :e4).tick(:n), (ing 2 4 6 8).look(:n), sus: 4, mode: 0 if n % 16 == 0
+          corrupt (ing :e4 :e4 :e4 :e4).tick(:n), (ing 2 4 6 8).look(:n), sus: 4, mode: 0 if n % 16 == 0
         }
         stop
       end
@@ -168,12 +160,10 @@ live_loop :Drip do
   }
 end
 
-live_loop :Thump, sync: :unsyncable do
-  8.times{
-    tick
+live_loop :Clock, sync: :unsyncable do
+  8.times{tick;
     DC = Drip[/cymbal/].look; CS = (0..17).map{|n| Crystal[/cymbal/].tick(:i)};
     C1 = (knit Analog[/clapraw/].look,8,Analog[/clap1/].look,8,Analog[/clap2/].look,8,Analog[/clap3/].look,16).look
-
     #smp TC.take(12).look, amp: 0.5+rand*0.1, rate: (ing 0.85,1.0, 1.0).look if spread(1,12*2).look
     k=(ing
       [KT[1]] _ _ _  TS[8] _ _ _      K1 _ _ _   _ _ _ _
@@ -187,8 +177,8 @@ live_loop :Thump, sync: :unsyncable do
       )
     #smp c2 if spread(1,16).look
     k=k.map{|s| look % 32 == 0 ? s : _ }
-    #sop2_mode (ing 0 1 2 3 4 5 6).look#, motion: (ing 0.0,1.0).look
-    #sop_mode(0) if !k
+    #qbitsea_mode (ing 0 1 2 3 4 5 6).look#, motion: (ing 0.0,1.0).look
+    #bitsea_mode(0) if !k
 
     kz=(ing
       [KT[1]] _ _ _   TS[2] _ TS[9] _     K3 _ TT[9] _  TS[3] _ _ _
@@ -315,15 +305,15 @@ live_loop :Thump, sync: :unsyncable do
     end
     }
     k=k.look
-    #k=_
+    k=_
     no{
       if spread(1,64).rot(-64+(8*2)).look   #4*1/8
         rev :e5, 60
       end
       if k && spread(1,64).rot(0).look
-        sop :fs4, sus: 4.0
+        bitsea :fs4, sus: 4.0
         cue(:light_source)
-        violin_x;strings_x;zero_x
+        null_x;strings_x;zero_x
         sync :kernel_panic
       end
     }
