@@ -47,12 +47,13 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
         fuzz = rand(0.05)
         with_fx (ing :slicer,:krush,:bitcrusher,:echo).tick(:pfx), mix: 0.5, phase: 1/4.0, decay: 2 {
           smp pp, amp: accent+1.0, attack: 0.0, start: 0.1-fuzz, rate:
-          (knit -0.25,32,-0.25,32,
+          (knit
+            -0.25,32,-0.25,32,
             -0.5-fuzz, 1,-0.5,31,
             -0.25-fuzz,1,-0.25,31).look
         }
-        smp pp, amp: (3+accent+(rand*0.1))*1,
-        rate: -2*(knit 1.1,4, 1.0,2).look, pan: (ing
+        smp pp, amp: (3+accent+(rand*0.1))*1, rate: -2*(knit 1.1,4, 1.0,2).look, pan:
+        (ing
           0.25 0.25 -0.25 -0.25  0.25 -0.25
           0.5  0.5  -0.25 -0.25  0.25 -0.5
           0.5  0.5  -0.25 -0.25  0.25 -0.5
