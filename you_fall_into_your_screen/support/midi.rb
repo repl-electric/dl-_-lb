@@ -508,7 +508,7 @@ module ReplElectric
       opts         = current_midi_defaults.merge(opts)
       n, vel = *params
       if n.is_a?(Array)
-        args =  args  << {sus: n[1]}
+        args =  args  << {sustain: n[1]}
         n = n[0]
       end
       if(opts[:mode])
