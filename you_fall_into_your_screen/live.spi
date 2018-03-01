@@ -79,7 +79,7 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
         )
       s=(knit s2,16*4,s3,16*4, s1,16*4).look
       s=_
-      mt s.look, accent=(line 75, 90, 16*4).look, 113
+      mt s.look, accent=(line 75, 90, 16*4).look, 113*0.5
       mt_cc morph: ((line 0.0, 1.1,16*16*2)+(line 1.1, 0.0, 16*16*2)).look
       s=(ing
         2 _ _ _  5 _ _ _    5 _ _ _      _ _ _ _
