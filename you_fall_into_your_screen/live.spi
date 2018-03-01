@@ -78,8 +78,8 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
         _ _   _ _   [5] _   _ _  5  _  _ _  5 _  _ _
         )
       s=(knit s2,16*4,s3,16*4, s1,16*4).look
-      s=_
-      mt s.look, accent=(line 80, 95, 16*4).look, 115
+      #s=_
+      mt s.look, accent=(line 75, 90, 16*4).look, 113
       mt_cc morph: ((line 0.0, 1.1,16*16*2)+(line 1.1, 0.0, 16*16*2)).look
       s=(ing
         2 _ _ _  5 _ _ _    5 _ _ _      _ _ _ _
@@ -88,13 +88,13 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
       accent=110
       s=_
       if s
-        mt s, accent=100, 115
+        mt s, accent=95, 112
       end
       if (s=(ing
             [5] _ 5 _ 5 _ 5 _   5 _ 5 _ 5 [5] 5 _
             ).look)
         s=_
-        mt s,accent=85, 120 if s
+        mt s,accent=(line 85,127,64).look, 120 if s
       end
 
       sleep 1/8.0
