@@ -1,4 +1,5 @@
 require "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/you_fall_into_your_screen/support/sample_map.rb";use_bpm 63.5
+bitsea_cc motion: 1.0
 
 live_loop :Fall_into_your_screen, sync: :unsyncable do
   tick
@@ -45,7 +46,7 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
       dust_pat(pp){|accent|
         fuzz = rand(0.05)
         with_fx (ing :slicer,:krush,:bitcrusher,:echo).tick(:pfx), mix: 0.5, phase: 1/4.0, decay: 2 {
-          smp pp, amp: accent+1.5, attack: 0.0, start: 0.1-fuzz, rate:
+          smp pp, amp: accent+1.6, attack: 0.0, start: 0.1-fuzz, rate:
           (knit
             -0.25,32,-0.25,32,
             -0.5-fuzz, 1,-0.5,31,
