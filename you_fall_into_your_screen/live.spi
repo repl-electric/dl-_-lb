@@ -18,7 +18,7 @@ live_loop :Fall_into_your_screen, sync: :unsyncable do
   #rev :a6, 15, sus: 12
   #cpu1 root(c), (ring 35,40).look*1.5, sus: c[0][-1]
   c.each_tick(:in){|n|
-    #bitsea n[0], 2.0*(ing 80 70 85 70).look(:in), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: (ramp 0.0, 1.0, 12).tick(:in)#, cutoff: 1.0
+    #bitsea n[0], 1.0*(ing 80 70 85 70).look(:in), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: (ramp 0.0, 1.1, 12).tick(:in)#, cutoff: 1.0
   }
   #null root(c), 127*1.0, mode: 1
   #strings c[0][-2], 35
