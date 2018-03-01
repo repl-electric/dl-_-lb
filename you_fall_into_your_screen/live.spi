@@ -217,12 +217,6 @@ live_loop :Clock, sync: :unsyncable do
     }
 
     s=(ing
-      C5 _ C5 _  C5 _ [C5] C5    C5 _ C5 _  C5 _ C5 _
-      C5 _ C5 _  C5 _ C5 _       C5 _ C5 _  C5 _ [C5] _
-      C5 _ _ _   C5 _ _ _         C5 _ _ _   _ _ _ _
-      C5 _ C5 _  C5 _ _ _         C5 _ C5 _  C5 _ [C5] _
-      ).look
-    s=(ing
       #[C5] C5 _  _ _ _
       #C5 _ _     _ _ _
         _ _ _ _   [C5] C5 _ _   _ _ _ _    _ _ _ _
