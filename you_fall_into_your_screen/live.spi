@@ -27,7 +27,7 @@ live_loop :Fall_into_your_screen, sync: :unsyncable do
   sleep zzz
 end
 
-#zero_on :fs5
+#zero_on
 zero_cc pulse: 0.00
 zero_cc more:  0.00
 zero_cc noise: 0.00
