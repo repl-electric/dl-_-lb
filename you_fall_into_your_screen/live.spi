@@ -223,9 +223,10 @@ live_loop :Clock, sync: :unsyncable do
       C5 _ C5 _  C5 _ _ _         C5 _ C5 _  C5 _ [C5] _
       ).look
     s=(ing
-      _ _ C5 _   _ _ _ _         _ _ _ _   _ _ _ _
-      _ _ C5 _   _ [C5] C5 _     _ _ _ _   _ _ _ _
-      _ _ C5 _   _ _ _ _         _ _ _ _   _ [C5] C5 _
+      #[C5] C5 _  _ _ _
+      #C5 _ _     _ _ _
+        _ _ _ _   [C5] C5 _ _   _ _ _ _    _ _ _ _
+        _ _ _ _   _ _ _ _       _ _ _ _    _ _ _ _
       ).look
     accent = 0.5
     if s.is_a?(Array)
