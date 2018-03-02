@@ -470,7 +470,7 @@ module ReplElectric
     end
 
     def null_mode(mode)
-      null ['C-1','Cs-1','B-1'][mode]
+      null ['C-1','Cs-1','D-1','B-1'][mode]
     end
 
     def corrupt_mode(mode)
