@@ -224,7 +224,7 @@ module ReplElectric
       end
     end
 
-    def sharp(n,*args)
+    def exception(n,*args)
       if n
         if n.is_a?(Array)
           args =  args  << {sus: n[1]}
@@ -236,9 +236,28 @@ module ReplElectric
         else
           velocity = 30
         end
+        args_h = resolve_synth_opts_hash_or_array(args)
         if n && ((n != "_") && n != :_)
           dshader :decay, :iSharp, (note(n)/69.0)
           midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 8})
+        end
+        exception_cc(args_h)
+      end
+    end
+
+    def exception_cc(cc)
+      cc.keys.each do |k|
+        n = case k
+            when :atk; 100
+            when :more; 101
+            when :shape; 102
+            when :wet; 103
+            else
+              nil
+            end
+          if n
+            midi_cc n, (cc[k] * 127.0).round, port: :iac_bus_1, channel: 8
+          end
         end
       end
     end
@@ -269,6 +288,7 @@ module ReplElectric
           end
         end
       rescue
+        puts $!.message
         puts $!.backtrace
       end
     end
