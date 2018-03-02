@@ -39,6 +39,7 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do
   i.call(c[3], 70*pf, sus: 2)
   i.call(c[4], 30*pf, sus: 8)
   i.call(c[5], 30*pf, sus: 8)
+  #exception root(c), 120, sus: 4#, wet: 0.1, more: 0.0, shape: 0.8, atk: 0.2
 
   null root(c), 127*1.0, mode: 1, sus: s[-1]
   8.times{tick(:in2);
