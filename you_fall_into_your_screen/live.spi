@@ -79,7 +79,7 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
         )
       s=(knit s2,16*4,s3,16*4, s1,16*4).look
       s=_
-      mt s.look, accent=(line 75, 90, 16*4).look, 113*0.5
+      mt s.look, accent=(line 75, 90, 16*4).look, 113
       mt_cc morph: ((line 0.0, 1.1,16*16*2)+(line 1.1, 0.0, 16*16*2)).look
       s=(ing
         2 _ _ _  5 _ _ _    5 _ _ _      _ _ _ _
@@ -152,7 +152,7 @@ live_loop :is_not_alive do
   16.times{
     tick
     i=(ing 1.0 _ _ 0.5 _ _ 0.25 _ 1.0  _ _   0.5 _ _ 0.125 _).look
-    smp Tape[/_high/,49], amp: i, pan: (ing -0.125 0.125).look, finish: (ine 0.2 1.0 100).look, start: (ine 0.0 0.8 100).look
+    smp Tape[/_high/,49], amp: i, pan: (ing -0.125 0.125).look, finish: (ine 0.2 1.0 100).look, start: (ine 0.0 0.8 100).look, rate: (knit 1,2, 0.85,2, 1,2, 0.75,2).look
     sleep 1/8.0
   }
 end
@@ -358,7 +358,7 @@ live_loop :should_not_loop_and_no, sync: :unsyncable do
   #C1 = CineElec[/one shots/,/pepper/]
   C1 = Tape[/_high/,49]
   p=spread(1,128).rot(-8*8 + 1).look
-  p=_
+  #p=_
   if p
     #smp Words[/beaut/], start: 0.1, finish: 0.8, rate: 1.0, amp: 1.0
     with_fx (knit :none, 3*128, :echo, 128).look do
