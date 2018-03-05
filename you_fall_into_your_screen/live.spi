@@ -103,7 +103,7 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
   end
 end
 
-#mt_cc morph: 0.3
+mt_cc morph: 0.3
 
 live_loop :Within_the_letters, sync: :light_source do;z,zs=nil;tick
   with_bpm 40.0 do #63.5
