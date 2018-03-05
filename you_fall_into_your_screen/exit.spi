@@ -2,6 +2,7 @@ REST=[[[_, 0.25]], 2];use_bpm 63.5
 live_loop :Fall_out_of_your_screen, sync: :unsyncable do
   tick
   live_loop :Within_the_letters{stop}
+
   score =  (ing  #15.25
     [[[:b2 2]  [:d5 2]   [:fs3 2]]           2]                  REST
     [[[:fs2 2] [:a4 2]   [:cs3 2]]           2]                  REST
@@ -14,7 +15,6 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do
   cue :kernel_panic
   s=score.look
   c=s[0];zzz=s[-1]
-
   bistable c[0][0], sus: 12 if spread(1,1).look
   if spread(1,6).look
     #rev :b5, 1
@@ -24,15 +24,13 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do
   if !c[0][0]
     eek (ing :e4 :gs4 :e4 :b4 _ _).look, (ing 100 120).look(:missing), sus: 3.0, at: 0.0, mod: 0.0
   end
-
   with_transpose -12 {cpu2 c[1], 60, sus: 2 }
-
   c.each_tick(:inner){|n|
     qbitsea n[0],2.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: 1.0, phase: 0, comp: 0
   }
 
   pf=0.2
-  i=(method :cpu1)
+  i=(method :callstack)
   i.call(c[0], 60*pf, sus: 4)
   i.call(c[1], 50*pf, sus: 4)
   i.call(c[2], 55*pf, sus: 4)
@@ -43,7 +41,7 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do
 
   null root(c), 127*1.0, mode: 1, sus: s[-1]
   8.times{tick(:in2);
-    cpu1 (ing
+    callstack (ing
           :a5 _ :a4 _    _   :b5  :a4 _
           :a5 _ :a4 _    _   :b5  :a4 _
           :a5 _ :fs5 _   _   :fs5 :a4 _
