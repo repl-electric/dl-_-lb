@@ -93,6 +93,7 @@ module ReplElectric
         end
         if n && ((n != "_") && n != :_)
           midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
+          puts "#{SonicPi::Note.new(n).midi_string} [Bitsea]" unless note(n) < MODE_NOTE
         end
         bitsea_cc args_h
       end
@@ -255,9 +256,8 @@ module ReplElectric
             else
               nil
             end
-          if n
-            midi_cc n, (cc[k] * 127.0).round, port: :iac_bus_1, channel: 8
-          end
+        if n
+          midi_cc n, (cc[k] * 127.0).round, port: :iac_bus_1, channel: 8
         end
       end
     end
@@ -284,7 +284,7 @@ module ReplElectric
             midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 3})
             dshader(:decay, :iHarp, (note(n)/69.0), 0.0041) if n && note(n)
             dshader(:iBright, velocity/127.0) if velocity
-            puts "#{SonicPi::Note.new(n).midi_string} <- [Operator]" unless note(n) < MODE_NOTE
+            puts "#{SonicPi::Note.new(n).midi_string} [Operator]" unless note(n) < MODE_NOTE
           end
         end
       rescue
@@ -403,7 +403,7 @@ module ReplElectric
             when :wet; 101
             when :more; 102
             when :noise; 103
-
+            when :amp;104
             else
               nil
             end
@@ -449,7 +449,7 @@ module ReplElectric
       midi_all_notes_off port: :iac_bus_1, channel: 9
     end
 
-    def cpu1(n,*args)
+    def callstack(n,*args)
       if n
         if n.is_a?(Array) && n[1].is_a?(Symbol)
           bonus = n[1]
@@ -536,7 +536,7 @@ module ReplElectric
       end
       if n
         midi n, vel, *(args << {port: :iac_bus_1} << {channel: 7})
-        puts "#{SonicPi::Note.new(n).midi_string} <- [Corrupt]" unless note(n) < MODE_NOTE
+        puts "#{SonicPi::Note.new(n).midi_string} [Corrupt]" unless note(n) < MODE_NOTE
       end
       corrupt_cc(opts)
     end
@@ -554,7 +554,7 @@ module ReplElectric
       end
       if n
         midi n, vel, *(args << {port: :iac_bus_1} << {channel: 15})
-        puts "#{SonicPi::Note.new(n).midi_string} <- [Null]" unless note(n) < MODE_NOTE
+        puts "#{SonicPi::Note.new(n).midi_string} [Null]" unless note(n) < MODE_NOTE
       end
       null_cc(opts)
     end
@@ -572,7 +572,7 @@ module ReplElectric
       end
       if n
         midi_note_on n, vel, *(args << {port: :iac_bus_1} << {channel: 15})
-        puts "#{SonicPi::Note.new(n).midi_string} <- [Null]" unless note(n) < MODE_NOTE
+        puts "#{SonicPi::Note.new(n).midi_string} [Null]" unless note(n) < MODE_NOTE
       end
       null_cc(opts)
     end
