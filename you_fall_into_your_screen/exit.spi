@@ -22,7 +22,7 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do
   end
   #rev :a6, 15, sus: 12
   if !c[0][0]
-    eek (ing :e4 :gs4 :e4 :b4 _ _).look, (ing 100 120).look(:missing), sus: 3.0, at: 0.0, mod: 0.0
+    eek (ing :e4 :gs4 :e4 :b4 _ _).look, (ing 100 120).look(:missing), sus: 3.0, at: 0.0, mod: 0.0, mode: 2
   end
   with_transpose -12 {cpu2 c[1], 60, sus: 2 }
   c.each_tick(:inner){|n|
