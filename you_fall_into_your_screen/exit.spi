@@ -26,7 +26,7 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do
   end
   with_transpose -12 {cpu2 c[1], 60, sus: 2 }
   c.each_tick(:inner){|n|
-    qbitsea n[0],2.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: 1.0, phase: 0, comp: 0
+    qbitsea n,2.0*(ing 80 70 85 70).look(:inner), mode: 0, cutoff: 1.0, phase: 0, comp: 0
   }
 
   pf=0.2
