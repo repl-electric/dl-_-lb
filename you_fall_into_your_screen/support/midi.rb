@@ -240,7 +240,7 @@ module ReplElectric
           velocity = args[0]
           args = args[1..-1]
         else
-          velocity = 30
+          velocity = 15
         end
         args_h = resolve_synth_opts_hash_or_array(args)
         if n && ((n != "_") && n != :_)
