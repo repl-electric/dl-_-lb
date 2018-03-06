@@ -18,7 +18,7 @@ live_loop :Fall_into_your_screen, sync: :unsyncable do
   #rev :a6, 15, sus: 12
   #callstack root(c), (ring 35,40).look*1.7, sus: c[0][-1]
   c.each_tick(:in){|n|
-    #bitsea n[0], 1.0*(ing 80 70 85 70).look(:in), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: (ramp 0.0, 1.1, 12).tick(:in)#, cutoff: 1.0
+    #bitsea n[0], 1.0*(ing 80 70 85 70).look(:in), sus: n[-1]+0.5, mode: 0, cutoff: (ramp 0.0, 1.1, 12).tick(:in)#, cutoff: 1.0
   }
   #null root(c), 127*1.0, mode: 1
   #exception root(c), 15
