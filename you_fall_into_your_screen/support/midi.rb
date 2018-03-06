@@ -205,15 +205,15 @@ module ReplElectric
 
     def qbitsea(n,*args)
       if n
-        if n.is_a?(Array)
-          args =  args  << {sus: n[1]}
-          n = n[0]
-        end
         if args && args[0].is_a?(Numeric)
           velocity = args[0]
           args = args[1..-1]
         else
           velocity = 30
+        end
+        if n.is_a?(Array)
+          args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
+          n = n[0]
         end
         args_h = resolve_synth_opts_hash_or_array(args)
         if(args_h[:mode])
@@ -221,8 +221,9 @@ module ReplElectric
         end
         if n && ((n != "_") && n != :_)
           midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 4})
+          puts "%s%s" %[SonicPi::Note.new(n).midi_string.ljust(4, " "), "[QBitSea]"]  unless note(n) < MODE_NOTE
+          qbitsea_cc args_h
         end
-        qbitsea_cc args_h
       end
     end
 
