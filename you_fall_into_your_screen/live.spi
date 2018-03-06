@@ -189,9 +189,9 @@ live_loop :Clock, sync: :unsyncable do
       K1 _ _ _       %l{TC[6]} _ _ _  K3 _ _ _   _ _ _ T1
       K1 _ _ _       _ _ _ _          K1 _ %e{TC[6]} _   _ _ [F1 0.99] _
       )
-    #smp C1, cutoff: 70 if spread(1,16).look
+
     k=k.map{|s| look % 32 == 0 ? s : _ }
-    #qbitsea_mode (ing 0 1 2 3 4 5 6).look#, motion: (ing 0.0,1.0).look
+    #bitsea_mode (ing *0..6).look#, motion: (ing 0.0,1.0).look
     #bitsea_mode(0) if !k
 
     kz=(ing
