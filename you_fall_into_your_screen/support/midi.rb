@@ -245,6 +245,7 @@ module ReplElectric
         args_h = resolve_synth_opts_hash_or_array(args)
         if n && ((n != "_") && n != :_)
           dshader :decay, :iSharp, (note(n)/69.0)
+          puts "%s%s" %[SonicPi::Note.new(n).midi_string.ljust(9, " "), "[Exception!]"]  unless note(n) < MODE_NOTE
           midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 8})
         end
         exception_cc(args_h)
