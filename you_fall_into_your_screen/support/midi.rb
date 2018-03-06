@@ -134,6 +134,9 @@ module ReplElectric
             when :cutoff; 97
             when :phase; 102
             when :comp; 101
+            when :low; 103
+            when :mid; 104
+            when :hi; 105
             else
               nil
             end
