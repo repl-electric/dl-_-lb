@@ -77,15 +77,15 @@ module ReplElectric
 
     def bitsea(n,*args)
       if n
-        if n.is_a?(Array)
-          args =  args  << {sustain: n[1]}
-          n = n[0]
-        end
         if args && args[0].is_a?(Numeric)
           velocity = args[0]
           args = args[1..-1]
         else
           velocity = 30
+        end
+        if n.is_a?(Array)
+          args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
+          n = n[0]
         end
         args_h = resolve_synth_opts_hash_or_array(args)
         if(args_h[:mode])
@@ -93,11 +93,12 @@ module ReplElectric
         end
         if n && ((n != "_") && n != :_)
           midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
-          puts "#{SonicPi::Note.new(n).midi_string} [Bitsea]" unless note(n) < MODE_NOTE
+          puts "%s%s" %[SonicPi::Note.new(n).midi_string.ljust(4, " "), "[BitSea]"]  unless note(n) < MODE_NOTE
+          bitsea_cc args_h
         end
-        bitsea_cc args_h
       end
     end
+
     def bitsea_on(n, *args)
       if n
         if n.is_a?(Array)
@@ -284,7 +285,7 @@ module ReplElectric
             midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 3})
             dshader(:decay, :iHarp, (note(n)/69.0), 0.0041) if n && note(n)
             dshader(:iBright, velocity/127.0) if velocity
-            puts "#{SonicPi::Note.new(n).midi_string} [Operator]" unless note(n) < MODE_NOTE
+            puts "#{SonicPi::Note.new(n).midi_string.ljust(4, " ")} [Operator]" unless note(n) < MODE_NOTE
           end
         end
       rescue
@@ -451,20 +452,27 @@ module ReplElectric
 
     def callstack(n,*args)
       if n
+        if args && args[0].is_a?(Numeric)
+          velocity = args[0]
+          args = args[1..-1]
+        else
+          velocity = 30
+        end
         if n.is_a?(Array) && n[1].is_a?(Symbol)
           bonus = n[1]
           n = n[0]
           at {
             sleep 1/8.0
-            midi bonus, 60, *(args << {port: :iac_bus_1} << {channel: 14} << {sustain: 1/4.0})
+            midi bonus, 60, *(args << {port: :iac_bus_1} << {channel: 14} << {sus: 1/4.0})
           }
         end
         if n.is_a?(Array)
-          args =  args  << {sus: n[1]}
+          args[0] =  {sus: n[-1]}.merge(args[0] || {})
           n = n[0]
         end
         if n
-          midi n, *(args << {port: :iac_bus_1} << {channel: 14})
+          puts "#{SonicPi::Note.new(n).midi_string.ljust(6, " ")}[Callstack]" unless note(n) < MODE_NOTE
+          midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 14})
         end
       end
     end
@@ -536,7 +544,7 @@ module ReplElectric
       end
       if n
         midi n, vel, *(args << {port: :iac_bus_1} << {channel: 7})
-        puts "#{SonicPi::Note.new(n).midi_string} [Corrupt]" unless note(n) < MODE_NOTE
+        puts "#{SonicPi::Note.new(n).midi_string.ljust(8, " ")}[Corrupt]" unless note(n) < MODE_NOTE
       end
       corrupt_cc(opts)
     end
@@ -554,7 +562,7 @@ module ReplElectric
       end
       if n
         midi n, vel, *(args << {port: :iac_bus_1} << {channel: 15})
-        puts "#{SonicPi::Note.new(n).midi_string} [Null]" unless note(n) < MODE_NOTE
+        puts "#{SonicPi::Note.new(n).midi_string.ljust(7, " ")}[Null]" unless note(n) < MODE_NOTE
       end
       null_cc(opts)
     end
@@ -572,7 +580,7 @@ module ReplElectric
       end
       if n
         midi_note_on n, vel, *(args << {port: :iac_bus_1} << {channel: 15})
-        puts "#{SonicPi::Note.new(n).midi_string} [Null]" unless note(n) < MODE_NOTE
+        puts "#{SonicPi::Note.new(n).midi_string.ljust(6, " ")} [Null]" unless note(n) < MODE_NOTE
       end
       null_cc(opts)
     end
@@ -688,7 +696,7 @@ module ReplElectric
     end
 
     def root(note_seq)
-      note_seq.map{|n| note(n[0])}.compact.sort[0]
+      note_seq.map{|n| [note(n[0]), n[-1]]}.compact.sort{|n1,n2| n1[0] <=> n2[0] }[0]
     end
 
     def sidechain
