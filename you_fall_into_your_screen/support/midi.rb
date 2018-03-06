@@ -328,12 +328,12 @@ module ReplElectric
       midi_note_off n, {port: :iac_bus_1,  channel: 3}
     end
 
-    def bistable(n,*args)
+    def whitespace(n,*args)
       begin
         if n
           velocity = 30
           if n.is_a?(Array)
-            args =  args  << {sustain: n[1]}
+            args =  args  << {sus: n[1]}
             n = n[0]
           end
           if args && args[0].is_a?(Numeric)
@@ -342,7 +342,7 @@ module ReplElectric
           end
           if n && ((n != "_") && n != :_)
             args_h = resolve_synth_opts_hash_or_array(args)
-            bistable_cc(args_h)
+            whitespace_cc(args_h)
 
             midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 13})
           end
@@ -352,10 +352,10 @@ module ReplElectric
       end
     end
 
-    def bistable_cc(cc)
+    def whitespace_cc(cc)
       cc.keys.each do |k|
         if k == :mode
-          bistable_mode(cc[k])
+          #whitespace_mode(cc[k])
         else
           n = case k
               when :cutoff; 4
