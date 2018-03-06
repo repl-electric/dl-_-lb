@@ -672,7 +672,13 @@ module ReplElectric
     end
 
     def strings(*args)
-      midi *(args << {port: :iac_bus_1, channel: 11})
+      params, opts = split_params_and_merge_opts_array(args)
+      opts         = current_midi_defaults.merge(opts)
+      n, vel = *params
+      if !vel
+        vel = 35
+      end
+      midi n, vel, *(args << {port: :iac_bus_1, channel: 11})
     end
     def strings_cc(*args)
       midi_cc *args << {port: :iac_bus_1, channel: 11}
