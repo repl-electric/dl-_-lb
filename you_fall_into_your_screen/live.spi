@@ -190,7 +190,7 @@ live_loop :Clock, sync: :unsyncable do
       K1 _ _ _       _ _ _ _          K1 _ %e{TC[6]} _   _ _ [F1 0.99] _
       )
 
-    k=k.map{|s| look % 32 == 0 ? s : _ }
+    k=k.map{|s| look % 64 == 0 ? s : _ }
     #bitsea_mode (ing *0..6).look#, motion: (ing 0.0,1.0).look
     #bitsea_mode(0) if !k
 
