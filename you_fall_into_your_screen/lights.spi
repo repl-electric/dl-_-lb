@@ -1,0 +1,48 @@
+shader :shader, "alien.glsl"#, "sphere.vert", "points", 8000
+ shader :fx, :bloom, 1
+ shader :fx, :rim, 0
+ shader :fx, :vts, 0
+ shader :fx, :toon, 0
+ shader :fx, :kal, 0
+ shader :fx, :pixel, 0
+ shader :fx, :rgb, 0
+ shader :fx, :bleach, 1
+shader :iR, 10.0
+shader :iG, 10.0
+shader :iB, 10.0
+shader :iMode, 0.0
+#shader :iMotion, 0.01
+#shader :decay, :iHarp, 10.0
+
+#operator :FS3, 127.0, sustain: 8
+
+live_loop :zoom do#, sync: :metro do
+#stop
+  tick
+  #shader :shader, "dots.glsl", "sphere.vert", "lines", 10000
+  x = "#{([" "]*rand_i(100)).join("")}#{((self.methods.map{|s| s.to_s.split("_").shuffle}.flatten)).shuffle.join(" "*rand_i(400))[0..300]}"
+  x = "#{[" " * rand_i(600)].join}#{(self.methods+self.private_methods+Object.instance_methods).choose}#{[" "*rand_i(600)].join}"
+
+  #  x = "#{((_.methods.map(&:to_s)+([" "]*(rand_i 10000)))*9).shuffle[0..300].join()}"
+  #x = "#{((_.methods.map(&:to_s)+([" "]*(rand_i 2000)))*9).shuffle[0..300].join()}"
+ # shader :clear
+  #x = "test"
+  smp Mountain[/subkick/,0], v: 1.5
+  shader :echo, "small", x, 0.0,0,  255,255,255,255
+  #shader :shader, "dots.glsl", "sphere.vert", "lines", 5000
+  shader :iAlien, (line 0.0, 1.0, 64/2.0).look
+  shader :iZoom, (line 0.0, 32, 12).look
+  shader :bloom, ((line 0.25, 1.5,256) + (line 1.5, 0.25,256)).look
+  #shader :decay, :iHarp, 10
+  #shader :decay, :iSharp, 10
+  sleep 1.0
+end
+
+live_loop :graphics, sync: :metro do
+  stop
+  #shader :shader, "dots.glsl", "sphere.vert", "tri", 500
+#  shader :iMode, 2
+  tick
+  #@points += 1000
+  sleep 1/12.0
+end
