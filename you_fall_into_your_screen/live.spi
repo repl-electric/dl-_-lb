@@ -195,23 +195,6 @@ live_loop :Clock, sync: :unsyncable do
     #bitsea_mode(0) if !k
 
     kz=(ing
-      [KT[1]] _ _ _   TS[2] _ TS[9] _     K3 _ TT[9] _  TS[3] _ _ _
-      K1  _ _ _       TS[2] _ TS[9] _     K3 _ _ _   %h{TS[3]} _ _ T1
-      K1  _ _ _       TS[2] _ TS[9] _     K3 _ _ _   %h{TS[3]} _ _ T1
-      K1  _ _ _       TS[2] _ TS[9] _     [K3] _ _ _   TS[3] _ _ _
-
-      K1  _ _ _       TS[2] _ TS[9] _     K3 _ _ _   %h{TS[3]} _ _ T1
-      K1  _ _ _       TS[2] _ TS[9] _     K3 _ _ _   %h{TS[3]} _ _ T1
-      K1  _ _ _       TS[2] _ TS[9] _     [K3] _ _ _   TS[3] _ _ _
-      KT[1] _ _ _     TS[2] _ TS[9] _     K3 _ TT[9] _  TS[3] _ _ _
-
-      K1  _ _ _       TS[2] _ TS[9] _     K3 _ _ _   %h{TS[3]} _ _ T1
-      K1  _ _ _       TS[2] _ TS[9] _     K3 _ _ _   %h{TS[3]} _ _ T1
-      K1  _ _ _       TS[2] _ TS[9] _     [K3] _ _ _   TS[3] _ _   _
-      K1  _ _ _       TS[2] _ TS[9] _     K3 _ TS[15] _   %e{TC[6]} _ _ _
-      )
-
-    kz=(ing
       [KT[1]] _ _ K1    _ _ _ T1  _ _ _ _   K1 _ K1 _
       K1 _ _   K1    _ _ _ T1  _ _ _ _   K1 _ K1 _
       K1 _ _   K1    _ _ _ T1  _ _ _ _   K1 _ K1 _
