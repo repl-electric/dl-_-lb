@@ -121,6 +121,10 @@ module ReplElectric
       end
     end
 
+    def bitsea_x(*args)
+      midi_all_notes_off port: :iac_bus_1, channel: 10
+    end
+
     def bitsea_off(n, *args)
       midi_note_off n, *(args << {port: :iac_bus_1} << {channel: 10})
     end
@@ -134,6 +138,7 @@ module ReplElectric
             when :cutoff; 97
             when :phase; 102
             when :comp; 101
+            when :octave; 106
             when :lo; 103
             when :mi; 104
             when :hi; 105
@@ -782,7 +787,7 @@ module ReplElectric
     def kick_machine(k, *args)
       #TODO: Pushing midi notes back into `k` pattern
       _=nil
-      k1,k3,k4,k5 = Frag[/kick/,9], Mountain[/subkick/,0], Mountain[/kick/,4], Lo[/kick/,15]
+      k1,k4,k3,k5 = Frag[/kick/,9], Mountain[/subkick/,0], Mountain[/kick/,4], Lo[/kick/,15]
       kt = Lo[/kick/,/thin/]
       f1 = "/Users/josephwilk/Workspace/music/samples/Tuned/Drip_effects/E01.wav"
       condi = 1
@@ -812,12 +817,12 @@ module ReplElectric
       v = 90
       n = _
       if k == k1
-        n = :a4
-        v = 65
+        n = :d5
+        v = 68
         k=_
-      elsif k == k4
+      elsif k == k3
         n= :a4
-        v = 50
+        v = 55
         k=_
       elsif k == kt[1]
         n=:as4
@@ -832,20 +837,20 @@ module ReplElectric
         v=90
         k=_
       end
-
+      puts "#{k} => #{n}" if n
       args_h = resolve_synth_opts_hash_or_array([*args])
       v= v * (args_h[:accent] || 1)
       if n
-        midi n, v - (rand_i(3)), channel: 2
-      end
-
-      if rand(1.0) <= condi
-        with_fx :krush, mix: dice(6) > 5 ? 0.1 : 0.0 do
-          if k == f1
-            r = 1.0
-          end
-          with_fx fx, phase: 4/8.0 do
-            smp k, *(args << {finish: fin} << {rate: r})
+        midi n, v - (rand_i(4)), channel: 2
+      else
+        if rand(1.0) <= condi
+          with_fx :krush, mix: dice(6) > 5 ? 0.1 : 0.0 do
+            if k == f1
+              r = 1.0
+            end
+            with_fx fx, phase: 4/8.0 do
+              smp k, *(args << {finish: fin} << {rate: r})
+            end
           end
         end
       end
