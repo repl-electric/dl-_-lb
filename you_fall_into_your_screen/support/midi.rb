@@ -177,6 +177,9 @@ module ReplElectric
             when :width; 110
             when :center; 111
             when :head; 112
+            when :lo; 113
+            when :hi; 114
+            when :mi; 115
             else
               nil
             end
