@@ -795,7 +795,7 @@ module ReplElectric
     end
 
     def ct(t)
-      am={ :gs=>:minor,:cs=>:minor,:a=>:major,:b=>:minor,:e=>:major,:fs=>:minor,:d=>:major}
+      am={ :gs=>:minor,:cs=>:minor,:a=>:major,:b=>:minor,:e=>:major,:fs=>:minor,:d=>:major,:ds=>:minor, :as=>:major}
       am[(t[0..-2].downcase.to_sym)] if t
     end
 
