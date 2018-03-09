@@ -267,6 +267,9 @@ module ReplElectric
             when :more; 101
             when :shape; 102
             when :wet; 103
+            when :hi; 104
+            when :mi; 105
+            when :lo; 106
             else
               nil
             end
@@ -617,6 +620,9 @@ module ReplElectric
             when :mul; 12
             when :shape; 11
             when :at; :at
+            when :hi; 104
+            when :mi; 105
+            when :lo; 106
             else nil
             end
         if n
@@ -715,7 +721,13 @@ module ReplElectric
     end
 
     def root(note_seq)
-      note_seq.map{|n| [note(n[0]), n[-1]]}.compact.sort{|n1,n2| n1[0] <=> n2[0] }[0]
+      note_seq.map{|n|
+        if n[0]
+          [note(n[0]), n[-1]]
+        else
+          nil
+        end
+      }.compact.sort{|n1,n2| n1[0] <=> n2[0] }[0]
     end
 
     def sidechain
