@@ -57,3 +57,26 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do tick;
     sleep zzz/8.0
   }
 end
+
+no{
+qbitsea_cc oct: 0.5
+qbitsea_cc drive: 0.27
+qbitsea_cc charge: 0.50
+qbitsea_cc fm: 0.00
+qbitsea_cc wav: 0.00
+qbitsea_cc wav_amp: 0.30
+qbitsea_cc atk: 0.83
+qbitsea_cc mod: 0.80
+qbitsea_cc motion: 0.036
+qbitsea_cc formant: 0.36
+qbitsea_cc mul: 0.00
+qbitsea_cc bass: 0.27
+
+#qbitsea_cc width: 0.50
+#qbitsea_cc center: 0.15
+#qbitsea_cc head: 0.00
+
+eq lo: 0.85
+eq mi: 0.85
+eq hi: 0.85
+}
