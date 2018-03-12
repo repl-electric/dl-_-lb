@@ -529,12 +529,11 @@ module ReplElectric
            end
       cc.keys.each do |k|
         n = case k
-            when :deform; 10
-            when :defon; 13
-            when :mul; 12
-            when :shape; 11
             when :at; :at
             when :motion; 1
+            when :formant; 100
+            when :octave; 101
+            when :flatpitch; 102
             else nil
             end
         if n
@@ -563,6 +562,28 @@ module ReplElectric
         puts "#{SonicPi::Note.new(n).midi_string.ljust(8, " ")}[Corrupt]" unless note(n) < MODE_NOTE
       end
       corrupt_cc(opts)
+    end
+
+    def corrupt_on(*args)
+      params, opts = split_params_and_merge_opts_array(args)
+      opts         = current_midi_defaults.merge(opts)
+      n, vel = *params
+      if n.is_a?(Array)
+        args =  args  << {sus: n[1]}
+        n = n[0]
+      end
+      if(opts[:mode])
+        corrupt_mode(opts[:mode])
+      end
+      if n
+        midi_note_on n, vel, *(args << {port: :iac_bus_1} << {channel: 7})
+        puts "#{SonicPi::Note.new(n).midi_string.ljust(8, " ")}[Corrupt]" unless note(n) < MODE_NOTE
+      end
+      corrupt_cc(opts)
+    end
+
+    def corrupt_x(*args)
+      midi_all_notes_off port: :iac_bus_1, channel: 7
     end
 
     def null(*args)
