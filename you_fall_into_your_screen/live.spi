@@ -17,6 +17,8 @@ live_loop :Fall_into_your_screen, sync: :unsyncable do
   #with_transpose 0 { cpu3 root(c),(ing 127 120).look, sus: 2 }
   #rev :a6, 15, sus: 12
   #callstack root(c), (ring 60,68).look
+  at{sleep 0.5;unity "/ripple/on",@ripple}
+  #unity "/camera/1"
   c.each_tick(:in){|n|
     #bitsea n, 1.0*(ing 80 70 85 70).look(:in), mode: 0, cutoff: (ramp 0.0, 1.1, 12).tick(:oo)#, cutoff: 1.0
   }
@@ -106,6 +108,7 @@ end
 mt_cc morph: 0.0
 
 live_loop :Within_the_letters, sync: :light_source do;z,zs=nil;tick
+  unity "/camera/3"
   with_bpm 45.125 do #63.5
     live_loop :Fall_into_your_screen {stop}
     #stop
@@ -298,59 +301,6 @@ live_loop :Clock, sync: :unsyncable do
     sidechain if k && spread(1,4).look
     sleep 1/8.0
   }
-end
-
-live_loop :Its_all_just_text_in_a_file, sync: :unsyncable do
-  c1,c2,c3,c4 = *Drip[/cymbal/,[0,2,3,4]];
-  with_fx :level, amp: 0.5 do
-    with_fx :reverb, mix: 0.4, room: 0.5, mix_slide: 0.5 do |r_fx|
-      8.times{
-        tick
-        if spread(1,16).look
-          accent = spread(1,32).look ? 30 : 20
-          #eek (ring :A1, :E2).tick(:in), accent, sus: 1, at: rand(1.0), mod: rand(1.0), mode: 2
-        end
-        ffx =(ing :hpf).look
-        pp=(ing
-          [c1] _
-          c1 _ _ _
-          _ c1 _ _
-          _ _ c1 _
-          _ _ _ c1
-          _ _ c1
-          _ _ c1
-          ).look
-        pp=(ing
-          [c1] _ _ _   _ _ c1 _
-          _ _ c1 _
-          _ _ _ _      _ _ {c1=>ffx} _
-          _ _ [c1] _
-          ).look
-
-        pp=_
-        if pp
-          accent = pp.is_a?(Array) ? 1.0 : 0.8
-          cutoff_bump = rand_i(5)
-          fx = :none
-          if pp && pp.is_a?(Hash)
-            fx = pp.values[0]
-            pp = pp.keys[0]
-          end
-          with_fx(fx){
-            smp pp, cutoff: (line 110, 115, 6*4).look, attack: (line 0.02, 0.0,6*2).look, amp: accent*(line 1.0,0.9,6*8).look+10, start: 0.5, rate: -0.25*(knit 1,(6*4)-4, 0.85,4, 1,(6*4)-4, 0.75,4).look, pan: (ing 0.25 0.25 -0.25 0.25).look, cutoff: 110-cutoff_bump#, cutoff: (ramp 40, 120,256*3).tick(:fireandice)
-          }
-          if spread(1,6).look
-            #smp MagicDust[:clack, [0,2,3,6]].tick(:insider), amp: 0.5*1, pan: (ring 0.25,-0.25).look(:inside)
-          end
-          if spread(3,7).look
-            #smp Junk[/RedShaker/,18..22].tick(:i), amp: 0.2, pan: (ing 0.25,-0.25).tick(:ingit)
-          end
-        end
-        sleep 1/8.0
-        control r_fx, mix: rand(0.5)
-      }
-    end
-  end
 end
 
 live_loop :should_not_loop_and_no, sync: :unsyncable do
