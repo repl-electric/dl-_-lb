@@ -95,6 +95,7 @@ module ReplElectric
           midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
           puts "%s%s" %[SonicPi::Note.new(n).midi_string.ljust(4, " "), "[BitSea]"]  unless note(n) < MODE_NOTE
           bitsea_cc args_h
+
         end
       end
     end
@@ -117,6 +118,13 @@ module ReplElectric
         end
         if n && ((n != "_") && n != :_)
           midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
+          at{
+            sleep 0.5
+            unity "/sea/on", 1.0
+            unity "/sea/spacex",0.1
+            unity "/postfx/color",0.0
+            unity "/alive/rotate",20.0
+            }
         end
       end
     end
@@ -252,9 +260,25 @@ module ReplElectric
         end
         args_h = resolve_synth_opts_hash_or_array(args)
         if n && ((n != "_") && n != :_)
-          dshader :decay, :iSharp, (note(n)/69.0)
+          #dshader :decay, :iSharp, (note(n)/69.0)
           puts "%s%s" %[SonicPi::Note.new(n).midi_string.ljust(9, " "), "[Exception!]"]  unless note(n) < MODE_NOTE
           midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 8})
+          @ripple = @ripple == 1.0 ? 0.0 : 1.0
+          at{
+            sleep 0.5
+            viz :alive, deformrate: 0.05
+            #unity "/ripple/on",1.0
+            #unity "/alive/bloat", 800.0
+            viz :alive, deform: 6.0
+            viz :alive, rotate: 20.0
+            unity "/alive/light", 1.2
+            #viz :alive, deform: 0.0-rand
+            sleep 0.25
+            viz :alive, deformrate: 0.0
+            viz :alive, rotate: 0.0
+            unity "/alive/light", 0.6
+        }
+
         end
         exception_cc(args_h)
       end
@@ -299,8 +323,32 @@ module ReplElectric
             args_h = resolve_synth_opts_hash_or_array(args)
 
             midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 3})
-            dshader(:decay, :iHarp, (note(n)/69.0), 0.0041) if n && note(n)
-            dshader(:iBright, velocity/127.0) if velocity
+            #dshader(:decay, :iHarp, (note(n)/69.0), 0.0041) if n && note(n)
+            #dshader(:iBright, velocity/127.0) if velocity
+            if args_h[:thick]
+              @thick=0.01
+            end
+            if !args_h[:off] || $mode != 4
+              @rot||=0.0
+              @rot += 0.001
+              dunity "/alive/rotspeed", [@rot, 0.5].max
+              dunity "/alive/length", rand(0.7)+velocity*0.01
+              @thick ||= 0.01
+              dviz :alive, thick: @thick
+              @thick += 0.001
+              if @thick > 0.03
+                @thick = 0.01
+              end
+            if n == :d4 || n == :gs4
+              at{
+              sleep 0.5
+              unity "/shard", velocity*0.001
+              sleep 0.125
+              unity "/shard", 0.0
+              }
+            end
+            end
+
             puts "#{SonicPi::Note.new(n).midi_string.ljust(4, " ")} [Operator]" unless note(n) < MODE_NOTE
           end
         end
@@ -559,6 +607,20 @@ module ReplElectric
       end
       if n
         midi n, vel, *(args << {port: :iac_bus_1} << {channel: 7})
+        @popsize = ((line 0.3,1.1,8)+(line 1.1,0.3,8)).look
+        @spacex = (line 0.1,0.5,8).look
+        @noisex = (line 20.0,0.1,8).look
+        @light ||= 0.5
+        @light += 0.05
+        at{
+          sleep 0.5
+          viz :sea, size: @popsize*1.01
+          viz :sea, spacex: @spacex
+          viz :sea, noise: @noisex
+          viz :alive, light: [@light,1.9].min
+          sleep 0.25
+          viz :alive, light: [@light-0.05,1.9-0.05].min
+        }
         puts "#{SonicPi::Note.new(n).midi_string.ljust(8, " ")}[Corrupt]" unless note(n) < MODE_NOTE
       end
       corrupt_cc(opts)
@@ -789,6 +851,14 @@ module ReplElectric
 
 
         midi note, vel, channel: 2, port: :iac_bus_1
+        @popsize = ((line 0.3,1.0,8)+(line 1.0,0.3,8)).look
+        if note
+          at{
+            sleep 0.5
+            viz :sea, size: @popsize
+            #viz :sea, popcolor: rand+0.1
+          }
+        end
       end
     end
     def mt_cc(cc)
@@ -878,6 +948,20 @@ module ReplElectric
       v= v * (args_h[:accent] || 1)
       if n
         midi n, v - (rand_i(4)), channel: 2
+        at{
+          sleep 0.5
+          viz :alive, deformrate: 0.1
+          if args_h[:def]
+            viz :alive, deform: args_h[:def]
+          else
+            viz :alive, deform: (rand 0.2)+0.01
+          end
+          #dviz :alive, deform: 0.9
+          unity "/shard", v*0.001
+          sleep 0.125
+          viz :alive, deformrate: 0.0
+          unity "/shard", 0.0
+        }
       else
         if rand(1.0) <= condi
           with_fx :krush, mix: dice(6) > 5 ? 0.1 : 0.0 do
