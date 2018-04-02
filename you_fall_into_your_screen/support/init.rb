@@ -15,7 +15,7 @@
 #unity "/alive/damp", 30.0
 #unity "/alive/maxtime", 0.006
 unity "/postfx",0.0
-def modlogo(r=nil)
+def camlogo(r=nil)
   unity "/alive/light", 0.3
   unity "/logo/re",0.0
   unity "/logo/person", 0.0
@@ -37,7 +37,12 @@ def modlogo(r=nil)
   end
 end
 
-def modend(r=nil)
+def logo(idx=0)
+  x=[{dash: 1.0}, {dot: 1.0},{winkdot: 1.0},{dash: 1.0}, {star: 1.0}][idx]
+  viz :logo, x
+end
+
+def camend(r=nil)
   unity "/alive/light", 0.6
   unity "/logo/re", 1.0
   unity "/camera/4",1.0
@@ -50,8 +55,11 @@ def modend(r=nil)
     unity "/glitch/invert",0.0
   end
 end
+def dcamend(r=nil)
+  at{sleep 0.5; modeend(r)}
+end
 
-def mod0
+def cam0
   unity "/alive/light", 0.9
   unity "/sea/spacex", 0.1
   unity "/sea/height", 1.3
@@ -72,7 +80,7 @@ def mod0
   viz :alive, deformrate: 0.0
 end
 
-def mod1
+def cam1
   unity "/alive/light", 0.7
   unity "/alive/rotate", 0.0
   unity "/alive/thick",0.0144
@@ -81,25 +89,35 @@ def mod1
   unity "/sea/spacex", 0.2
   unity "/sea/height", 1.3
   unity "/sea/noise", 20.0
+  unity "/postfx/color",0.0
   #viz :alive, deformrate: 0.0
   #dviz :alive, deform: 100.0
 end
 
-def mod2
+def cam2
   viz :alive, light: 0.6
   viz camera: 1
   #viz :alive, deform: 300.0
 end
 
-def mod3
+def cam3
   viz :alive, light: 0.6
   viz camera: 3
   unity "/alive/thick",0.0144
   unity "/alive/length",0.06
+  viz :glitch, width: 0.005
+  viz :glitch, density: 1.6
+  viz :glitch, crash: 0.8
   #viz :alive, deform: 300.0
 end
 
-def mod4
+def crashcam3(factor=0.0)
+  viz :glitch, width: 0.5*factor
+  viz :glitch, density: 50.0*factor
+  viz :glitch, crash: 0.85*factor
+end
+
+def cam4
   $mode = 4
   viz :alive, light: 0.6
   viz camera: 4
@@ -107,52 +125,37 @@ def mod4
   unity "/alive/length",0.06
   viz :glitch, color: 0.0
   @thick = 0.01
+  viz :logo, blank: 1.0
   #viz :alive, deform: 300.0
 end
 
-#mode0
-
-#viz shard: 0.1
-
-#viz :sea, popcolor: 0.0
-#viz :sea, popsize: 1.0
-
-#dviz :alive, deform: 100.0
-#viz :alive, deformrate: 0.0
-#viz :alive, rotate: 0.2
-#viz postfx: 1.0
-#viz postfx: 0.0
-
-#p
-
-#viz camera: 0
-
-#viz :alive, deform: 100.0
-#sleep 0.5
-#live_loop :go do
-#  tick
-  #dviz :alive, deform: 0.02
-  #kick_machine K1, accent: 1.0, def: 0.3# if spread(1,3).look
-  #smp Mountain[/subkick/,0]
-  #dviz :postfx, color: (line 0.0,1.0,4).look
-  #dviz :postfx, color: 0.0
-  #dviz :sea, popsize: rand(1.5)
-
-  #dviz :alive, deformrate: 0.2
-  #smp Mountain[/subkick/,0]
-  #dviz :alive, deformrate: 0.1
-  #dviz :alive, deformrate: 0.0
-#  sleep 2
-#end
-
-#modelogo
-#viz :alive, deform: rand()+0.1
-
-#viz :alive, deform: 100.0
-#viz :alive, deform: 200.0
-#viz :alive, sine: 0.9
-
-#bitsea_on :cs4
-
-#bitsea_cc motion: 0.19
-#bitsea_cc octave: 0.56
+def dcam4
+  at{
+    sleep 0.5
+    cam4
+  }
+end
+def dcam3
+  at{
+    sleep 0.5
+    cam3
+  }
+end
+def dcam2
+  at{
+    sleep 0.5
+    cam2
+  }
+end
+def dcam1
+  at{
+    sleep 0.5
+    cam1
+  }
+end
+def dcam0
+  at{
+    sleep 0.5
+    cam0
+  }
+end
