@@ -610,16 +610,26 @@ module ReplElectric
         @popsize = ((line 0.3,1.1,8)+(line 1.1,0.3,8)).look
         @spacex = (line 0.1,0.5,8).look
         @noisex = (line 20.0,0.1,8).look
-        @light ||= 0.5
-        @light += 0.05
+        @light ||= 0.7
+        @light += 0.08
         at{
           sleep 0.5
+          if opts && opts[:mode] == 2
+            dviz :alive, thick: 0.15
+            dviz :alive, length: 0.5
+            dviz  :alive, reset: 1.0
+            dviz :alive, amp: 5
+            dviz :alive, freq: 7.21
+          end
+
           viz :sea, size: @popsize*1.01
           viz :sea, spacex: @spacex
           viz :sea, noise: @noisex
-          viz :alive, light: [@light,1.9].min
-          sleep 0.25
-          viz :alive, light: [@light-0.05,1.9-0.05].min
+          if opts && opts[:mode] == 2
+            viz :alive, light: [@light,2.9].min
+            sleep 0.25
+            viz :alive, light: [@light-0.1,2.9-0.1].min
+          end
         }
         puts "#{SonicPi::Note.new(n).midi_string.ljust(8, " ")}[Corrupt]" unless note(n) < MODE_NOTE
       end
