@@ -15,6 +15,15 @@
 #unity "/alive/damp", 30.0
 #unity "/alive/maxtime", 0.006
 unity "/postfx",0.0
+
+def invcol(x=1.0)
+  viz :glitch, invert: x
+end
+def alivecol(x=0.0)
+  viz :alive, color: x
+end
+
+
 def camlogo(r=nil)
   viz :alive, color: 0.0
   unity "/alive/light", 0.3
