@@ -116,17 +116,19 @@ def cam2
 end
 
 def cam3
-  $mode = 3
-  @light=0.6
-  viz :alive, color: 0.0
-  viz :alive, light: 0.6
-  viz camera: 3
-  unity "/alive/thick",0.0144
-  unity "/alive/length",0.06
-  viz :glitch, width: 0.005
-  viz :glitch, density: 1.6
-  viz :glitch, crash: 0.8
-  #viz :alive, deform: 300.0
+  if $mode != 3
+    $mode = 3
+    @light=0.6
+    viz :alive, color: 0.0
+    viz :alive, light: 0.6
+    viz camera: 3
+    unity "/alive/thick",0.0144
+    unity "/alive/length",0.06
+    viz :glitch, width: 0.005
+    viz :glitch, density: 1.6
+    viz :glitch, crash: 0.8
+    #viz :alive, deform: 300.0
+  end
 end
 
 def crashcam3(factor=0.0)
@@ -147,6 +149,7 @@ def terrain(height=0.0)
 end
 
 def cam4
+  if $mode != 4
   $mode = 4
   viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
   viz :alive, light: 0.6
@@ -157,7 +160,8 @@ def cam4
   viz :glitch, color: 0.0
   @thick = 0.01
   viz :logo, blank: 1.0
-  #viz :alive, deform: 300.0
+    #viz :alive, deform: 300.0
+  end
 end
 
 def dcam4
