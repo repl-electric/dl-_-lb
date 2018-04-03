@@ -158,6 +158,7 @@ def cam4
   unity "/alive/length",0.06
   viz :sea, on: 0.0
   viz :glitch, color: 0.0
+  viz :glitch, invert: 0.0
   @thick = 0.01
   viz :logo, blank: 1.0
     #viz :alive, deform: 300.0
