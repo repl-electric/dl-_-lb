@@ -16,13 +16,31 @@
 #unity "/alive/maxtime", 0.006
 unity "/postfx",0.0
 
+def console(msg)
+  viz console: "> #{msg.to_s.split("/")[-1]}"
+end
+
+def whatisit?
+  at{
+    sleep 0.5
+    viz :alive, rotate: 0.5
+    terrain 1.0
+    sleep 1.5
+    viz :alive, rotate: 0.0
+    terrain 0.0
+    sleep 0.5
+  }
+end
+
 def invcol(x=1.0)
   viz :glitch, invert: x
 end
 def alivecol(x=0.0)
   viz :alive, color: x
 end
-
+def electric
+  viz :electric
+end
 
 def camlogo(r=nil)
   viz :alive, color: 0.0
@@ -55,10 +73,20 @@ end
 def camend(r=nil)
   unity "/alive/light", 0.6
   unity "/logo/re", 1.0
-  unity "/camera/4",1.0
+  unity "/camera/0",1.0
   unity "/glitch/block",0.03
   unity "/glitch/slice",0.0
   unity "/alive/rotate", 0.0
+  viz :alive, color: 0.0
+  at{
+    f = 8.0
+    viz :cam0, focus: f
+    128.times{
+      f-=0.05
+      viz :cam0, focus: [f,0.0].max
+      sleep 0.125
+    }
+  }
   if r && r!=0
     unity "/glitch/invert",1.0
   else
@@ -142,25 +170,32 @@ def terrain(height=0.0)
     viz :alive, terrain: 1.0
     viz :alive, height: height
     viz :alive, x: 15.49
-    viz :alive, z: 9.79
+    viz :alive, z: 9.79 * (rand*0.25)
   else
     viz :alive, terrain: 0.0
   end
 end
 
+def dterrain(height=0.0)
+  at{
+    sleep 0.5
+    terrain height
+  }
+end
+
 def cam4
   if $mode != 4
-  $mode = 4
-  viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
-  viz :alive, light: 0.6
-  viz camera: 4
-  unity "/alive/thick",0.0144
-  unity "/alive/length",0.06
-  viz :sea, on: 0.0
-  viz :glitch, color: 0.0
-  viz :glitch, invert: 0.0
-  @thick = 0.01
-  viz :logo, blank: 1.0
+    $mode = 4
+    viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
+    viz :alive, light: 0.6
+    viz camera: 4
+    unity "/alive/thick",0.0144
+    unity "/alive/length",0.06
+    viz :sea, on: 0.0
+    viz :glitch, color: 0.0
+    viz :glitch, invert: 0.0
+    @thick = 0.01
+    viz :logo, blank: 1.0
     #viz :alive, deform: 300.0
   end
 end
