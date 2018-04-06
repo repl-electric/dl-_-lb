@@ -241,6 +241,7 @@ module ReplElectric
         if n && ((n != "_") && n != :_)
           midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 4})
           puts "%s%s" %[SonicPi::Note.new(n).midi_string.ljust(4, " "), "[QBitSea]"]  unless note(n) < MODE_NOTE
+          console(SonicPi::Note.new(n).midi_string) unless note(n) < MODE_NOTE
           qbitsea_cc args_h
         end
       end
@@ -328,7 +329,7 @@ module ReplElectric
             if args_h[:thick]
               @thick=0.01
             end
-            if !args_h[:off] || $mode != 4
+            if !args_h[:off] && $mode != 4
               @rot||=0.0
               @rot += 0.001
               dunity "/alive/rotspeed", [@rot, 0.5].max
@@ -610,16 +611,23 @@ module ReplElectric
         @popsize = ((line 0.3,1.1,8)+(line 1.1,0.3,8)).look
         @spacex = (line 0.1,0.5,8).look
         @noisex = (line 20.0,0.1,8).look
-        @light ||= 0.7
-        @light += 0.08
+        if $mode == 0
+          dterrain 2.0
+        end
+        if opts && opts[:mode] == 2
+          @light ||= 0.7
+          @light += 0.08
+        elsif note(n) > MODE_NOTE
+          @light = 0.7
+        end
         at{
           sleep 0.5
           if opts && opts[:mode] == 2
             dviz :alive, thick: 0.15
             dviz :alive, length: 0.5
-            dviz  :alive, reset: 1.0
-            dviz :alive, amp: 5
-            dviz :alive, freq: 7.21
+            dviz :alive, reset: 1.0
+            viz :alive, gravity: 0, amp: 0, freq: 0, speed: 0
+            #dviz :alive, amp: 5 dviz :alive, freq: 7.21
           end
 
           viz :sea, size: @popsize*1.01
@@ -866,7 +874,9 @@ module ReplElectric
           at{
             sleep 0.5
             viz :sea, size: @popsize
-            #viz :sea, popcolor: rand+0.1
+            if $mode == 0
+              viz :alive, light: 0.1+rand*(vel*0.001)
+            end
           }
         end
       end
@@ -953,7 +963,6 @@ module ReplElectric
         v=90
         k=_
       end
-      puts "#{k} => #{n}" if n
       args_h = resolve_synth_opts_hash_or_array([*args])
       v= v * (args_h[:accent] || 1)
       if n
@@ -967,7 +976,7 @@ module ReplElectric
             viz :alive, deform: (rand 0.2)+0.01
           end
           #dviz :alive, deform: 0.9
-          unity "/shard", v*0.001
+          unity "/shard", v*0.0015
           sleep 0.125
           viz :alive, deformrate: 0.0
           unity "/shard", 0.0
