@@ -37,7 +37,25 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do tick;
   i.call(c[4], 30*pf, sus: 8)
   i.call(c[5], 30*pf, sus: 8)
 
-  exception root(c), 127, sus: 2#, shape: 1.0, : #, wet: 0.1, more: 0.0, shape: 0.8, atk: 0.2
+  at{
+    sleep 0.5
+    exception root(c), 127, sus: 0.25, atk: 0.01, shape: 1.0, wet: 1.0
+    sleep 0.5
+    exception root(c), 40, sus: 0.25, atk: 0.2, shape: 1.0, wet: 0.5
+  }
+
+  #exception root(c), 127, sus: 2#, shape: 1.0, : #, wet: 0.1, more: 0.0, shape: 0.8, atk: 0.2
+
+  at{
+    8.times{; tick(:a)
+      kick_machine (ing
+                    K1 _ _ _   _ _ _ _     K3 _ _ _   _ _ _ _
+                    K1 _ _ _   _ _ _ _     K3 _ _ _   _ _ _ _
+                    ).look(:a), def: 8, accent: 1.5
+      sleep 1/4.0
+    }
+  }
+
   null root(c), 127*0.5, mode: 2
 
   8.times{tick(:in2);
@@ -54,10 +72,60 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do tick;
           :a5 _ :a4 _    _   :b5  :a4 _
           :a5 _ :a4 _    _   :b5  :a4 _
           :a5 _ :a4 _    :e6 :b5  :a4 _
-          ).look(:in2), (ing 90 90 80 80 70 70 60 60).look(:in2)*1.4
+               ).look(:in2), (ing 90 90 80 80 70 70 60 60).look(:in2)*1.4
+    s=(ing
+      _ _ _ _ _ _ [1] 1
+      _ _ _ _ _ _ 1 1
+      _ _ _ _ _ _ 1 _
+      ).look(:in2)
+    mt s, 100, 127
+    mt_cc morph: 0.0#(line 0.01, 0.4, 32).look(:in2)
     sleep zzz/8.0
   }
 end
+
+live_loop :glitch, sync: :Fall_out_of_your_screen do; tick
+      p=(ing
+      _ _ _ _                _ _ _ _
+      _ _ _ _                _ _ _ _
+      [TS[49]] _ _ TS[12]    _ _ _ _
+
+      _ _ _ _                _ _ _ _
+      _ _ _ _                _ _ _ _
+      TS[7] _ _ _            _ _ _ _
+
+      _ _ _ _                _ _ _ _
+      _ _ _ _                _ _ _ _
+      TT[49] _ _ TS[12]      _ _ _ _
+
+      _ _ _ _                _ _ _ _
+      _ _ _ _                _ _ _ _
+      TS[7] _ _ _            _ _ _ _
+      )
+
+    p=p.look
+    #p=_
+    fx=:lpf
+    accent = (ing 0.2 0.2 0.3 0.5).look
+    attack = 0.0
+    r = 1.0
+    if p && p.is_a?(Array)
+      p = p[0]
+      accent=accent*1.5
+    end
+  if p
+    with_fx :krush, mix: 0.2 do
+      with_swing(0.01) do
+        with_fx(fx, phase: (ring 1/4.0,1/4.0,1/8.0).look){
+          smp p, amp: 1.5*accent, rate: r, attack: attack
+        }
+      end
+    end
+  end
+  sleep 1/8.0
+end
+
+
 
 no{
 qbitsea_cc oct: 0.5
