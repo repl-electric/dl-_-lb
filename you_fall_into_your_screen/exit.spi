@@ -43,7 +43,6 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do tick;
     sleep 0.5
     exception root(c), 40, sus: 0.25, atk: 0.2, shape: 1.0, wet: 0.5
   }
-
   #exception root(c), 127, sus: 2#, shape: 1.0, : #, wet: 0.1, more: 0.0, shape: 0.8, atk: 0.2
 
   at{
@@ -51,7 +50,7 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do tick;
       kick_machine (ing
                     K1 _ _ _   _ _ _ _     K3 _ _ _   _ _ _ _
                     K1 _ _ _   _ _ _ _     K3 _ _ _   _ _ _ _
-                    ).look(:a), def: 8, accent: 1.5
+                    ).look(:a), def: 8, accent: 1.5*1
       sleep 1/4.0
     }
   }
@@ -78,6 +77,7 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do tick;
       _ _ _ _ _ _ 1 1
       _ _ _ _ _ _ 1 _
       ).look(:in2)
+    #s=_
     mt s, 100, 127
     mt_cc morph: 0.0#(line 0.01, 0.4, 32).look(:in2)
     sleep zzz/8.0
