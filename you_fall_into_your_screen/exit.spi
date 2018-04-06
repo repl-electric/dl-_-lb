@@ -78,7 +78,7 @@ live_loop :Fall_out_of_your_screen, sync: :unsyncable do tick;
       _ _ _ _ _ _ 1 _
       ).look(:in2)
     #s=_
-    mt s, 100, 127
+    mt s, 95, 127
     mt_cc morph: 0.0#(line 0.01, 0.4, 32).look(:in2)
     sleep zzz/8.0
   }
