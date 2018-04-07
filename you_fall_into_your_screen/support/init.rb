@@ -132,20 +132,23 @@ def cam0
 end
 
 def cam1
-  $mode = 1
-  unity "/alive/light", 0.7
-  unity "/alive/rotate", 0.0
-  unity "/alive/thick",0.0144
-  unity "/alive/length",0.06
-  unity "/glitch/block",0.0
-  unity "/sea/spacex", 0.2
-  unity "/sea/height", 1.3
-  unity "/sea/noise", 20.0
-  unity "/postfx/color",0.0
-  unity "/cam0/color",0.0
-  unity "/cam0/blur", 0.0
-  #viz :alive, deformrate: 0.0
-  #dviz :alive, deform: 100.0
+  if $mode !=1
+    $mode = 1
+    unity "/camera/0",1.0
+    unity "/alive/light", 0.7
+    unity "/alive/rotate", 0.0
+    unity "/alive/thick",0.0144
+    unity "/alive/length",0.06
+    unity "/glitch/block",0.0
+    unity "/sea/spacex", 0.2
+    unity "/sea/height", 1.3
+    unity "/sea/noise", 20.0
+    unity "/postfx/color",0.0
+    unity "/cam0/color",0.0
+    unity "/cam0/blur", 0.0
+    #viz :alive, deformrate: 0.0
+    #dviz :alive, deform: 100.0
+  end
 end
 
 def cam2
