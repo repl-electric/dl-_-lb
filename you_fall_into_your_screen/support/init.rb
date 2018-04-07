@@ -1,3 +1,4 @@
+$mode=0
 # unity "/alive/light", 0.5
 #unity "/sea/spacex", 0.1
 #unity "/sea/noise", 20.0
@@ -15,6 +16,11 @@
 #unity "/alive/damp", 30.0
 #unity "/alive/maxtime", 0.006
 unity "/postfx",0.0
+
+def focus(f=50.1,a=0.09)
+  unity "/cam0/focus", f
+  unity "/cam0/aperture", a
+end
 
 def console(msg)
   viz console: "> #{msg.to_s.split("/")[-1]}"
@@ -38,8 +44,12 @@ end
 def alivecol(x=0.0)
   viz :alive, color: x
 end
-def electric
-  viz :electric
+
+def electric(n=50)
+  unity "/electric/#{n}"
+end
+def delectric(n=50)
+  at{sleep 0.5; electric(n)}
 end
 
 def camlogo(r=nil)
@@ -132,6 +142,8 @@ def cam1
   unity "/sea/height", 1.3
   unity "/sea/noise", 20.0
   unity "/postfx/color",0.0
+  unity "/cam0/color",0.0
+  unity "/cam0/blur", 0.0
   #viz :alive, deformrate: 0.0
   #dviz :alive, deform: 100.0
 end
@@ -183,8 +195,8 @@ def dterrain(height=0.0)
   }
 end
 
-def cam4
-  if $mode != 4
+def cam4(f=false)
+  if $mode != 4 || f
     $mode = 4
     viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
     viz :alive, light: 0.6
