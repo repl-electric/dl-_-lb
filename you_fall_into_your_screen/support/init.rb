@@ -1,4 +1,4 @@
-$mode=0
+$mode=-1
 # unity "/alive/light", 0.5
 #unity "/sea/spacex", 0.1
 #unity "/sea/noise", 20.0
@@ -20,6 +20,26 @@ unity "/postfx",0.0
 def focus(f=50.1,a=0.09)
   unity "/cam0/focus", f
   unity "/cam0/aperture", a
+end
+
+def breath(f=0.1)
+  if f == 0.0
+    dviz breath: 0.0
+  else
+    at{
+      sleep 0.5
+      viz breath: f
+      sleep 0.125
+      viz breath: 0.1
+    }
+  end
+end
+
+def alive(*args)
+  at{
+    sleep 0.5
+    viz :alive, *args
+  }
 end
 
 def console(msg)
@@ -107,32 +127,34 @@ def dcamend(r=nil)
   at{sleep 0.5; modeend(r)}
 end
 
-def cam0
-  $mode = 0
-  viz :alive, color: 0.108
-  unity "/alive/light", 0.9
-  unity "/sea/spacex", 0.1
-  unity "/sea/height", 1.3
-  unity "/sea/noise", 0.01
-  unity "/logo/person",0.0
-  unity "/camera/0",1.0
-  unity "/glitch/block",0.0
-  unity "/glitch/slice",0.0
-  unity "/glitch/invert",0.0
-  unity "/alive/rotate", 0.0
-  unity "/postfx/color",1.0
-  viz :alive, deform: 1.0
-  viz postfx: 0.0
-  viz :alive, length: 0.4
-  viz :alive, thick: 0.05
-  viz :sea, color: 0.0
-  viz :sea, size: 1.0
-  viz :alive, deformrate: 0.0
-  viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
+def cam0(f=false)
+  if $mode != 0
+    $mode = 0
+    viz :alive, color: 0.108
+    unity "/alive/light", 0.9
+    unity "/sea/spacex", 0.1
+    unity "/sea/height", 1.3
+    unity "/sea/noise", 0.01
+    unity "/logo/person",0.0
+    unity "/camera/0",1.0
+    unity "/glitch/block",0.0
+    unity "/glitch/slice",0.0
+    unity "/glitch/invert",0.0
+    unity "/alive/rotate", 0.0
+    unity "/postfx/color",1.0
+    viz :alive, deform: 1.0
+    viz postfx: 0.0
+    viz :alive, length: 0.4
+    viz :alive, thick: 0.05
+    viz :sea, color: 0.0
+    viz :sea, size: 1.0
+    viz :alive, deformrate: 0.0
+    viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
+  end
 end
 
-def cam1
-  if $mode !=1
+def cam1(f=false)
+  if $mode !=1 || f
     $mode = 1
     unity "/camera/0",1.0
     unity "/alive/light", 0.7
@@ -145,31 +167,38 @@ def cam1
     unity "/sea/noise", 20.0
     unity "/postfx/color",0.0
     unity "/cam0/color",0.0
-    unity "/cam0/blur", 0.0
+    viz :cam0, blur: 0.0
     #viz :alive, deformrate: 0.0
     #dviz :alive, deform: 100.0
   end
 end
 
-def cam2
+def cam2(f=false)
   $mode = 2
   viz :alive, light: 0.6
   viz camera: 1
   #viz :alive, deform: 300.0
 end
 
-def cam3
-  if $mode != 3
+def cam3(f=false)
+  if $mode != 3 || f
     $mode = 3
     @light=0.6
     viz :alive, color: 0.0
     viz :alive, light: 0.6
     viz camera: 3
-    unity "/alive/thick",0.0144
-    unity "/alive/length",0.06
     viz :glitch, width: 0.005
     viz :glitch, density: 1.6
     viz :glitch, crash: 0.8
+    terrain 0.0
+    viz :sea, noise: 10.001
+    viz :sea, spacex: 0.201
+    viz :alive, length: 0.06
+    viz :alive, thick: 0.0144
+    viz :sea, color: 0.0
+    viz :sea, size: 1.0
+    viz :alive, deformrate: 0.0
+    viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
     #viz :alive, deform: 300.0
   end
 end
@@ -182,10 +211,12 @@ end
 
 def terrain(height=0.0)
   if height
+    $height=height
+    $z = 9.79 * (rand*0.25)
     viz :alive, terrain: 1.0
     viz :alive, height: height
     viz :alive, x: 15.49
-    viz :alive, z: 9.79 * (rand*0.25)
+    viz :alive, z: $z
   else
     viz :alive, terrain: 0.0
   end

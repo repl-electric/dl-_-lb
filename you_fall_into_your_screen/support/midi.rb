@@ -3,6 +3,12 @@ module ReplElectric
     include SonicPi::Lang::Support::DocSystem
     include SonicPi::Util
     MODE_NOTE = 13
+    #helpers
+    def linear_map(x0, x1, y0, y1, x)
+      dydx = (y1 - y0) / (x1- x0)
+      dx = (x- x0)
+      (y0 + (dydx * dx))
+    end
 
     def bass(n, *args)
       begin
@@ -516,6 +522,14 @@ module ReplElectric
     end
 
     def callstack(n,*args)
+      if $mode == 3
+          at{
+            sleep 0.5
+            viz :alive, height: 0.036
+            sleep 0.125
+            viz :alive, height: 0.0
+        }
+      end
       if n
         if args && args[0].is_a?(Numeric)
           velocity = args[0]
@@ -538,6 +552,18 @@ module ReplElectric
         if n
           puts "#{SonicPi::Note.new(n).midi_string.ljust(6, " ")}[Callstack]" unless note(n) < MODE_NOTE
           midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 14})
+          if $mode == 3
+            @sea_idx ||= line(0,31,32)+line(31,0,32)
+            w = @sea_idx.tick(:sea_idx)
+            at{
+              sleep 0.5
+              #puts  w*0.025
+              viz :sea, noise: 10.0-rand*0.004
+              viz :sea, height: w*0.025
+              viz :sea, size: linear_map(54,69, 0.3,0.7, note(n))
+            }
+          end
+
         end
       end
     end
@@ -969,16 +995,32 @@ module ReplElectric
         midi n, v - (rand_i(4)), channel: 2
         at{
           sleep 0.5
+          if n==:as4
+            viz :alive, height: $height+(v*0.0025)
+          else
+            viz :alive, height: $height-(v*0.002)
+          end
+
+          viz :alive, z: $z+(v*0.02)
+
           viz :alive, deformrate: 0.1
           if args_h[:def]
             viz :alive, deform: args_h[:def]
           else
             viz :alive, deform: (rand 0.2)+0.01
           end
-          #dviz :alive, deform: 0.9
-          unity "/shard", v*0.0015
+          dviz :alive, deform: 0.9
+          if n==:as4
+            unity "/alive/spike", 1.0
+          end
+          unity "/shard", v*0.001
           sleep 0.125
+          viz :alive, height: $height
+
           viz :alive, deformrate: 0.0
+          #if n==:d5
+          #  unity "/breath", 0.0
+          #end
           unity "/shard", 0.0
         }
       else
@@ -988,6 +1030,12 @@ module ReplElectric
               r = 1.0
             end
             with_fx fx, phase: 4/8.0 do
+              at{sleep 0.5
+                unity "/breath", 0.1
+                sleep 0.125
+                unity "/breath", 0
+              }
+
               smp k, *(args << {finish: fin} << {rate: r})
             end
           end
@@ -1010,6 +1058,42 @@ module ReplElectric
       end
     end
 
+    def smp_dust(pp,*args)
+        if pp
+          fx = :none
+          cutoff_bump=(pp.is_a?(Array) ? 15 : rand_i(10))
+          accent = (pp.is_a?(Array) ? 0.7 : 0.4)*1
+          if pp && pp.is_a?(Hash)
+            fx = pp.values[0]
+            pp = pp.keys[0]
+          end
+          opts = resolve_synth_opts_hash_or_array(args)
+          fuzz = if opts[:rate]
+                   opts[:rate]
+                 else
+                   rand(0.05)
+                 end
+          fxs=if opts[:fxs]
+                opts[:fxs]
+              else
+                [:slicer,:krush,:bitcrusher,:echo]
+              end
+          amps = if opts[:amp]
+                   opts[:amp] * (accent+10.6)
+                 else
+                   (accent+10.6)
+                 end
+          with_fx ring(*fxs).tick(:fx), mix: 0.5, phase: 1/4.0, decay: 2 {
+            dterrain 0.1
+            smp pp, amp: amps, attack: 0.0, start: 0.1-fuzz, rate: knit(-0.25,32,-0.25,32,
+                                                                                   -0.5-fuzz, 1,-0.5,31,
+                                                                                   -0.25-fuzz,1,-0.25,31).look
+          }
+        end
+      pp
+    end
+
+    #Depreciate
     def dust_pat(pp,&block)
       if pp
         fx = :none
