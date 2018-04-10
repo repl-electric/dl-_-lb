@@ -999,7 +999,7 @@ module ReplElectric
         midi n, v - (rand_i(4)), channel: 2
         at{
           sleep 0.5
-          if n==:as4
+          if n==:as4 || $mode == 4
             viz :alive, height: $height+(v*0.0025)
           else
             viz :alive, height: $height-(v*0.002)
