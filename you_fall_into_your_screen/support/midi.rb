@@ -346,8 +346,8 @@ module ReplElectric
               dunity "/alive/length", rand(0.7)+velocity*0.01
               @thick ||= 0.01
               dviz :alive, thick: @thick
-              @thick += 0.001
-              if @thick > 0.03
+              @thick += 0.0005
+              if @thick > 0.029
                 @thick = 0.01
               end
             if n == :d4 || n == :gs4
