@@ -190,7 +190,8 @@ def cam3(f=false)
     viz :glitch, width: 0.005
     viz :glitch, density: 1.6
     viz :glitch, crash: 0.8
-    terrain 0.0
+    terrain 0.01
+    viz :sea, on: 1.0
     viz :sea, noise: 10.001
     viz :sea, spacex: 0.201
     viz :alive, length: 0.06
