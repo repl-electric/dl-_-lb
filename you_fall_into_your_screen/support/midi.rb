@@ -10,6 +10,10 @@ module ReplElectric
       (y0 + (dydx * dx))
     end
 
+    def find_chord(note)
+      chord(note,ct(note))
+    end
+
     def bass(n, *args)
       begin
         if n
