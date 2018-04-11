@@ -14,6 +14,34 @@ module ReplElectric
       chord(note,ct(note))
     end
 
+    def strpat(s)
+      p=nil
+      s.gsub(/\s+/,'').split('').reduce([]){|ac,x|
+        if x != '[' && x!= "]" && x!= "\n"
+          ac << x
+        elsif x == "]"
+          ac[-1] = "[#{ac[-1]}#{x}"
+        end
+        ac
+      }.map{|x| eval(x)}.ring
+    end
+
+    def mt_pat
+      s1 = ring(_, 5,   _, _,   [5], _,   _, _,   _, _,  _, _,  5, _,  _, _,
+                _, 5,   _, _,   [5], _,   5, _,   _, _,  _, _,  5, _,  _, _,
+                _, 5,   _, _,   [5], _,   _, _,   _, _,  _, _,  5, _,  _, _,
+                _, 5,   _, _,   [5], _,   _, _,   5, _,  _, _,  5, _,  _, _)
+      s2 = ring(_, _,   _, _,   [5], _,   _, _,   _, _,  _, _,  5, _,  _, _,
+                _, _,   _, _,   [5], _,   5, _,   _, _,  _, _,  5, _,  _, _,
+                _, _,   _, _,   [5], _,   _, _,   _, _,  _, _,  5, _,  _, _,
+                _, _,   _, _,   [5], _,   _, _,   _, _,  _, _,  5, _,  _, _)
+      s3 = ring(_, _,   _, _,   [5], _,   _, _,  5,  _,  _, _,  5, _,  _, _,
+                _, _,   _, _,   [5], _,   _, _,  5,  _,  _, _,  5, _,  _, _,
+                _, _,   _, _,   [5], _,   _, _,  5,  _,  _, _,  5, _,  _, _,
+                _, _,   _, _,   [5], _,   _, _,  5,  _,  _, _,  5, _,  _, _)
+      knit(s2,16*4,s3,16*4, s1,16*4)
+    end
+
     def bass(n, *args)
       begin
         if n
@@ -346,8 +374,8 @@ module ReplElectric
               dunity "/alive/length", rand(0.7)+velocity*0.01
               @thick ||= 0.01
               dviz :alive, thick: @thick
-              @thick += 0.0005
-              if @thick > 0.029
+              @thick += 0.001
+              if @thick > 0.03
                 @thick = 0.01
               end
             if n == :d4 || n == :gs4
@@ -659,6 +687,12 @@ module ReplElectric
             viz :alive, gravity: 0, amp: 0, freq: 0, speed: 0
             #dviz :alive, amp: 5 dviz :alive, freq: 7.21
           end
+          if $mode == 3
+            dviz :alive, thick: 0.15
+            dviz :alive, length: 0.5
+            dviz :alive, reset: 1.0
+            viz :alive, gravity: 0, amp: 0, freq: 0, speed: 0
+          end
 
           viz :sea, size: @popsize*1.01
           viz :sea, spacex: @spacex
@@ -897,13 +931,10 @@ module ReplElectric
         #   :C2, :cs2, :d2, :ds2, :e2, :f2, :fs2, :g2,
         #   :C6, :cs6, :d6, :ds6, :e6, :f6, :fs6, :g6][n]
 
-
         midi note, vel, channel: 2, port: :iac_bus_1
-        @popsize = ((line 0.3,1.0,8)+(line 1.0,0.3,8)).look
         if note
           at{
             sleep 0.5
-            viz :sea, size: @popsize
             if $mode == 0
               viz :alive, light: 0.1+rand*(vel*0.001)
             end
@@ -1034,11 +1065,13 @@ module ReplElectric
               r = 1.0
             end
             with_fx fx, phase: 4/8.0 do
+              if k
               at{sleep 0.5
                 unity "/breath", 0.1
                 sleep 0.125
                 unity "/breath", 0
-              }
+                }
+              end
 
               smp k, *(args << {finish: fin} << {rate: r})
             end
