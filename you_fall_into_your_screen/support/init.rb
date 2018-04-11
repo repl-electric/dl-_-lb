@@ -17,6 +17,12 @@ $mode=-1
 #unity "/alive/maxtime", 0.006
 unity "/postfx",0.0
 
+def init!
+  unity "/camera/0",1.0
+  unity "/alive/length",0.0
+  unity "/logo/person", 0.0
+end
+
 def focus(f=50.1,a=0.09)
   unity "/cam0/focus", f
   unity "/cam0/aperture", a
@@ -72,7 +78,51 @@ def delectric(n=50)
   at{sleep 0.5; electric(n)}
 end
 
-def camlogo(r=nil)
+def camlogo(*args)
+  opts = resolve_synth_opts_hash_or_array(args)
+  if opts[:invert]
+    unity "/glitch/invert",opts[:invert]
+  end
+  if opts[:rot]
+    unity "/alive/rotate", opts[:rot]
+  end
+  if !opts[:off]
+    if opts[:crazy]
+      smp Mountain[/bowed/,/e_/,9]
+      dviz shard: opts[:crazy]
+    end
+    unity "/breath", 1.0
+    if opts[:logo]
+      unity "/logo/person", 0.0
+      unity "/logo/person", 1.0
+    else
+      unity "/logo/person", 0.0
+    end
+    unity "/camera/4",1.0
+    unity "/alive/light", 0.3
+    unity "/glitch/block",0.03
+    unity "/glitch/slice",0.0
+    viz :alive, color: 0.0, deform: 1.0, length: 0.4, thick: 0.05
+    viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
+  else
+    unity "/breath", 0.0
+    unity "/shard", 0.0
+    unity "/logo/person", 0.0
+    #unity "/alive/rotate", 0.0
+    unity "/alive/light", 0.0
+    unity "/camera/0",1.0
+    viz :alive, color: 0.0, deform: 0.0, length: 0.0, thick: 0.0
+    viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
+  end
+end
+
+def dcamlogo(*args)
+  at{
+    sleep 0.5
+    camlogo(*args)
+  }
+end
+def camlogoold(r=nil)
   viz :alive, color: 0.0
   unity "/alive/light", 0.3
   unity "/logo/re",0.0
@@ -103,7 +153,7 @@ end
 def camend(r=nil)
   unity "/alive/light", 0.6
   unity "/logo/re", 1.0
-  unity "/camera/0",1.0
+  #unity "/camera/4",1.0
   unity "/glitch/block",0.03
   unity "/glitch/slice",0.0
   unity "/alive/rotate", 0.0
@@ -235,6 +285,8 @@ def cam4(f=false)
     $mode = 4
     viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
     viz :alive, light: 0.6
+    unity "/glitch/block",0.0
+    unity "/glitch/slice",0.0
     viz camera: 4
     unity "/alive/thick",0.0144
     unity "/alive/length",0.15
