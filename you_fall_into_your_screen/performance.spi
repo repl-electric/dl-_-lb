@@ -1,21 +1,15 @@
-#camlogo logo: 1, crazy: 1, off: 1.0
-#focus
+#camlogo
 
-live_loop :go, sync: :unsyncable do
-  #exception root(score), atk: 0.01, more: 0.0, shape: 0.0, wet: 0.0
+live_loop :fall_into_your_screen, sync: :unsyncable do
+
   sleep 1
-  #null root(score), 50
   sleep 1
 end
 
-live_loop :pointless, sync: :unsyncable do
+live_loop :by_the_light_of_the_terminal, sync: :unsyncable do
   with_fx :echo, mix: 1*(ring 0.025+rand*0.1,0.055+rand*0.1,0.03,0.02,0.01).look, phase: (ring 1/4.0, 1/8.0).look do
     8.times{
       tick
-      #qbitsea :A3 if spread(7,11).look
-      #qbitsea :e3, sus:0.125 if spread(3,8).look
-      #eek :a2, sus: 1.0, mode: 0 if spread(1,12*2).rot(2).look
-      #corrupt :A2
       pp=(ing
         _
         ).look
