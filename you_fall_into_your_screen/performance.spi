@@ -1,13 +1,16 @@
 #camlogo
-
-live_loop :fall_into_your_screen, sync: :unsyncable do
-
+#focus
+live_loop :fall_into_your_screen, sync: :unsyncable do; tick
+  #alive rotate: 1.0
+  #shard 0.1
   sleep 1
+  #alive rotate: 0.0
+  #shard 0.0
   sleep 1
 end
 
 live_loop :by_the_light_of_the_terminal, sync: :unsyncable do
-  with_fx :echo, mix: 1*(ring 0.025+rand*0.1,0.055+rand*0.1,0.03,0.02,0.01).look, phase: (ring 1/4.0, 1/8.0).look do
+  with_fx :echo, mix: (ring 0.025+rand*0.1,0.055+rand*0.1,0.03,0.02,0.01).look, phase: (ring 1/4.0, 1/8.0).look do
     8.times{
       tick
       pp=(ing
@@ -20,7 +23,7 @@ live_loop :by_the_light_of_the_terminal, sync: :unsyncable do
   end
 end
 
-live_loop :its_all_just_text_in_a_file, sync: :unsyncable do
+live_loop :its_all_just_text_in_a_file, sync: :unsyncable do; tick
 
   sleep 1/8.0
 end
