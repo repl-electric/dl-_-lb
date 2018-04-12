@@ -23,6 +23,14 @@ def init!
   unity "/logo/person", 0.0
 end
 
+def shard(f=0.0)
+  dviz shard: f
+end
+
+def spike(f=0.0)
+  dviz :alive, shard: f
+end
+
 def focus(f=5.85,a=0.85)
   unity "/cam0/focus", f
   unity "/cam0/aperture", a
