@@ -23,7 +23,7 @@ def init!
   unity "/logo/person", 0.0
 end
 
-def focus(f=50.1,a=0.09)
+def focus(f=5.85,a=0.85)
   unity "/cam0/focus", f
   unity "/cam0/aperture", a
 end
