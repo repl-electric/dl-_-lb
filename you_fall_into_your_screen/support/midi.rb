@@ -675,35 +675,28 @@ module ReplElectric
         if $mode == 0
           dterrain 2.0
         end
-        if opts && opts[:mode] == 2
+        if $mode == 3
           @light ||= 0.7
-          @light += 0.08
+          @light += 0.03
         elsif note(n) > MODE_NOTE
           @light = 0.7
         end
         at{
           sleep 0.5
-          if opts && opts[:mode] == 2
-            dviz :alive, thick: 0.15
-            dviz :alive, length: 0.5
-            dviz :alive, reset: 1.0
-            viz :alive, gravity: 0, amp: 0, freq: 0, speed: 0
-            #dviz :alive, amp: 5 dviz :alive, freq: 7.21
-          end
           if $mode == 3
-            dviz :alive, thick: 0.15
-            dviz :alive, length: 0.5
-            dviz :alive, reset: 1.0
+            viz :alive, thick: 0.15
+            viz :alive, length: 0.5
+            viz :alive, reset: 1.0
             viz :alive, gravity: 0, amp: 0, freq: 0, speed: 0
           end
 
           viz :sea, size: @popsize*1.01
           viz :sea, spacex: @spacex
           viz :sea, noise: @noisex
-          if opts && opts[:mode] == 2
-            viz :alive, light: [@light,2.9].min
+          if $mode == 3
+            viz :alive, light: [@light,1.5].min
             sleep 0.25
-            viz :alive, light: [@light-0.1,2.9-0.1].min
+            viz :alive, light: [@light-0.05,1.5-0.05].min
           end
         }
         puts "#{SonicPi::Note.new(n).midi_string.ljust(8, " ")}[Corrupt]" unless note(n) < MODE_NOTE
