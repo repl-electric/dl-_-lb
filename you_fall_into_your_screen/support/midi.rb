@@ -688,6 +688,7 @@ module ReplElectric
             viz :alive, length: 0.5
             viz :alive, reset: 1.0
             viz :alive, gravity: 0, amp: 0, freq: 0, speed: 0
+            viz breath: 1.0
           end
           viz :sea, size: @popsize*1.01
           viz :sea, spacex: @spacex
