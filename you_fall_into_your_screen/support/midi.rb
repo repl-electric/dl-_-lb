@@ -689,7 +689,6 @@ module ReplElectric
             viz :alive, reset: 1.0
             viz :alive, gravity: 0, amp: 0, freq: 0, speed: 0
           end
-
           viz :sea, size: @popsize*1.01
           viz :sea, spacex: @spacex
           viz :sea, noise: @noisex
@@ -883,7 +882,17 @@ module ReplElectric
 
     def root(note_seq)
       note_seq.map{|n|
-        if n[0]
+        if n
+          note(n)
+        else
+          nil
+        end
+      }.compact.sort{|n1,n2| n1 <=> n2 }[0]
+    end
+
+    def rootl(note_seq)
+      note_seq.map{|n|
+        if n && n[0]
           [note(n[0]), n[-1]]
         else
           nil
