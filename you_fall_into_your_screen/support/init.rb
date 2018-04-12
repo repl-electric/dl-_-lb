@@ -299,10 +299,10 @@ def cam4(f=false)
   end
 end
 
-def dcam4
+def dcam4(*args)
   at{
     sleep 0.5
-    cam4
+    cam4(*args)
   }
 end
 def dcam3
