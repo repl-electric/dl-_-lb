@@ -175,6 +175,7 @@ def camend(r=nil)
       sleep 0.125
     }
   }
+  unity "/glitch/invert",0.0
   if r && r!=0
     unity "/glitch/invert",1.0
   else
@@ -322,10 +323,10 @@ def dcam4(*args)
     cam4(*args)
   }
 end
-def dcam3
+def dcam3(*args)
   at{
     sleep 0.5
-    cam3
+    cam3(*args)
   }
 end
 def dcam2
