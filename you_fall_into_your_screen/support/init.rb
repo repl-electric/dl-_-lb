@@ -17,6 +17,16 @@ $mode=-1
 #unity "/alive/maxtime", 0.006
 unity "/postfx",0.0
 
+def panic(f=false)
+  if !f
+    unity "/logo/blank", 0.0
+    unity "/logo/blank", 1.0
+  else
+    unity "/logo/re", 0.0
+    unity "/logo/re", 1.0
+  end
+end
+
 def init!
   unity "/camera/0",1.0
   unity "/alive/length",0.0
@@ -159,6 +169,7 @@ def logo(idx=0)
 end
 
 def camend(r=nil)
+  alivecol -2.0
   unity "/alive/light", 0.6
   unity "/logo/re", 1.0
   #unity "/camera/4",1.0
@@ -166,15 +177,6 @@ def camend(r=nil)
   unity "/glitch/slice",0.0
   unity "/alive/rotate", 0.0
   viz :alive, color: 0.0
-  at{
-    f = 8.0
-    viz :cam0, focus: f
-    128.times{
-      f-=0.05
-      viz :cam0, focus: [f,0.0].max
-      sleep 0.125
-    }
-  }
   unity "/glitch/invert",0.0
   if r && r!=0
     unity "/glitch/invert",1.0
@@ -183,7 +185,7 @@ def camend(r=nil)
   end
 end
 def dcamend(r=nil)
-  at{sleep 0.5; modeend(r)}
+  at{sleep 0.5; camend(r)}
 end
 
 def cam0(f=false)
@@ -259,6 +261,7 @@ def cam3(f=false)
     viz :sea, size: 1.0
     viz :alive, deformrate: 0.0
     viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
+    viz breath: 0.0
     #viz :alive, deform: 300.0
   end
 end
@@ -314,6 +317,21 @@ def cam4(f=false)
       viz breath: 0.0
       unity "/shard", 0.0
     }
+  end
+end
+
+def dcam(n)
+  if n == 4
+    dcam4
+  end
+  if n == 3
+    dcam3
+  end
+  if n == 2
+    dcam2
+  end
+  if n == 1
+    dcam1
   end
 end
 
