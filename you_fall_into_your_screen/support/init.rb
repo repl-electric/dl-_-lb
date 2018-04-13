@@ -308,6 +308,8 @@ def cam4(f=false)
     @thick = 0.01
     viz :logo, blank: 1.0
     #viz :alive, deform: 300.0
+    unity "/logo/blank", 1.0
+    unity "/logo/blank", 0.0
     at{
       unity "/glitch/block",1.0
       unity "/shard", 1.0
