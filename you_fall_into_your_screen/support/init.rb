@@ -36,12 +36,16 @@ end
 def shard(f=0.0)
   dviz shard: f
 end
+def spark(f=0.0)
+  dviz shard: f
+end
+
 
 def spike(f=0.0)
   dviz :alive, shard: f
 end
 
-def focus(f=5.85,a=0.85)
+def focus(f=5.9,a=0.89)
   unity "/cam0/focus", f
   unity "/cam0/aperture", a
 end
