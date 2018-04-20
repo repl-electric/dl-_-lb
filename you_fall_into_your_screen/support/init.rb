@@ -101,40 +101,48 @@ def delectric(n=50)
 end
 
 def camlogo(*args)
-  opts = resolve_synth_opts_hash_or_array(args)
-  if opts[:invert]
-    unity "/glitch/invert",opts[:invert]
-  end
-  if opts[:rot]
-    unity "/alive/rotate", opts[:rot]
-  end
-  if !opts[:off]
-    if opts[:crazy]
-      smp Mountain[/bowed/,/e_/,9]
-      dviz shard: opts[:crazy]
+  if $mode == -1
+    opts = resolve_synth_opts_hash_or_array(args)
+    if opts[:invert]
+      unity "/glitch/invert",opts[:invert]
     end
-    unity "/breath", 1.0
-    if opts[:logo]
-      unity "/logo/person", 0.0
-      unity "/logo/person", 1.0
+    if opts[:rot]
+      unity "/alive/rotate", opts[:rot]
+    end
+    if !opts[:off]
+      if opts[:crazy]
+        smp Mountain[/bowed/,/e_/,9]
+        dviz shard: opts[:crazy]
+      end
+      unity "/breath", 1.0
+      if opts[:logo]
+        unity "/glitch/slidewidth", 0.005
+        unity "/logo/person", 0.0
+        unity "/logo/person", 1.0
+        viz :sea, on: 0.0
+      else
+        unity "/glitch/slidewidth", 0.0
+        unity "/logo/person", 0.0
+      end
+      unity "/camera/4",1.0
+      unity "/alive/light", 0.3
+      unity "/glitch/block",0.03
+      unity "/glitch/slice",0.0
+      viz :alive, color: 0.0, deform: 1.0, length: 0.4, thick: 0.01
+      viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
     else
+      $mode=0
+      unity "/glitch/slidewidth", 0.005
+      unity "/breath", 0.0
+      unity "/shard", 0.0
       unity "/logo/person", 0.0
-    end
-    unity "/camera/4",1.0
-    unity "/alive/light", 0.3
-    unity "/glitch/block",0.03
-    unity "/glitch/slice",0.0
-    viz :alive, color: 0.0, deform: 1.0, length: 0.4, thick: 0.05
-    viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
-  else
-    unity "/breath", 0.0
-    unity "/shard", 0.0
-    unity "/logo/person", 0.0
-    #unity "/alive/rotate", 0.0
-    unity "/alive/light", 0.0
-    unity "/camera/0",1.0
-    viz :alive, color: 0.0, deform: 0.0, length: 0.0, thick: 0.0
-    viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
+      #unity "/alive/rotate", 0.0
+      unity "/alive/light", 0.0
+      unity "/camera/0",1.0
+      viz :sea, on: 1.0
+      viz :alive, color: 0.0, deform: 0.0, length: 0.0, thick: 0.0
+      viz :alive, gravity: 1, amp: 1, freq: 1, speed: 1
+  end
   end
 end
 
@@ -290,6 +298,13 @@ def terrain(height=0.0)
 end
 
 def dterrain(height=0.0)
+  at{
+    sleep 0.5
+    terrain height
+  }
+end
+
+def deterrain(height=0.0)
   at{
     sleep 0.5
     terrain height
