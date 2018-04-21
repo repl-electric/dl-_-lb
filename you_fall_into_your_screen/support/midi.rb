@@ -160,7 +160,10 @@ module ReplElectric
           midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
           at{
             sleep 0.5
-            unity "/sea/on", 1.0
+            if $mode == -1
+              viz shard: 1.0
+            end
+            #unity "/sea/on", 1.0
             unity "/sea/spacex",0.1
             unity "/postfx/color",0.0
             unity "/alive/rotate",20.0
@@ -672,9 +675,6 @@ module ReplElectric
         @popsize = ((line 0.3,1.1,8)+(line 1.1,0.3,8)).look
         @spacex = (line 0.1,0.5,8).look
         @noisex = (line 20.0,0.1,8).look
-        if $mode == 0
-          dterrain 2.0
-        end
         if $mode == 3
           @light ||= 0.7
           @light += 0.03
@@ -939,12 +939,12 @@ module ReplElectric
 
         midi note, vel, channel: 2, port: :iac_bus_1
         if note
-          at{
-            sleep 0.5
-            if $mode == 0
-              viz :alive, light: 0.1+rand*(vel*0.001)
-            end
-          }
+#          at{
+#            sleep 0.5
+#            if $mode == 0
+              #viz :alive, light: 0.1+rand*(vel*0.001)
+#            end
+#          }
         end
       end
     end
