@@ -1,0 +1,73 @@
+load "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/april/support/midi.rb"
+use_bpm 127
+
+live_loop :scale, sync: :test  do
+  tick
+  12.times{
+     tick
+#     ze (ing :A3 :A3 :C3 :F3 :C4).look, 127 if spread(7,11).look
+     sleep 1/2.0
+   }
+   12.times{
+    tick
+#     ze (ing :C3 :C2 :B3 :B3 :D3).look, 105 if spread(3,8).look
+     sleep 1/4.0
+   }
+   sleep 1
+  # sleep 1/8.0
+ end
+#stop
+
+live_loop :test do; tick
+  kick_machine K1, accent: 3
+  #ze :e2
+  mbox  :F3, 127-rand*5, sus: 4
+  mbox2 :F3, 127-rand*5, sus: 4
+
+  #mbox2 :a4, 127-rand*5, sus: 4
+  at{
+    32.times{
+      tick(:on)
+      #ze :e4, 127 if spread(3,8).look(:on)
+      sleep 0.5
+    }
+  }
+  #looper :c4, 80, sus: 4#, motion: 0.5
+  sleep 2
+  mbox (ing :a4 :c4 :f4 :c4).look,(ing 122 110 120 112).look, sus: 4
+  #looper_cc drive: 0.0
+  looper :a2, 80, sus: 4#, motion: 0.5
+  sleep 2
+end
+
+live_loop :fast, sync: :test do
+  tick
+  #qbitsea :B2, 80,  sus: 1/12.0   if spread(7,11).look
+  qbitsea :F3, 120, sus: 1/12.0 if spread(3,8).look
+   if spread(6,12).look
+     with_fx :echo,rate: 1.0 do
+       #smp Frag[/coil/,3], start: 0.8, finish: 0.85, amp: 1
+       #smp Straw.slice(:D4).take(12).look, amp: 2
+     end
+   end
+  sleep 1/8.0
+end
+
+live_loop :thing, sync: :test do
+  #stop
+  tick
+  score = (ing :A3 :F4 :C3 :A3 :E4 :F3 :C3) #7
+  note = score.look
+  pads note, 1, sus: 8, drive: 0.2
+  baz note, 30, sus: 12, drive: 0.2
+  sleep 16#/2.0
+end
+
+
+#baz :A2, 30, sus: 12
+#midi :A2,30, sustain: 32, channel: 7
+
+#looper_cc motion: 0.2
+looper_cc fm: 0.0, drive: 0.8, motion: 0.5
+mbox_cc  motion: 0.30
+mbox2_cc motion: 0.40
