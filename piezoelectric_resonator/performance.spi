@@ -1,7 +1,7 @@
 load "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/piezoelectric_resonator/support/midi.rb"
 use_bpm 127
 
-live_loop :scale, sync: :test  do
+live_loop :scale, sync: :unsyncable  do
   tick
   12.times{
      tick
@@ -18,38 +18,40 @@ live_loop :scale, sync: :test  do
  end
 #stop
 
-live_loop :test do; tick #2*32
-  kick_machine K1, accent: 3
+live_loop :test, sync: :unsyncable do; tick #2*32
+  #kick_machine K1, accent: 2
   #mbox2  :C4, 127-rand*5, sus: 2
   #mbox2 :g4, 127-rand*5, sus: 4
 
+  #mbox2 :a4, 127-rand*5, sus: 4
+
   at{
     sleep 0.5
-    mbox2 :g4, 127-rand*5, sus: 4
+    mbox :g3, 127-rand*5, sus: 4
   }
-  mbox  :a4, 127-rand*5, sus: 4
-
-  looper (ing :c4).look, 127, sus: 4#, motion: 0.5
+  mbox2 :a3, 127-rand*5, sus: 4
+  #looper (ing :a2).look, 40, sus: 4#, motion: 0.5
   sleep 1
 
-  with_transpose -12*0 {
-    ze (knit :g5,4, :A4,4, :E4, 4).look,10 if spread(7,11).look
-    ze (knit :g4,4, :A4,4, :E4, 4).look,5 if spread(3,8).look
+  with_transpose -12*2 {
+    #ze (knit :g5,4, :A4,4, :E4, 4).look,10 if spread(7,11).look
+    #ze (knit :g4,4, :A4,4, :E4, 4).look,5 if spread(3,8).look
   }
   sleep 1
+  #mbox :g4, 127-rand*5, sus: 2
   #mbox  (ing :a4 :c4 :f4 :c4  :d4 :d4 :c4 :a3).look,(ing 122 110 120 112).look, sus: 4
   #looper_cc drive: 0.0
   sleep 1
-  #looper (ing :G3).look, 80, sus: 4#, motion: 0.5
+  #looper (ing :G3).look, 20, sus: 4#, motion: 0.5
 
   #mbox2 (ing :c3 :e3 :a3 :e3  :f3 :f3 :c3 :g2).look,(ing 122 110 120 112).look, sus: (ing 2, 2, 4, 2, 4).look
   sleep 1
 end
 
-live_loop :fast, sync: :test do
+live_loop :fast, sync: :unsyncable do
   tick
   #qbitsea :B2, 80,  sus: 1/12.0   if spread(7,11).look
-  #qbitsea :C4, 127, sus: 1/12.0     if spread(3,8).look
+  #qbitsea :C4, 127, sus: 1/12.0     if spread(7,11).look
   #mbox2 :E5, 127-rand*5, sus: 1/2.0 if spread(7,11).look
 
   if spread(7,11).look
@@ -65,11 +67,12 @@ live_loop :fast, sync: :test do
   sleep 1/8.0
 end
 
-live_loop :thing, sync: :test do
+live_loop :thing, sync: :unsyncable do
   #stop
   tick
-  score = (ing :A3 :F4 :C3  :A3 :E4 :F3 :C3 _
-               :A3 :F4 :C3  :A3 :E4 :G3 :C3 _)
+  score = (ing
+    :A3 :F4 :C3  :A3 :E4 :F3 :C3 _
+    :A3 :F4 :C3  :A3 :E4 :G3 :C3 _)
   note = score.look
 
   score = (ring
@@ -95,7 +98,7 @@ live_loop :thing, sync: :test do
     note = root(c)
 
   at{
-    v=0.7
+    v=1.1
     callstack c[0],120*v, sus: 8
     sleep 1.0
     operator c[1],117*v, sus: 6
@@ -105,16 +108,16 @@ live_loop :thing, sync: :test do
     #operator c[3],100*v, sus: 9
   }
 
-  #at{ sleep 8/2.0; with_transpose -12*2 { qbitsea c[1], 80+rand_i(5), sus: 8 }}
-  pads note, 1, sus: 8, drive: 0.0
-  #baz note, 30, sus: 12, drive: 0.1
+  #at{ sleep 8/2.0; with_transpose -12*2 { qbitsea c[1], 30+rand_i(5), sus: 8 }}
+  #pads note, 1, sus: 8, drive: 0.7
+  #baz note, 30, sus: 12, drive: 0.7
   sleep 16/2.0
 end
 
 #baz :A2, 30, sus: 12
 #midi :A2,30, sustain: 32, channel: 7
 
-looper_cc motion: 0.4, drive: 0.2, fm: 0.00
+looper_cc motion: 0.6, drive: 0.4, fm: 0.0
 #looper_cc motion: 0.6, drive: 0.2, fm: 0.4
 #looper_cc fm: 0.2, drive: 1.0, motion: 0.8
 #mbox_cc  motion: 0.30
@@ -123,7 +126,10 @@ looper_cc motion: 0.4, drive: 0.2, fm: 0.00
 # mbox2_cc motion: 0.2
 #mbox_cc  motion: 0.1
 #mbox2_cc motion: 0.55
-mbox_cc  motion: 0.55
-mbox2_cc motion: 0.55
+#mbox_cc  motion: 0.55
+#mbox2_cc motion: 0.55
+mbox_cc  motion: 0.0
+mbox2_cc motion: 0.0
 
 #zero_x
+live_loop(:unsyncable) do; sleep 1.0 end
