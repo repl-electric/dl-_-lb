@@ -38,7 +38,7 @@ def pads(n,*args)
     if(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
-      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 3})
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
       nname = SonicPi::Note.new(n).midi_string
       pads_cc args_h
     end
@@ -53,7 +53,7 @@ def pads_cc(cc)
           nil
         end
     if n
-      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 3
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 10
     end
   end
 end
