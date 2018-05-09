@@ -1,29 +1,32 @@
+#unity "/scene/1", 1.0
+#stop
+
 load "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/piezoelectric_resonator/support/midi.rb"
 use_bpm 127
+
 
 live_loop :scale, sync: :unsyncable  do
   tick
   12.times{
      tick
-#     ze (ing :A3 :A3 :C3 :F3 :C4).look, 127 if spread(7,11).look
+    #ze (ing :A3 :A3 :C3 :F3 :C4).look, 127 if spread(7,11).look
      sleep 1/2.0
    }
    12.times{
     tick
-#     ze (ing :C3 :C2 :B3 :B3 :D3).look, 105 if spread(3,8).look
-     sleep 1/4.0
+    #ze (ing :C3 :C2 :B3 :B3 :D3).look, 105 if spread(3,8).look
+    sleep 1/4.0
    }
    sleep 1
   # sleep 1/8.0
  end
-#stop
 
 live_loop :test, sync: :unsyncable do; tick #2*32
   #kick_machine K1, accent: 2
   #mbox2  :C4, 127-rand*5, sus: 2
   #mbox2 :g4, 127-rand*5, sus: 4
 
-  #mbox2 :a4, 127-rand*5, sus: 4
+  #mbox :a4, 127-rand*5, sus: 4
   at{
     sleep 0.5
     #mbox2 :g3, 127-rand*5, sus: 4
@@ -33,8 +36,8 @@ live_loop :test, sync: :unsyncable do; tick #2*32
   sleep 1
 
   with_transpose -12*0 {
-   # ze (knit :g5,4, :A4,4, :E4, 4).look,10 if spread(7,11).look
-   # ze (knit :g4,4, :A4,4, :E4, 4).look,5 if spread(3,8).look
+    ze (knit :g5,4, :A4,4, :E4, 4).look,10 if spread(7,11).look
+    ze (knit :g4,4, :A4,4, :E4, 4).look,5 if spread(3,8).look
   }
   sleep 1
   #mbox :g4, 127-rand*5, sus: 2
@@ -98,7 +101,7 @@ live_loop :thing, sync: :unsyncable do
 
   at{
     v=0.8
-    #callstack c[0],120*v, sus: 8
+    callstack c[0],114*v, sus: 8
     sleep 1.0
     #operator c[1],117*v, sus: 6
     sleep 2
@@ -108,8 +111,8 @@ live_loop :thing, sync: :unsyncable do
   }
 
   #at{ sleep 8/2.0; with_transpose -12*2 { qbitsea c[1], 20+rand_i(5), sus: 8 }}
-  #pads note, 1, sus: 8, drive: 0.3
-  #baz note, 30, sus: 12, drive: 0.5
+  #pads note, 1, sus: 8, drive: 0.0
+  #baz note, 30, sus: 12, drive: 0.0
   sleep 16/2.0
 end
 

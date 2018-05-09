@@ -1,0 +1,63 @@
+viz :sea, on: 0.0
+live_loop :name do
+  tick
+  #dviz tri: 1.0
+  #
+
+  #kick_machine K1
+  #dviz :ripple, throttle: 0.9  #dviz :alive, deform: rand
+  #dviz :alive, deform: rand
+  #8.times {sleep 1/8.0;   dviz :alive, deform: rand}
+  #viz :ripple, throttle: 0.0
+  #dviz :alive, deform: 0.1
+  sleep 4
+end
+
+live_loop :animate do
+  tick
+  smp Mountain[/subkick/], amp: 2
+  x=(ring {dash: 1.0}, {dot: 1.0},{dash: 1.0}, {star: 1.0}).look
+  #dviz :logo, x
+  #dviz :glitch, invert: (ing 1.0,0.0).look
+  sleep 1
+end
+
+#mod0
+
+viz :glitch, invert: 1.0
+
+#bitsea_on :cs4
+
+
+#viz :logo, person: 1.0
+
+
+#bitsea_on :cs4
+
+#viz :alive, length: 0.9
+
+#mod1
+#viz :alive, light: 1.2
+
+#viz :glitch, invert: 1.0
+#viz tri: 1.0
+#viz :ripple, throttle: 1.0  #dviz :alive, deform: rand
+
+
+#mod4
+
+
+
+bitsea_cc motion: 0.31  #╟▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒░╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╢
+bitsea_cc octave: 0.56  #╟▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒░╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╢
+#bitsea_cc formant: 0.39 #╟▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▒░╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╢
+
+kick_machine K1, def: 0.01
+
+
+#viz :alive, rotate: 0.5
+#mod0
+#viz :alive, light: 0.5
+
+#viz :alive, deformrate: 1.0
+#viz shard: 0.0

@@ -1,0 +1,242 @@
+REST=[[[_, 0.25]], 2];use_bpm 63.5
+live_loop :Fall_out_of_your_screen  do
+  tick
+  live_loop :Within_the_letters{stop}
+  score =  (ing  #15.25
+#    [[[:b3 2]   [:d5 2]   [:fs4 2]]           2]                  REST
+#    [[[:fs3 2]  [:a5 2]   [:cs4 2]]           2]                  REST
+#    [[[:a3 2]   [:b4 2]   [:e4 2]]            2]
+
+    [[[:d3 2]   [:fs4 2]   [:a3 2]  [[:cs5 2] [:e4 2]].choose] 2]  REST
+    [[[:e3 2]   [:gs3 2]   [:b3 2]]  2] REST
+    [[[:cs4 2]  [:a4 2]    [:fs3 2] [_ 2]]  2]                  REST
+    [[[:a3 4]   [:cs4 2]   [:e4 2]  [:b5 2]]  2]                  REST
+
+#    [[[:a2 2]  [:cs5 2]  [:e4 2] [_ 2]]  2]                  REST
+
+
+#    [[[:fs3 2]  [:e5 2]   [:Cs3 2] ]  2]                          REST
+    )
+  cue :kernel_panic
+  s=score.look
+  c=s[0];zzz=s[-1]
+
+  #bistable c[0][0], sus: 12 if spread(1,1).look
+  if spread(1,6).look
+    #rev :b5, 1
+    #eek :Gs3, 10
+  end
+  #rev :a6, 15, sus: 12
+  if !c[0][0]
+    #eek (ing :e4 :gs4 :e4 :b4 _ _).look, (ing 100 120).look(:missing), sus: 3.0, at: 0.0, mod: 0.0
+  end
+
+  with_transpose -12 {cpu2 c[1], 60, sus: 2 }
+
+  c.each_tick(:inner){|n|
+    qbitsea n[0],2.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: 1.0, phase: 0, comp: 0
+  }
+
+  pf=1.5
+  i=(method :operator)
+  at{
+    with_transpose 0 do
+    i.call(c[0], 60*pf, sus: 4)
+    sleep 0.5
+    i.call(c[1], 50*pf, sus: 4)
+    sleep 0.25
+    i.call(c[2], 55*pf, sus: 4)
+    sleep 0.25
+    i.call(c[3], 70*pf, sus: 2)
+    sleep 0.25
+    i.call(c[4], 30*pf, sus: 8)
+    sleep 0.25
+    i.call(c[5], 30*pf, sus: 8)
+      sleep 0.25
+      end
+}
+  null root(c), 127*1.0, mode: 1, sus: s[-1]
+  8.times{tick(:in2);
+    cpu1 (ing
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :fs5 _   _   :fs5 :a4 _
+          :a5 _ :e5 _    _   :cs6 :a4 _
+          :a5 _ :a4 _   :e5  :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    :e6 :b5  :a4 _
+          ).look(:in2), (ing 90 90 80 80 70 70 60 60).look(:in2)*0
+    sleep zzz/8.0
+  }
+end
+
+
+
+#v2
+
+
+REST=[[[_, 0.25]], 2];use_bpm 63.5
+live_loop :Fall_out_of_your_screen  do
+  tick
+  live_loop :Within_the_letters{stop}
+  score =  (ing  #15.25
+#    [[[:b3 2]   [:d5 2]   [:fs4 2]]           2]                  REST
+#    [[[:fs3 2]  [:a5 2]   [:cs4 2]]           2]                  REST
+#    [[[:a3 2]   [:b4 2]   [:e4 2]]            2]
+
+    [[[:d3 2]   [:fs4 2]   [:a3 2]  [[:cs5 2] [:e4 2]].choose] 2]  REST
+    [[[:e3 2]   [:gs3 2]   [:b3 2]]  2] REST
+    [[[:cs4 2]  [:a3 2]    [:fs3 2] [_ 2]]  2]                  REST
+    [[[:a3 4]   [:cs4 2]   [:e4 2]  [:b4 2]]  2]                  REST
+
+#    [[[:a2 2]  [:cs5 2]  [:e4 2] [_ 2]]  2]                  REST
+
+
+#    [[[:fs3 2]  [:e5 2]   [:Cs3 2] ]  2]                          REST
+    )
+  cue :kernel_panic
+  s=score.look
+  c=s[0];zzz=s[-1]
+
+  #bistable c[0][0], sus: 12 if spread(1,1).look
+  if spread(1,6).look
+    #rev :b5, 1
+    #eek :Gs3, 10
+  end
+  #rev :a6, 15, sus: 12
+  if !c[0][0]
+    #eek (ing :e4 :gs4 :e4 :b4 _ _).look, (ing 100 120).look(:missing), sus: 3.0, at: 0.0, mod: 0.0
+  end
+
+  #with_transpose -12 {cpu2 c[1], 60, sus: 2 }
+
+  c.each_tick(:inner){|n|
+    qbitsea n[0],2.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: 1.0, phase: 0, comp: 0
+  }
+
+  pf=1.5
+  i=(method :operator)
+  at{
+    with_transpose 0 do
+    i.call(c[0], 60*pf, sus: 4)
+    sleep 0.5
+    i.call(c[1], 50*pf, sus: 4)
+    sleep 0.25
+    i.call(c[2], 55*pf, sus: 4)
+    sleep 0.25
+    i.call(c[3], 70*pf, sus: 2)
+    sleep 0.25
+    i.call(c[4], 30*pf, sus: 8)
+    sleep 0.25
+    i.call(c[5], 30*pf, sus: 8)
+      sleep 0.25
+      end
+}
+  null root(c), 127*1.0, mode: 1, sus: s[-1]
+  8.times{tick(:in2);
+    cpu1 (ing
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :fs5 _   _   :fs5 :a4 _
+          :a5 _ :e5 _    _   :cs6 :a4 _
+          :a5 _ :a4 _   :e5  :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    :e6 :b5  :a4 _
+          ).look(:in2), (ing 90 90 80 80 70 70 60 60).look(:in2)*0
+    sleep zzz/8.0
+  }
+end
+
+
+#post
+
+
+
+REST=[[[_, 0.25]], 2];use_bpm 63.5
+live_loop :Fall_out_of_your_screen  do
+  tick
+  live_loop :Within_the_letters{stop}
+  score =  (ing  #15.25
+#    [[[:b3 2]   [:d5 2]   [:fs4 2]]           2]                  REST
+#    [[[:fs3 2]  [:a5 2]   [:cs4 2]]           2]                  REST
+#    [[[:a3 2]   [:b4 2]   [:e4 2]]            2]
+
+    [[[:d3 2]   [:fs5 2]   [:a3 2]  [[:cs5 2] [:e4 2]].choose] 2]  REST
+    [[[:e3 2]   [:gs5 2]   [:b3 2]]  2] REST
+    [[[:cs4 2]  [:a5 2]    [:fs3 2] [_ 2]]  2]                  REST
+    [[[:a3 4]   [:cs6 2]   [:e4 2]  [:b5 2]]  2]                  REST
+
+#    [[[:a2 2]  [:cs5 2]  [:e4 2] [_ 2]]  2]                  REST
+#    [[[:fs3 2]  [:e5 2]   [:Cs3 2] ]  2]                          REST
+    )
+  cue :kernel_panic
+  s=score.look
+  c=s[0];zzz=s[-1]
+
+  #bistable c[0][0], sus: 12 if spread(1,1).look
+  if spread(1,6).look
+    #rev :b5, 1
+    #eek :Gs3, 10
+  end
+  #rev :a6, 15, sus: 12
+  if !c[0][0]
+    #eek (ing :e4 :gs4 :e4 :b4 _ _).look, (ing 100 120).look(:missing), sus: 3.0, at: 0.0, mod: 0.0
+  end
+
+  with_transpose -12 {cpu2 c[1], 60, sus: 2 }
+
+  c.each_tick(:inner){|n|
+    qbitsea n[0],2.0*(ing 80 70 85 70).look(:inner), sus: ((n[-1])*1)+0.5, mode: 0, cutoff: 1.0, phase: 0, comp: 0
+  }
+
+  null root(c), 127*1.0, mode: 2, sus: s[-1]
+  exception root(c), 120, sus: 4#, wet: 0.1, more: 0.0, shape: 0.8, atk: 0.2
+  #corrupt :fs4, motion: 0.5
+
+  pf=0.9
+  i=(method :operator)
+  at{
+    with_transpose 0 do
+    i.call(c[0], 60*pf, sus: 4)
+    sleep 0.5
+    i.call(c[1], 50*pf, sus: 4)
+    sleep 0.25
+    i.call(c[2], 55*pf, sus: 4)
+    sleep 0.25
+    i.call(c[3], 70*pf, sus: 2)
+    sleep 0.25
+    i.call(c[4], 30*pf, sus: 8)
+    sleep 0.25
+    i.call(c[5], 30*pf, sus: 8)
+      sleep 0.25
+      end
+  }
+
+  8.times{tick(:in2);
+    cpu1 (ing
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :fs5 _   _   :fs5 :a4 _
+          :a5 _ :e5 _    _   :cs6 :a4 _
+          :a5 _ :a4 _   :e5  :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    :e6 :b5  :a4 _
+          ).look(:in2), (ing 90 90 80 80 70 70 60 60).look(:in2)*0
+    sleep zzz/8.0
+  }
+end

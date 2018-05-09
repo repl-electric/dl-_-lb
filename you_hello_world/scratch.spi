@@ -1,0 +1,45 @@
+load "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/you_hello_world/support/midi.rb"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#nsynth_cc x: 0.60, y: 0.70
+
+live_loop :alive do;tick
+  smp Mountain[/subkick/,0] if (ing 1 1 0 1  1 1 1 0).look == 1
+  n=(ing :G3 :E3 :D3 _ :E3 :A3 :F3 _).look
+  nsynth n,(ing 70 55 68 60).look*1.9, sus: 2.0
+  baz n,1, mix: 1.5, sus: 2.0
+  baz :F3,2, mix: 1.5, sus: (ing 0.5 1 0.25 1).look
+  sleep 1
+end

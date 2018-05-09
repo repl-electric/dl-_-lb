@@ -1,0 +1,15 @@
+#cam0
+#cam3 true
+#terrain 0.1
+live_loop :name do
+  tick
+  #terrain 0.1
+  callstack (ing :D4 :Cs4 _ :A3 _ :E4 _ :A4 :A4 :A4 :A4 ).look,127, sus: 2
+  operator (ing :D4 :Cs4 _ :A3 _ :E4 _ :A4 :A4 :A4 :A4 ).look
+  #viz :sea, noise: 10.0-rand*0.005
+  #viz :sea, height: look%32*0.025
+  #viz "/alive/reset", 1.0
+  alive light: 0.6+rand*0.05
+  sleep 1.0
+  sleep 1
+end

@@ -1,0 +1,118 @@
+stop
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      #smp @harp.take(12).look, amp: 4, finish_offset: (ing 0.005, 0.04).look
+      smp @all.take(32).look, amp: 2,  finish_offset: (ing 0.02, 0.001, 0.01, 0.0).look, rate: 0.25
+
+#sleep 8
+live_loop :go do
+  smp Mountain[/subkick/,0], amp: 1
+  x = Mountain[/snare/,[0,0,3]].look
+  at{
+    sleep (1/4.0*8)/2.0
+    smp x, amp: 1
+  }
+  with_fx :echo, mix: 0.0, decay: 1{#, phase: 2/8.0 {
+    8.times{
+      tick
+      r = look % 3 == 0 ? -1.0 : 1.0
+      smp (ing @y.take(32).look, @harp.take(32)).look, amp: 4,
+        finish_offset: (ing 0.02, 0.001, 0.01, 0.0).look, rate: r
+
+      if spread(7,11).look
+        smp @s.take(32).look, amp: 12, finish_offset: 0.0
+      end
+      if spread(3,8).look
+        smp @hats.take(4).look(offset: 1), amp: 12
+      end
+      sleep 1/8.0
+      }
+    }
+end
+
+
+
+
+
+
+
+#stop
+#nsynth :A2
+
+#nsynth_cc x: 0.1
+#nsynth_cc y: 0.80
+#stop
+#bass_cc mix: 0.0
+#nsynth_cc mix: 0.0
+#midi_cc 1,120, channel: 1, bus: :iac_bus_1
+#bass :f2
+
+#midi :f2, channel: 2
+#stop
+live_loop :example do
+#  midi :A2, port: :iac_bus_1
+ # midi :A2, port: :iac_bus_2
+
+  tick
+  #smp Mountain[/subkick/,0],amp: 1 if (ing 1 1 1 0  1 0 1 0).look == 1
+  #nsynth (ing :G4 :E4 :D4 _ :E4 :C3 :A3 _).look
+  #nsynth_cc y: rand
+
+  #baz :c2,1
+  sleep 1
+end
+
+
+      smp @harp.take(32).look if spread(7,11).look
+      smp @all.reverse.take(6).look, amp: 0.5, finish_offset: (ing 0.01, 0.05, 0.01, 0.08).look, rate: 1.0 if spread(3,8).look
+
+      if spread(1,4).look
+        smp @vocal.drop(1).take(12).look, amp: 8.5, rpitch: 12
+      end
+
+
+
+smp @harp.take(2).look#, finish_offset: 0.05, rate: 1.0
+smp @sops.take(12).look, amp: 2.5 if spread(7,11).look
+smp @vocal.take(6).look, finish_offset: 0.01
+
+
+
+  #smp Mountain[/subkick/,0] if (ing 1 1 1 0 1 0 1 0 ).look == 1
+  #nsynth (ing :G3 :E3 :D3 _ :E3 :A3 :F3 _).look, sus: 2.0
+  #baz :C2,20, mix: 1.0, sus: (ing 0.5 1 0.25 1).look
+  sleep 2

@@ -1,0 +1,21 @@
+require "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/you_fall_into_your_screen/support/sample_map.rb"
+require "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/you_fall_into_your_screen/init.rb"
+
+#modelogo
+#unity "/postfx",1.0
+#unity "/alive/rotate",0.0
+
+#bitsea_on :CS4
+
+bitsea_cc motion: 0.10
+bitsea_cc octave: 0.50
+
+live_loop :kick do
+  tick
+
+  exception :A2
+  corrupt :A3, motion: 0.4
+
+  kick_machine (ing K1 ).look, def: 0.4
+  sleep 2
+end

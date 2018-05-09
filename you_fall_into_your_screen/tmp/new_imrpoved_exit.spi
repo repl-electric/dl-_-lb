@@ -1,0 +1,181 @@
+REST=[[[_, 0.25]], 2];use_bpm 63.5
+cam4
+live_loop :Fall_out_of_your_screen do tick;
+  live_loop :Within_the_letters{stop}
+  #dcam4
+
+  score =  (ing  #15.25
+     [[[:b2 2]  [:d3 2]   [:fs3 2]]           2]                  REST
+     [[[:fs2 2] [:a3 2]   [:cs4 2]]           2]                  REST
+     [[[:a2 2]  [:cs3 2]   [:e3 2]]            2] REST
+    [[[:d1 2]  [:fs3 2]  [:a3 2]  [:e4 2]] 2]  REST
+    [[[:e2 2]  [:gs3 2]  [:b3 2]]  2]                    REST
+    [[[:cs2 2]  [:e3 2]   [:gs3 2] ]  2]                  REST
+    [[[:a4 2] [:A3 2]   [:Cs4 2] ]  2]                          REST
+    )
+  cue :kernel_panic
+  s=score.look;;c=s[0];zzz=s[-1]
+  whitespace c[0][0], sus: 12
+  if spread(1,6).look
+    #rev :b5, 1
+    eek :Gs3, 10
+  end
+  #rev :e5, 15, sus: 12
+  if !c[0][0]
+    eek (ing :e4 :gs4 :e4 :b4 _ _).look, (ing 100 120).look(:missing), sus: 3.0, at: 0.0, mod: 0.0, mode: 2
+  end
+  with_transpose -12 {cpu2 c[1], 60, sus: 2 }
+  c.each_tick(:inner){|n|
+    qbitsea n,2.0*(ing 80 70 85 70).look(:inner), mode: 0, cutoff: 1.0, phase: 0, comp: 0
+  }
+  alivecol 0.5
+  dterrain 0.1
+
+  pf=1.7
+  i=(method :operator)
+  at{
+    i.call(c[0], 60*pf, sus: 4)
+    sleep 0.5
+    i.call(c[1], 50*pf, sus: 4)
+    sleep 0.25
+    i.call(c[2], 55*pf, sus: 4)
+        sleep 0.25
+    i.call(c[3], 70*pf, sus: 2)
+        sleep 0.25
+    i.call(c[4], 30*pf, sus: 8)
+        sleep 0.25
+    i.call(c[5], 30*pf, sus: 8)
+        sleep 0.25
+  }
+  #exception root(c), 127, shape: 0.8, wet: 0.0
+  at{
+    with_transpose 0{
+    sleep 0.5
+    exception root(c), 127, sus: 0.25, atk: 0.01, shape: 1.0, wet: 1.0
+    sleep 0.5
+    exception root(c), 40, sus: 0.25, atk: 0.2, shape: 1.0, wet: 0.5
+    #sleep 0.5
+    #exception root(c), 90, sus: 0.25, atk: 0.2, shape: 1.0, wet: 0.8
+    #sleep 0.5
+     # exception root(c), 127, sus: 0.25, atk: 0.2, shape: 1.0, wet: 0.9
+      }
+
+  } #, shape: 1.0, : #, wet: 0.1, more: 0.0, shape: 0.8, atk: 0.2
+
+  with_transpose 12{
+    null root(c), 127*0.4, mode: 2, sus: 1
+  }
+
+  with_transpose 12*0.5{
+    corrupt c[0],127, mode: 2, sus: 8
+    }
+  #dcam4
+  at{
+    8.times{; tick(:a)
+      kick_machine (ing
+                    K1 _ _ _   _ _ _ _     K3 _ _ _   _ _ _ _
+                    K1 _ _ _   _ _ _ _     K3 _ _ _   _ _ _ _
+                    ).look(:a), def: 8, accent: 2
+#      electric 50
+      sleep 1/4.0
+    }
+  }
+
+  8.times{tick(:in2);
+    callstack (ing
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :fs5 _   _   :fs5 :a4 _
+          :a5 _ :e5 _    _   :cs6 :a4 _
+          :a5 _ :a4 _   :e5  :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    _   :b5  :a4 _
+          :a5 _ :a4 _    :e6 :b5  :a4 _
+               ).look(:in2), (ing 90 90 80 80 70 70 60 60).look(:in2)*0.0
+
+
+
+
+    #mt_cc morph: ((line 0.0, 1.1,16*16*2)+(line 1.1, 0.0, 16*16*2)).look
+    s=(ing
+      _ _ _ _ _ _ [1] 1
+      _ _ _ _ _ _ 1 1
+      _ _ _ _ _ _ 1 _
+
+      ).look(:in2)
+    mt s, 115, 127
+    mt_cc morph: 0.0#(line 0.01, 0.4, 32).look(:in2)
+    sleep zzz/8.0
+  }
+end
+
+live_loop :glitch, sync: :Fall_out_of_your_screen do; tick
+      p=(ing
+      _ _ _ _                _ _ _ _
+      _ _ _ _                _ _ _ _
+      [TS[49]] _ _ TS[12]    _ _ _ _
+
+      _ _ _ _                _ _ _ _
+      _ _ _ _                _ _ _ _
+      TS[7] _ _ _            _ _ _ _
+
+      _ _ _ _                _ _ _ _
+      _ _ _ _                _ _ _ _
+      TT[49] _ _ TS[12]      _ _ _ _
+
+      _ _ _ _                _ _ _ _
+      _ _ _ _                _ _ _ _
+      TS[7] _ _ _            _ _ _ _
+      )
+
+    p=p.look
+    #p=_
+    fx=:lpf
+    accent = (ing 0.2 0.2 0.3 0.5).look
+    attack = 0.0
+    r = 1.0
+    if p && p.is_a?(Array)
+      p = p[0]
+      accent=accent*1.5
+    end
+  if p
+    with_fx :krush, mix: 1.0 do
+      with_swing(0.01) do
+        with_fx(fx, phase: (ring 1/4.0,1/4.0,1/8.0).look){
+          smp p, amp: 2.5*accent, rate: r, attack: attack
+        }
+      end
+    end
+  end
+  sleep 1/8.0
+end
+
+#camlogo
+logo 0
+
+no{
+qbitsea_cc oct: 0.50
+qbitsea_cc drive: 0.30
+qbitsea_cc charge: 0.30
+qbitsea_cc fm: 0.00
+qbitsea_cc wav: 0.90
+qbitsea_cc wav_amp: 1.00
+qbitsea_cc atk: 0.30
+qbitsea_cc mod: 1.00
+qbitsea_cc motion: 0.10
+qbitsea_cc formant: 0.51
+qbitsea_cc mul: 0.00
+qbitsea_cc bass: 0.00
+
+qbitsea_cc width: 1.00
+qbitsea_cc center: 0.00
+qbitsea_cc head: 0.61
+
+eq lo: 0.85
+eq mi: 0.85
+eq hi: 0.85
+}

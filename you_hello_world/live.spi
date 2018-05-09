@@ -1,0 +1,42 @@
+load "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/you_hello_world/support/midi.rb"
+use_bpm 127
+load "/Users/josephwilk/Workspace/repl-electric/live-coding-space/lib/samples.rb"
+load "/Users/josephwilk/Workspace/repl-electric/live-coding-space/lib/dsp.rb"
+load "/Users/josephwilk/Workspace/repl-electric/live-coding-space/lib/monkey.rb"
+_=nil
+module All
+  def self.slice(n, size: 1/4.0, pat: "Straw")
+    @straw_cache ||= {}
+    n = n.to_s.gsub(/s/,"#")
+    k = "#{n}#{pat}#{size}"
+    if !@straw_cache.has_key?(k)
+      @straw_cache[k] = NoteSlices.find(note: n, max: size, pat: pat).take(64)
+    end
+    @straw_cache[k]
+  end
+end
+
+
+
+
+
+@voca ||= All.slice(:Fs3, size: 1/4.0, pat: "Straw")
+@harp ||= All.slice(:Fs4, size: 1/2.0, pat: "harp")
+@all  ||= All.slice(:A4,  size: 1/2.0,  pat: "%")
+@hats ||= All.slice(:E4, size: 1/4.0,  pat: "hat")
+@sops ||= All.slice(:E4, size: 1/4.0, pat: "Sop")
+
+corrupt :FS4,80, mode: 2, sus: 12
+
+stop
+
+live_loop :go do
+  with_fx :echo, mix: 0.5, decay: 1 {
+    8.times{
+      tick
+      smp @harp.take(2).look, rate: 0.5, finish_offset: 0.05
+      smp @sops.take(12).look, amp: 0.8 if spread(7,11).look
+      sleep 1/4.0
+    }
+  }
+end

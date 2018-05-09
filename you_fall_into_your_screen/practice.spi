@@ -1,0 +1,81 @@
+stop
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#focus 40, 0.11
+viz :alive, rotate: 0.0
+live_loop :name do
+  #stop
+  tick
+  #smp Mountain[/subkick/,0], amp: 0.5
+  kick_machine K1, accent: 0.5
+  dterrain 1.1
+#  dviz :alive, rotate: 0.3
+ # dviz :alive, z: 9.79-rand*10
+  dviz breath: 1.0
+  sleep 0.125
+  dterrain 0.0
+  dviz breath: 0.0
+  sleep 2
+end
+
+
+
+live_loop :namez do
+  notes = (ing :D :E :Fs :Gs, :A :B :Cs)
+  #notes = (ing :B :D :Fs :A)
+  kick_machine K1, accent: 0.25
+  dviz breath: 1.0*0.5
+
+  smp x=Mountain[/bowed notes/,/#{notes.map{|s|s.to_s.gsub("s","#")}.join "_|"}/].shuffle.look, amp: 0.5
+  sleep 0.25
+  console x
+  #logo rand_i(5)
+  tick
+  alive, rotate: 0.8
+  dterrain 0.2
+  sleep 0.25
+  dviz breath: 0.0
+#  viz :alive, zslow: rand*10
+#  sleep 3.5
+  #dviz :alive, rotate: 0.0
+  #viz :alive, z: 9.79
+  sleep 3-0.25-0.25
+  alive, rotate: 0.1
+  dterrain 0.1
+  sleep 1
+end

@@ -1,0 +1,39 @@
+#            unity /alive/bloat", 0.0
+
+
+
+#bitsea_on :CS4
+
+bitsea_cc motion: 0.00
+#bitsea_cc octave: 0.61
+#bitsea_cc octave: 0.51
+
+
+unity "/light", 0.5
+unity "/sea/spacex", 0.3
+unity "/camera/1", 1.0
+
+
+#unity "/sea/spacex", 0.3
+unity "/sea/noise", 20.0
+
+
+#unity "/sea/spacex",0.1
+
+
+#sample Mountain[/subkick/,0], amp: 2
+
+#bitsea_x :A3
+
+
+
+
+            # when :at; :at
+            # when :motion; 1
+            # when :formant; 100
+            # when :octave; 101
+            # when :flatpitch; 102
+
+
+
+#corrupt :A3, flatpitch: 0.0

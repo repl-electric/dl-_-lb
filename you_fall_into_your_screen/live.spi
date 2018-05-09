@@ -1,5 +1,6 @@
 require "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/you_fall_into_your_screen/support/sample_map.rb";use_bpm 63.5
 bitsea_cc motion: 1.00
+viz :cam0, focus: 4.8
 
 live_loop :Fall_into_your_screen, sync: :unsyncable do
   tick
@@ -25,7 +26,7 @@ live_loop :Fall_into_your_screen, sync: :unsyncable do
   #exception root(c), 15
   #strings c[0][-2]
   sleep zzz
-  corrupt root(c), 10, motion: 0.1, mode: 0
+  corrupt root(c), 20, motion: 0.1, mode: 0
   #null root(c), 127*0.2, mode: 2, sus: 1
   #verb_slice Drip[/effect/].look if spread(1,3).look
   sleep zzz
@@ -43,12 +44,13 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
       pp = (ing
         _ _ _ _    _ _ _ _     _ _ _ _    _ _ _ _
         _ _ _ _    _ _ D1 _    _ _ _ _   _ _ _ _
-        ).look
-      pp=_
+        ).look$0
+      #pp=_
 
       dust_pat(pp){|accent|
         fuzz = rand(0.05)
         with_fx (ing :slicer,:krush,:bitcrusher,:echo).tick(:pfx), mix: 0.5, phase: 1/4.0, decay: 2 {
+          dterrain 0.1
           smp pp, amp: accent+1.6, attack: 0.0, start: 0.1-fuzz, rate:
           (knit
             -0.25,32,-0.25,32,
@@ -81,7 +83,7 @@ live_loop :By_the_light_of_the_terminal, sync: :unsyncable do
         _ _   _ _   [5] _   _ _  5  _  _ _  5 _  _ _
         )
       s=(knit s2,16*4,s3,16*4, s1,16*4).look
-      s=_
+      #s=_
       mt s.look, accent=(line 75, 85, 16*4).look, 100
       #mt_cc morph: ((line 0.0, 1.1,16*16*2)+(line 1.1, 0.0, 16*16*2)).look
       s=(ing
@@ -261,7 +263,7 @@ live_loop :Clock, sync: :unsyncable do
       )
 
     p=p.look
-    p=_
+    #p=_
     fx=:lpf
     accent = (ing 0.2 0.2 0.3 0.5).look
     attack = 0.0
@@ -273,13 +275,14 @@ live_loop :Clock, sync: :unsyncable do
     if p
       with_swing(0.01) do
         with_fx(fx, phase: (ring 1/4.0,1/4.0,1/8.0).look){
+          delectric 5
           smp p, amp: 3*accent, rate: r, attack: attack
         }
       end
     end
     k=k.look
 
-    k=_
+    #k=_
     no{
       if spread(1,64).rot(-64+(8*2)).look   #4*1/8
         rev :e5, 60

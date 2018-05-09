@@ -1,0 +1,2 @@
+viz :alive, deformrate: 0.0
+viz :alive, deform: 1.

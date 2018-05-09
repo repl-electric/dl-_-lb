@@ -1,0 +1,32 @@
+unity "/ripple/twist", 10.8
+
+
+#viz :alive, length: 0.8
+cam4
+invcol 0.0
+alivecol 0.0
+
+
+
+
+stop
+
+cam4
+
+qbitsea_cc oct: 0.50
+qbitsea_cc drive: 0.68
+qbitsea_cc charge: 0.50
+qbitsea_cc fm: 0.41
+qbitsea_cc wav: 0.01
+qbitsea_cc wav_amp: 0.30
+qbitsea_cc atk: 0.83
+qbitsea_cc mod: 0.80
+qbitsea_cc motion: 0.24
+qbitsea_cc formant: 0.36
+qbitsea_cc mul: 0.00
+qbitsea_cc bass: 0.27
+
+
+
+
+#alivecol 0.1

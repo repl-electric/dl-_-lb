@@ -1,5 +1,24 @@
 load "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/april/support/midi.rb"
+
 use_bpm 127
+
+
+
+
+live_loop :go do
+  tick
+  ze (knit :a4,4, :b4,4, :c4, 4, :d4, 4, :e4, 4, :f4, 4, :g4, 4).look,127
+  #sleep 1
+  sleep 1
+end
+
+
+
+
+
+stop
+
+
 
 live_loop :scale, sync: :test  do
   tick

@@ -1,0 +1,41 @@
+#qbitsea_on :A3
+
+#corrupt_on :A3
+#corrupt flatpitch: 0.0
+#load "/Users/josephwilk/Workspace/repl-electric/live-coding-space/lib/shaderview.rb"
+
+#require "/Users/josephwilk/Workspace/josephwilk/c++/sonic-pi/app/server/sonicpi/lib/sonicpi/osc/osc.rb"
+
+$LOAD_PATH.unshift("/Users/josephwilk/Workspace/ruby/osc-ruby/lib/")
+require "osc-ruby.rb"
+
+unity "/shard", 0.0
+
+#unity("/logo/re", 1)
+#unity("/logo/person", 0)
+#unity "/glitch/invert", 0.0
+
+unity "/glitch/block1", 0.0
+unity "/glitch/slice1", 0.0
+#unity "/glitch/block", 3.0
+#unity "/glitch/slice", 4.0
+
+unity "/camera/4"
+#unity "/alive/length", 0.04
+#unity "/alive/spring", 200.0
+#unity "/alive/damp", 30.0
+#unity "/alive/maxtime", 0.006
+#unity "/alive/rotspeed", 1.0
+# unity "/glitch", 0.85
+
+
+# # live_loop :test do
+# #   puts :HIT
+unity "/alive/light", 0.5
+nity "/alive/bloat", 0.0
+# # end
+
+# unity "/sea/height", 0.0
+ #unity "/sea/noise", 10.2
+ unity "/sea/spacex", 0.1
+unity "/sea/on", 1.0
