@@ -94,6 +94,12 @@
        ((string-match param-name "qbitsea/lo")    (osc-send-message re-osc-client host 4 113 vel))
        ((string-match param-name "qbitsea/mi")    (osc-send-message re-osc-client host 4 115 vel))
 
+       ((string-match param-name "nsynth_cc/x")
+        (osc-send-message re-osc-client host 1 52 vel))
+
+       ((string-match param-name "nsynth_cc/y")
+        (osc-send-message re-osc-client host 1 53 vel))
+
        (t
         (progn (osc-send-message rk-osc-client         (format "/%s" param-name) num)
                (when (string-match param-name "qbitsea_cc/drive")
