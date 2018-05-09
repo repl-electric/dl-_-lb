@@ -68,14 +68,12 @@
               (osc-send-message un-osc-client "/alive/thick" 0.0144)
               (osc-send-message un-osc-client "/alive/length" 0.06)
               (osc-send-message un-osc-client "/alive/rotate" 0.001)
-
               )
           (osc-send-message un-osc-client "/alive/rotate" (* 20.0 (- 0.1 num))))
         (osc-send-message re-osc-client host 10 1 vel))
        ((string-match param-name "bitsea_cc/octave")
         (osc-send-message re-osc-client host 10 106 vel)
         (osc-send-message un-osc-client "/postfx" (max (- (* 20 num) (* 20 0.5)) 0))
-
         )
        ((string-match param-name "bitsea_cc/formant")
         (progn
