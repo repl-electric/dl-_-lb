@@ -320,12 +320,13 @@ def cam4(f=false)
     unity "/glitch/slice",0.0
     viz camera: 4
     unity "/alive/thick",0.0144
-    unity "/alive/length",0.15
+    unity "/alive/length",0.25
     viz :sea, on: 0.0
     viz :glitch, color: 0.0
     viz :glitch, invert: 0.0
     @thick = 0.01
     viz :logo, blank: 1.0
+    terrain 0.01
     #viz :alive, deform: 300.0
     unity "/logo/blank", 1.0
     unity "/logo/blank", 0.0
