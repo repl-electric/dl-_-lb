@@ -187,13 +187,20 @@ def looper(n,*args)
       n = n[0]
     end
     args_h = resolve_synth_opts_hash_or_array(args)
-    if(args_h[:mode])
+    if(m=args_h[:mode])
+      looper_mode(m)
     end
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 5})
       nname = SonicPi::Note.new(n).midi_string
       looper_cc args_h
     end
+  end
+end
+
+def looper_mode(mode)
+  if mode
+    looper ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]
   end
 end
 
