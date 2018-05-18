@@ -54,10 +54,38 @@ def pads(n,*args)
         midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
       end
       nname = SonicPi::Note.new(n).midi_string
+      puts "Pads -> [#{nname}]"
       pads_cc args_h
     end
   end
 end
+
+def sopsea(n,*args)
+  if n
+    if args && args[0].is_a?(Numeric)
+      velocity = args[0]
+      args = args[1..-1]
+    else
+      velocity = 30
+    end
+    if n.is_a?(Array)
+      args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
+      n = n[0]
+    end
+        args_h = resolve_synth_opts_hash_or_array(args)
+    if(args_h[:mode])
+      qbitsea_mode(args_h[:mode])
+    end
+    if n && ((n != "_") && n != :_)
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 4})
+      nname = SonicPi::Note.new(n).midi_string
+      #puts "%s%s" %[nname.ljust(4, " "), "[QBitSea]"]  unless note(n) < MODE_NOTE
+      #          console("QbitSea #{nname}") unless note(n) < MODE_NOTE
+      qbitsea_cc args_h
+        end
+  end
+end
+
 
 def play_with(synths, *args)
   synths.each do |s|
@@ -73,6 +101,7 @@ def pads_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :drive; 51
+        when :amp; 52
         else
           nil
         end
@@ -235,6 +264,7 @@ def looper_cc(cc)
         when :motion; 1
         when :fm; 50
         when :drive; 51
+        when :amp; 52
         else
           nil
         end
