@@ -163,6 +163,7 @@ def mbox2_cc(cc)
     n = case k
         when :motion; 1
         when :drive; 51
+        when :sat; 52
         else
           nil
         end
