@@ -38,7 +38,19 @@ def pads(n,*args)
     if(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
-      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
+      if t = args_h[:thick]
+        if t >= 0
+          midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
+        end
+        if t >= 1
+          midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 11})
+        end
+        if t >= 2
+          midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 12})
+        end
+      else
+        midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
+      end
       nname = SonicPi::Note.new(n).midi_string
       pads_cc args_h
     end
