@@ -1,3 +1,5 @@
+MODE_NOTE = 13
+
 def ze(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
@@ -53,6 +55,16 @@ def pads(n,*args)
       end
       nname = SonicPi::Note.new(n).midi_string
       pads_cc args_h
+    end
+  end
+end
+
+def play_with(synths, *args)
+  synths.each do |s|
+    begin
+      method(s).(*args)
+    rescue Exception => e
+      puts e.inspect
     end
   end
 end
