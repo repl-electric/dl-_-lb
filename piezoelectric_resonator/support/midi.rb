@@ -1,4 +1,68 @@
-MODE_NOTE = 13
+ MODE_NOTE = 13
+
+def linear_map(x0, x1, y0, y1, x)
+  dydx = (y1 - y0) / (x1- x0)
+  dx = (x- x0)
+  (y0 + (dydx * dx))
+end
+
+
+ def kal(n,*args)
+     if n
+    if args && args[0].is_a?(Numeric)
+      velocity = args[0]
+      args = args[1..-1]
+    else
+      velocity = 40
+    end
+    if n.is_a?(Array)
+      args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
+      n = n[0]
+    end
+    args_h = resolve_synth_opts_hash_or_array(args)
+    if(args_h[:mode])
+    end
+    if n && ((n != "_") && n != :_)
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 15})
+      nname = SonicPi::Note.new(n).midi_string
+    end
+  end
+ end
+
+ def kalshot(n,*args)
+     if n
+    if args && args[0].is_a?(Numeric)
+      velocity = args[0]
+      args = args[1..-1]
+    else
+      velocity = 40
+    end
+    if n.is_a?(Array)
+      args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
+      n = n[0]
+    end
+    args_h = resolve_synth_opts_hash_or_array(args)
+    if(args_h[:mode])
+    end
+    if n && ((n != "_") && n != :_)
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 16})
+      nname = SonicPi::Note.new(n).midi_string
+    end
+  end
+ end
+
+ def lfo(args)
+   args_h = resolve_synth_opts_hash_or_array(args)
+   puts args_h
+   if args_h[:on] != nil
+     if args_h[:on] == true
+       puts "#{ midi_cc 20, 127, channel: 1, port: :iac_bus_1}"
+       midi_cc 20, 127, channel: 1, port: :iac_bus_1
+     else
+       midi_cc 20, 0, channel: 1, port: :iac_bus_1
+     end
+   end
+ end
 
 def ze(n,*args)
   if n
@@ -111,7 +175,7 @@ def pads_cc(cc)
   end
 end
 
-def baz(n,*args)
+def deep(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -129,16 +193,21 @@ def baz(n,*args)
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 7})
       nname = SonicPi::Note.new(n).midi_string
-      puts "#{nname} [Baz]"
-      baz_cc(args_h)
+      puts "#{nname} #{note(n)} [Deep]"
+      sea wave: linear_map(45,72, 0.3,5.0, note(n)), delay: true
+      deep_cc(args_h)
+    else
+      sea wave: 0.0, ripple: 0.0
     end
   end
 end
 
-def baz_cc(cc)
+def deep_cc(cc)
   cc.keys.each do |k|
     n = case k
-        when :drive; 51
+        when :drive
+          sea ripple: cc[k]*2, delay: true
+          51
         else
           nil
         end
@@ -265,6 +334,7 @@ def looper_cc(cc)
         when :fm; 50
         when :drive; 51
         when :amp; 52
+        when :oct; 53
         else
           nil
         end
