@@ -89,6 +89,10 @@ def risingrocks(*args)
   end
 end
 def defaultcolor
+  unity "/linecolor/h",0.0
+  unity "/linecolor/s",0.0
+  unity "/linecolor/b",0.0
+
   unity "/color2/h", (328.0 / 360)
   unity "/color1/h",0.0
   unity "/color3/h",0.0
@@ -96,6 +100,14 @@ def defaultcolor
   unity "/color1/s",0.0
   unity "/color3/s",0.0
   unity "/color3/b",0.0
+end
+def linecolor()
+  at{
+    sleep 0.5
+    unity "/linecolor/s",1.0
+    unity "/linecolor/b",1.0
+    unity "/linecolor/h",rand
+  }
 end
 def color
   at{
