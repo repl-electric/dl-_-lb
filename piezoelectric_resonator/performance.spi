@@ -1,67 +1,199 @@
-#unity "/scene/1", 1.0
+#stop
+load "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/piezoelectric_resonator/support/midi.rb"
+load "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/piezoelectric_resonator/support/init.rb"
+use_bpm 127
+#init!
+
+world time: 1.0
+#create_sea
+
+
+
+
+
+#sea wave: 0.0, ripple: 0.0
+live_loop :fund do
+  tick
+  kick_machine K1, accent: 2
+  #deep :A2, 127
+ # at{
+#    sleep 0.5
+    puts :hit
+  color
+  #}
+
+#  unity "/color1", rand*10
+#  unity "/color2", rand*10
+#  unity "/color3", rand*10
+#  smp Mountain[/subkick/,0]
+  sleep 8
+end
+stop
+
 #stop
 
-load "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/piezoelectric_resonator/support/midi.rb"
-use_bpm 127
+#unity "/color2", 0.0
+#unity "/rockshard",1.0
+#unity "/rocks",1.0
+
+#risingrocks on: 1.0, turbulence: 0.0
+#unity "/rocks/vortex/radius", 10.0
+#unity "/rocks/vortex/force", 20.0
+
+#stop
 
 
-live_loop :scale, sync: :unsyncable  do
+#stop
+#kalshot :c2, sus: 3
+#create_light
+#create_cube 10
+#create_tree 4
+#create_aura
+#rocks 1.0, orbit: 10.1, noise: 4.9, rot: 1000.0, freq: 0.1
+
+
+live_loop :test do
+  tick
+  # world :lightning
+ # puts :hit
+  #kick_machine K1
+  at{
+    sleep 0.5
+    #world lightning: 1.0
+    #    unity "/burst", 0.0
+    create_cube 4.0
+    #unity "/roots", 1.0
+    unity "/world/lightning",1.0
+    }
+  sleep 2
+#  unity "/world/lightning",0.0
+  unity "/burst", 0.001
+  create_cube 2
+  #unity "/roots", 0.0
+  sleep 2
+end
+
+
+live_loop(:unsyncable) do; sleep 1.0 end
+
+live_loop :scale, sync: :unsyncable  do  #10...
   tick
   12.times{
      tick
-    #ze (ing :A3 :A3 :C3 :F3 :C4).look, 127 if spread(7,11).look
+     #ze (ing :A3 :A3 :C3 :F3 :C4).look, 127*0.01 if spread(7,11).look
      sleep 1/2.0
    }
    12.times{
     tick
-    #ze (ing :C3 :C2 :B3 :B3 :D3).look, 105 if spread(3,8).look
+    #ze (ing :C3 :C2 :B3 :B3 :D3).look, 127*0.5 if spread(3,8).look
     sleep 1/4.0
    }
-   sleep 1
+  #sleep 3
+  sleep 1        # + 2
   # sleep 1/8.0
  end
 
 live_loop :test, sync: :unsyncable do; tick #2*32
-  #kick_machine K1, accent: 2
-  #mbox2  :C4, 127-rand*5, sus: 2
-  #mbox2 :g4, 127-rand*5, sus: 4
+  if (ing 1 1 1 0 1 1 0 1).look == 1
+    #kick_machine K1, accent: (ing 2.2 2.0 2.1 2.0).look*1.0
+    #kal (ing :F3 :A3 :A3 :A3 :A3 :C3).look, 80, sus: 2
+    world(lightning: true)
+  else
+    #kalshot :d2,10, sus: 3*1
+  end
 
-  #mbox :a4, 127-rand*5, sus: 4
+  #  with_fx :slicer, phase: 1/2.0{
+  if spread(1,2).look
+
+#    sample_smash(Alt[/vor_alto_leg_oo_05_d_08/,0], [8,16,16,16,16].shuffle,
+                 #rpitch: (ring 12, 5, 5+2.0,0).tick(:progrress),
+ #                cutoff: 135, amp: 8.0)
+
+    # with_fx :slicer, phase: 0.25, wave: 0 do
+    #     with_fx :pitch_shift, time_dis: 0.9, window_size: 0.9, mix: 0.1, pitch_dis: 0.1  do
+    #       with_fx :wobble, phase: 32, mix: 1 do
+    #         with_fx :echo, decay: 16, phase: 0.125 do
+    #         sample_smash(Sop[/sustain/,[0..3]].tick(:sample),[4.0,4.0,4.0,4.0],
+    #              amp: 2.8, cutoff: 130)
+    #       end
+    #     end
+    #   end
+    # end
+
+  end
+#  }
+  #mbox2 :f3, 100-rand*5, sus: 4
+  #mbox2 :f3, 127-rand*5, sus: 4
+  #mbox2 :a4, 127-rand*5, sus: 4
   at{
     sleep 0.5
     #mbox2 :g3, 127-rand*5, sus: 4
   }
-  #mbox :a4, 127-rand*5, sus: 4
-  #looper (ing :c4).look, 30, sus: 4#, motion: 0.5
+  #mbox :a3, 77-rand*5, sus: 4
+  #looper (ing :c3 :g2).look, 120, sus: 2
+  looper (ing :a3).look, 40, sus: 2
+
   sleep 1
+  #mbox :A4, 127, sus: 1 if spread(1,4).rot(2).look
 
   with_transpose -12*0 {
-    ze (knit :g5,4, :A4,4, :E4, 4).look,10 if spread(7,11).look
-    ze (knit :g4,4, :A4,4, :E4, 4).look,5 if spread(3,8).look
+    ze (nit :g5 4 :A4 4 :E4 4).look,10                 if spread(7,11).look
+    ze (nit :g4 4 :A4 4 :E4 4 :a4 4 :e4 4 :c5 4).look, 5   if spread(3,8).look
   }
   sleep 1
-  #mbox :g4, 127-rand*5, sus: 2
+  #mbox :g4, 71-rand*5, sus: 2
   #mbox  (ing :a4 :c4 :f4 :c4  :d4 :d4 :c4 :a3).look,(ing 122 110 120 112).look, sus: 4
   #looper_cc drive: 0.0
   sleep 1
-  #looper (ing :G3).look, 20, sus: 4#, motion: 0.5
+  n = (nit :e4 4 :c4 4 :g4 4 :c4 4 :g4 4 :c4 4).look
+  if spread(3,8).look
+    if spread(1,4).look
+      at{
+        #mbox2 n, 127, sus: 0.25
+        sleep 0.5
+        #mbox2 n, 120, sus: 0.25
+      }
+    end
+  else
+    #mbox2 n, 127, sus: 2
+  end
+  #ze :G5, 5 if spread(1,8).look
+  #looper (ing :c6).look, 20, sus: 2#, motion: 0.5
+
+  #mbox2 :C3, 70-rand*5, sus: 1
 
   #mbox2 (ing :c3 :e3 :a3 :e3  :f3 :f3 :c3 :g2).look,(ing 122 110 120 112).look, sus: (ing 2, 2, 4, 2, 4).look
+
+  #mbox :G4, 127, sus: 1 if spread(1,4).rot(2).look
+
   sleep 1
 end
 
 live_loop :fast, sync: :unsyncable do
   tick
   #qbitsea :B2, 80,  sus: 1/12.0   if spread(7,11).look
-  #qbitsea :G4, 127, sus: 1/12.0     if spread(7,11).look
-  #mbox2 :E5, 127-rand*5, sus: 1/2.0 if spread(7,11).look
+  sopsea :c4, 55, sus: 1/8.0     if spread(7,11).look
+  sopsea :a3, 55, sus: 1/2.0     if spread(3,8).look
+  sopsea :f3, 55, sus: 1         if spread(1,8).look
+
+  #mbox :C3, 127-rand*5, sus: 6 if spread(1,12).look
 
   if spread(7,11).look
     #operator :e5, 127, sus: 1/8.0
   end
 
-  if spread(6,12).look
-     #with_fx :echo,rate: 1.0 do
+  if spread(6,12*2).look
+    no do
+    with_fx (knit :reverb, 12-6, :echo,6).tick(:inner), mix: 0.8, decay: 0.125, phase: 1/4.0 do
+      smp Corrupt[/kalimba/, /fx/, /\/c_/].look(:inner), slice: (ing
+        1 1 1
+        4 4 4
+        3 3 3
+        ).look, num_slices: (ing 32 32 32 16 16 16 16 32 16).look(:inner),
+      amp: (ing 1 0.6 1 0.8 0.7).look(:inner)*0.5
+      end
+    end
+    #with_fx :echo,rate: 1.0 do
        #smp Frag[/coil/,3], start: 0.8, finish: 0.85, amp: 1
        #smp Straw.slice(:D4).take(12).look, amp: 2
      #end
@@ -103,26 +235,38 @@ live_loop :thing, sync: :unsyncable do
     v=0.8
     callstack c[0],114*v, sus: 8
     sleep 1.0
-    #operator c[1],117*v, sus: 6
+    operator c[1],117*v, sus: 6
     sleep 2
+    #operator c[1],59*v, sus: 6
     #operator c[2],105*v, sus: 9
     sleep 1.0
     #operator c[3],100*v, sus: 9
   }
 
-  #at{ sleep 8/2.0; with_transpose -12*2 { qbitsea c[1], 20+rand_i(5), sus: 8 }}
-  #pads note, 1, sus: 8, drive: 0.0
-  #baz note, 30, sus: 12, drive: 0.0
+  #at{ sleep 8/2.0; with_transpose -12*2 { qbitsea c[1], 20+rand_i(5), sus: 5 }}
+  #pads note, 1, sus: 8, drive: 0.0, thick: 6
+  #deep note, 1, sus: 12, drive: 0.0
+  #sea wave: -1.0
   sleep 16/2.0
 end
 
-#baz :A2, 30, sus: 12
-#midi :A2,30, sustain: 32, channel: 7
+#start
+def start
+  looper_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0
+  mbox2_cc motion: 0.5, sat: 0.00, drive: 0.00
+  mbox_cc  motion: 0.6
+  pads_cc amp: 0.85
+  looper_cc amp: 0.85
+end
+#start
+def deepbase
+  looper_cc motion: 1.00, drive: 0.30, fm: 0.00, mode: 0
+end
+#start
+#looper_cc motion: 0.50, drive: 0.20, fm: 0.00, mode: 4
 
-baz_cc drive: 0.0
-pads_cc drive: 0.0
-
-looper_cc motion: 0.6, drive: 0.0, fm: 0.0
+#mbox2_cc sat: 1.0, drive: 0.1
+#looper_cc motion: 0.26, fm: 0.00, drive: 0.20, mode: 1
 #looper_cc motion: 0.6, drive: 0.2, fm: 0.4
 #looper_cc fm: 0.2, drive: 1.0, motion: 0.8
 #mbox_cc  motion: 0.30
@@ -130,9 +274,13 @@ looper_cc motion: 0.6, drive: 0.0, fm: 0.0
 #mbox_cc  motion: 0.1
 #mbox2_cc motion: 0.2
 #mbox_cc  motion: 0.1
-#mbox2_cc motion: 0.55
-#mbox_cc  motion: 0.55
-mbox_cc  motion: 0.6
-mbox2_cc motion: 0.6
 
-live_loop(:unsyncable) do; sleep 1.0 end
+
+#mbox2_cc motion: 0.20, sat: 0.00, drive: 0.00
+#mbox_cc  motion: 0.10
+
+#mbox_cc  motion: 0.20
+#mbox2_cc motion: 0.40
+
+#mbox_cc  motion: 0.40
+#mbox2_cc motion: 0.40
