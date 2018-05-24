@@ -69,8 +69,12 @@ def rocks(n=0.0, *args)
 end
 def risingrocks(*args)
   opts = resolve_synth_opts_hash_or_array(args)
-  if opts[:on]
-    unity "/rocks", opts[:on]
+  if o=opts[:on] != nil
+    if o
+      unity "/rocks",1.0
+    else
+      unity "/rocks",0.0
+    end
   end
   if opts[:turbulence]
     unity "/rocks/turb", opts[:turbulence]
@@ -82,6 +86,7 @@ def risingrocks(*args)
     else
       unity "/rocks/vortex",1.0
       unity "/rocks/vortex/force",o
+      unity "/rocks/vortex/radius",5.0
     end
   end
   if opts[:radius]
@@ -101,25 +106,34 @@ def defaultcolor
   unity "/color3/s",0.0
   unity "/color3/b",0.0
 end
-def linecolor()
+def linecolor(factor=1)
   at{
     sleep 0.5
     unity "/linecolor/s",1.0
     unity "/linecolor/b",1.0
-    unity "/linecolor/h",rand
+    unity "/linecolor/h",rand*factor
   }
 end
-def color
-  at{
+def linear_map(x0, x1, y0, y1, x)
+  dydx = (y1 - y0) / (x1- x0)
+  dx = (x- x0)
+  (y0 + (dydx * dx))
+end
+def color(factor=1)
+  if factor
+    factor = note(factor)
+    factor = linear_map(30, 60, 0.0,1.0, factor)
+    at{
     sleep 0.5
     unity "/color3/b",1.0
     unity "/color2/s", 1.0
     unity "/color1/s",1.0
     unity "/color3/s",1.0
-    unity "/color2/h", rand
-    unity "/color1/h", rand
-    unity "/color3/h", rand
+    unity "/color2/h", rand*factor
+    unity "/color1/h", rand*factor
+    unity "/color3/h", rand*factor
     }
+  end
 end
 def init!
   defaultcolor
