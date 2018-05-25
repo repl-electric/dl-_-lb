@@ -48,8 +48,29 @@ def sea(*args)
   end
   if o=opts[:ripple]
     unity "/sea/rippleheight", o
+    puts o
   end
   }
+end
+def roots(*args)
+  opts = resolve_synth_opts_hash_or_array(args)
+  if opts[:throttle]
+    unity "/roots", opts[:throttle]
+  end
+  if o=opts[:drag]
+    unity "/roots/drag", o
+  end
+  if o=opts[:freq]
+    unity "/roots/freq", o
+  end
+  if o=opts[:target]
+    if o == :bird
+      unity "/roots/target/bird", 1.0
+    end
+    if o == :cube
+      unity "/roots/target/cube", 1.0
+    end
+  end
 end
 def rocks(n=0.0, *args)
   unity "/rockcircle/throttle",n
@@ -69,12 +90,17 @@ def rocks(n=0.0, *args)
 end
 def risingrocks(*args)
   opts = resolve_synth_opts_hash_or_array(args)
-  if o=opts[:on] != nil
+  if (o=opts[:on]) != nil
     if o
       unity "/rocks",1.0
     else
+      puts :off
+      unity "/rocks",1.0
       unity "/rocks",0.0
     end
+  end
+  if o=opts[:throttle]
+    unity "/rocks/throttle", o
   end
   if opts[:turbulence]
     unity "/rocks/turb", opts[:turbulence]
@@ -89,8 +115,20 @@ def risingrocks(*args)
       unity "/rocks/vortex/radius",5.0
     end
   end
+  if opts[:y]
+    unity "/rocks/pos", opts[:y]
+  end
   if opts[:radius]
     unity "/rocks/vortex/radius", opts[:radius]
+  end
+end
+def cam(type=:main)
+  if type == :main
+    unity "/cam0"
+  elsif type == :top
+    unity "/cam1"
+  elsif type == :bird
+    unity "/cam2"
   end
 end
 def defaultcolor
