@@ -277,6 +277,10 @@ def mbox_of(n)
   end
 end
 
+def mbox_x(*args)
+  midi_all_notes_off port: :iac_bus_2, channel: 1
+end
+
 def mbox_cc(cc)
   cc.keys.each do |k|
     n = case k
@@ -333,6 +337,10 @@ def mbox2_on(n,*args)
       midi_note_on n, velocity, *(args << {port: :iac_bus_2} << {channel: 9})
     end
   end
+end
+
+def mbox2_x(*args)
+  midi_all_notes_off port: :iac_bus_2, channel: 9
 end
 
 def mbox2_of(n)
