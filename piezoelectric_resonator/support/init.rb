@@ -72,6 +72,15 @@ def roots(*args)
     end
   end
 end
+def rocksinit()
+  unity "/rocks/vortex",1.0
+  unity "/rocks/vortex/force",-1000.0
+  unity "/rocks/turb",0.0
+  unity "/rocks/vortex/radius",100.0
+  unity "/rocks/pos",6.0
+  rocks 1.0
+  rocks 1.0, orbit: -40.0, rot: -100, noise: 10.8
+end
 def rocks(n=0.0, *args)
   unity "/rockcircle/throttle",n
   opts = resolve_synth_opts_hash_or_array(args)
