@@ -53,7 +53,6 @@ end
 
  def lfo(args)
    args_h = resolve_synth_opts_hash_or_array(args)
-   puts args_h
    if args_h[:on] != nil
      if args_h[:on] == true
        midi_cc 20, 127, channel: 1, port: :iac_bus_1
@@ -202,7 +201,7 @@ def deep(n,*args)
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 7})
       nname = SonicPi::Note.new(n).midi_string
-      puts "#{nname}} [Deep]"
+      puts "#{nname} [Deep]"
       sea wave: linear_map(45,72, 0.3,6.0, note(n)), delay: true
       deep_cc(args_h)
     end
@@ -249,6 +248,34 @@ def mbox(n,*args)
   end
 end
 
+def mbox_on(n,*args)
+  if n
+    if args && args[0].is_a?(Numeric)
+      velocity = args[0]
+      args = args[1..-1]
+    else
+      velocity = 30
+    end
+    if n.is_a?(Array)
+      args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
+      n = n[0]
+    end
+    args_h = resolve_synth_opts_hash_or_array(args)
+    if(args_h[:mode])
+    end
+    if n && ((n != "_") && n != :_)
+      midi_note_on n, velocity, *(args << {port: :iac_bus_2} << {channel: 1})
+      nname = SonicPi::Note.new(n).midi_string
+      mbox_cc args_h
+    end
+  end
+end
+
+def mbox_of(n)
+  if n
+    midi_note_off n, port: :iac_bus_2, channel: 1
+  end
+end
 
 def mbox_cc(cc)
   cc.keys.each do |k|
@@ -263,7 +290,6 @@ def mbox_cc(cc)
     end
   end
 end
-
 
 def mbox2(n,*args)
   if n
@@ -288,6 +314,32 @@ def mbox2(n,*args)
   end
 end
 
+def mbox2_on(n,*args)
+  if n
+    if args && args[0].is_a?(Numeric)
+      velocity = args[0]
+      args = args[1..-1]
+    else
+      velocity = 30
+    end
+    if n.is_a?(Array)
+      args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
+      n = n[0]
+    end
+    args_h = resolve_synth_opts_hash_or_array(args)
+    if(args_h[:mode])
+    end
+    if n && ((n != "_") && n != :_)
+      midi_note_on n, velocity, *(args << {port: :iac_bus_2} << {channel: 9})
+    end
+  end
+end
+
+def mbox2_of(n)
+  if n
+    midi_note_off n, port: :iac_bus_2, channel: 9
+  end
+end
 
 def mbox2_cc(cc)
   cc.keys.each do |k|
