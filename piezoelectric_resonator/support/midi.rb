@@ -396,6 +396,22 @@ def looper_mode(mode)
   end
 end
 
+def flow_oct(oct)
+  {
+  -24 => 0,
+  -12 => 0.3,
+  -5  => 0.4,
+  0 =>  0.5,
+  7 => 0.65,
+  12 => 0.66,
+  19 => 0.7,
+  24 => 0.73,
+  31 => 0.75,
+  36 => 0.78,
+  43 => 0.8,
+  48=> 0.83}[oct]
+end
+
 def looper_cc(cc)
   cc.keys.each do |k|
     n = case k
@@ -403,7 +419,12 @@ def looper_cc(cc)
         when :fm; 50
         when :drive; 51
         when :amp; 52
-        when :oct; 53
+        when :oct
+          f = flow_oct(cc[k])
+          if f
+            cc[k] = f
+          end
+          53
         else
           nil
         end
