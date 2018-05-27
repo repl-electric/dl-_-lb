@@ -72,6 +72,15 @@ def roots(*args)
     end
   end
 end
+def tree(*args)
+  opts = resolve_synth_opts_hash_or_array(args)
+  if o=opts[:height]
+    unity "/tree/height",o
+  end
+  if o=opts[:grow]
+    unity "/tree/grow",o
+  end
+end
 def rocksinit()
   unity "/rocks/vortex",1.0
   unity "/rocks/vortex/force",-1000.0
