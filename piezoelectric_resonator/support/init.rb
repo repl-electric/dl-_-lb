@@ -19,24 +19,19 @@ end
 def explode_cube()
   unity "/cube/explode"
 end
-def split_cube(axis=:x, fast=false)
-  if fast
-  if axis == :x
-    unity "/cube/split/x"
-  elsif axis == :y
-    unity "/cube/split/y"
-  elsif axis == :z
-    unity "/cube/split/z"
+def split_cube(*args)
+  opts = resolve_synth_opts_hash_or_array(args)
+  if v=opts[:x]
+    unity "/cube/split/x", v
   end
-  else
-    if axis == :x
-    unity "/cube/split/fastx"
-  elsif axis == :y
-    unity "/cube/split/fasty"
-  elsif axis == :z
-    unity "/cube/split/fastz"
+  if v=opts[:y]
+    unity "/cube/split/y", v
   end
-
+  if v=opts[:z]
+    unity "/cube/split/z", v
+  end
+  if v=opts[:cubes]
+    unity "/cube/split/cubes", v
   end
 end
 def explode_rocks()
