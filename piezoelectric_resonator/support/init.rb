@@ -1,3 +1,6 @@
+def scene(n)
+  unity "/scene/#{n}"
+end
 def create_tree(n=0.0)
  unity "/tree", n
 end
@@ -121,13 +124,12 @@ def rocks(n=0.0, *args)
     unity "/rockcircle/freq",o
   end
 end
-def risingrocks(*args)
+def vortex(*args)
   opts = resolve_synth_opts_hash_or_array(args)
   if (o=opts[:on]) != nil
     if o
       unity "/rocks",1.0
     else
-      puts :off
       unity "/rocks",1.0
       unity "/rocks",0.0
     end
@@ -158,11 +160,13 @@ end
 def cam(type=:main)
   if type == :main
     unity "/cam0"
+    unity "/cubeinside", 0.25*3
   elsif type == :top
     unity "/cam1"
   elsif type == :bird
     unity "/cam2"
   elsif type == :cube
+    unity "/cubeinside", 0.0
     unity "/cam4"
   end
 end
