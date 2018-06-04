@@ -19,6 +19,26 @@ end
 def explode_cube()
   unity "/cube/explode"
 end
+def split_cube(axis=:x, fast=false)
+  if fast
+  if axis == :x
+    unity "/cube/split/x"
+  elsif axis == :y
+    unity "/cube/split/y"
+  elsif axis == :z
+    unity "/cube/split/z"
+  end
+  else
+    if axis == :x
+    unity "/cube/split/fastx"
+  elsif axis == :y
+    unity "/cube/split/fasty"
+  elsif axis == :z
+    unity "/cube/split/fastz"
+  end
+
+  end
+end
 def explode_rocks()
   unity "/explode1"
 end
@@ -147,6 +167,8 @@ def cam(type=:main)
     unity "/cam1"
   elsif type == :bird
     unity "/cam2"
+  elsif type == :cube
+    unity "/cam4"
   end
 end
 def defaultcolor
