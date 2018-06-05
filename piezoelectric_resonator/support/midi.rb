@@ -78,6 +78,17 @@ def ze(n,*args)
     if(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
+      if $pmode == 0
+        at{
+          world lightning: true
+          sleep 0.5
+          unity "/linecolor/cube/b", linear_map(64,72, 0.0,10.0, note(n))
+          cube_linecolor rand, rand, rand
+          light(size: linear_map(64,72, -0.02,0.0, note(n)))
+          sleep 0.5
+          light(size: 0.0)
+        }
+      end
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 8})
       nname = SonicPi::Note.new(n).midi_string
       pads_cc args_h
@@ -384,11 +395,45 @@ def looper(n,*args)
     end
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 5})
+      at{
+        sleep 1
+        slice_cube x: (rand)
+      }
       nname = SonicPi::Note.new(n).midi_string
       looper_cc args_h
     end
   end
 end
+
+def looper_on(n,*args)
+  if n
+    if args && args[0].is_a?(Numeric)
+      velocity = args[0]
+      args = args[1..-1]
+    else
+      velocity = 30
+    end
+    if n.is_a?(Array)
+      args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
+      n = n[0]
+    end
+    args_h = resolve_synth_opts_hash_or_array(args)
+    if(m=args_h[:mode])
+      looper_mode(m)
+    end
+    if n && ((n != "_") && n != :_)
+      midi_note_on n, velocity, *(args << {port: :iac_bus_2} << {channel: 5})
+      nname = SonicPi::Note.new(n).midi_string
+      looper_cc args_h
+    end
+  end
+end
+
+def looper_x(*args)
+  midi_all_notes_off port: :iac_bus_2, channel: 5
+end
+
+
 
 def looper_mode(mode)
   if mode

@@ -1,3 +1,4 @@
+$pmode=0
 def scene(n)
   unity "/scene/#{n}"
 end
@@ -18,11 +19,20 @@ def create_island(n=0.0)
 end
 def create_cube(n=0.0)
   unity "/cube",n
+  slice_cube y: 10, z: 10.0, cubes: 10.0
 end
 def explode_cube()
   unity "/cube/explode"
 end
-def split_cube(*args)
+def explode_world()
+  world time: 0.1
+  unity "/explode2"
+end
+def explode_aura()
+  world time: 0.1
+  unity "/explode3"
+end
+def slice_cube(*args)
   opts = resolve_synth_opts_hash_or_array(args)
   if v=opts[:x]
     unity "/cube/split/x", v
@@ -108,9 +118,11 @@ def rocksinit()
   rocks 1.0
   rocks 1.0, orbit: -40.0, rot: -100, noise: 10.8
 end
-def rocks(n=0.0, *args)
-  unity "/rockcircle/throttle",n
+def rocks(*args)
   opts = resolve_synth_opts_hash_or_array(args)
+  if o=opts[:throttle]
+    unity "/rockcircle/throttle",o
+  end
   if o=opts[:orbit]
     unity "/rockcircle/orbit",o
   end
@@ -157,8 +169,16 @@ def vortex(*args)
     unity "/rocks/vortex/radius", opts[:radius]
   end
 end
+def light(*args)
+  opts = resolve_synth_opts_hash_or_array(args)
+  if (o = opts[:size])
+    unity "/cubeinside", o
+  end
+end
+
 def cam(type=:main)
   if type == :main
+    $pmode=1
     unity "/cam0"
     unity "/cubeinside", 0.25*3
   elsif type == :top
@@ -166,6 +186,7 @@ def cam(type=:main)
   elsif type == :bird
     unity "/cam2"
   elsif type == :cube
+    $pmode=0
     unity "/cubeinside", 0.0
     unity "/cam4"
   end
@@ -182,6 +203,14 @@ def defaultcolor
   unity "/color1/s",0.0
   unity "/color3/s",0.0
   unity "/color3/b",0.0
+end
+def cube_linecolor(s,b,h)
+  at{
+    sleep 0.5
+    unity "/linecolor/cube/s",s
+    unity "/linecolor/cube/b",b
+    unity "/linecolor/cube/h",h
+  }
 end
 def linecolor(factor=1)
   at{
@@ -223,4 +252,5 @@ def init!
   create_bird -1
   create_cube -2
   create_aura -5
+  unity "/cubeinside", -0.25
 end

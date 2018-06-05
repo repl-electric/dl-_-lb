@@ -1,82 +1,13 @@
 #stop
+$pmode = 0
 load "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/piezoelectric_resonator/support/midi.rb"
 load "/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/piezoelectric_resonator/support/init.rb"
 use_bpm 127
-#init!
-
-world time: 1.0
-#create_sea
-
-
-
-
-
-#sea wave: 0.0, ripple: 0.0
-live_loop :fund do
-  tick
-  kick_machine K1, accent: 2
-  #deep :A2, 127
- # at{
-#    sleep 0.5
-    puts :hit
-  color
-  #}
-
-#  unity "/color1", rand*10
-#  unity "/color2", rand*10
-#  unity "/color3", rand*10
-#  smp Mountain[/subkick/,0]
-  sleep 8
-end
-stop
-
-#stop
-
-#unity "/color2", 0.0
-#unity "/rockshard",1.0
-#unity "/rocks",1.0
-
-#risingrocks on: 1.0, turbulence: 0.0
-#unity "/rocks/vortex/radius", 10.0
-#unity "/rocks/vortex/force", 20.0
-
-#stop
-
-
-#stop
-#kalshot :c2, sus: 3
-#create_light
-#create_cube 10
-#create_tree 4
-#create_aura
-#rocks 1.0, orbit: 10.1, noise: 4.9, rot: 1000.0, freq: 0.1
-
-
-live_loop :test do
-  tick
-  # world :lightning
- # puts :hit
-  #kick_machine K1
-  at{
-    sleep 0.5
-    #world lightning: 1.0
-    #    unity "/burst", 0.0
-    create_cube 4.0
-    #unity "/roots", 1.0
-    unity "/world/lightning",1.0
-    }
-  sleep 2
-#  unity "/world/lightning",0.0
-  unity "/burst", 0.001
-  create_cube 2
-  #unity "/roots", 0.0
-  sleep 2
-end
-
 
 live_loop(:unsyncable) do; sleep 1.0 end
 
 live_loop :scale, sync: :unsyncable  do  #10...
+  stop
   tick
   12.times{
      tick
@@ -95,9 +26,9 @@ live_loop :scale, sync: :unsyncable  do  #10...
 
 live_loop :test, sync: :unsyncable do; tick #2*32
   if (ing 1 1 1 0 1 1 0 1).look == 1
-    #kick_machine K1, accent: (ing 2.2 2.0 2.1 2.0).look*1.0
+    #kick_machine K1, accent: (ing 1.2 1.0 1.1 1.0).look*1.0
     #kal (ing :F3 :A3 :A3 :A3 :A3 :C3).look, 80, sus: 2
-    world(lightning: true)
+    #world lightning: true
   else
     #kalshot :d2,10, sus: 3*1
   end
@@ -131,16 +62,15 @@ live_loop :test, sync: :unsyncable do; tick #2*32
   }
   #mbox :a3, 77-rand*5, sus: 4
   #looper (ing :c3 :g2).look, 120, sus: 2
-  looper (ing :a3).look, 40, sus: 2
+ # looper (ing :a3  :f2 :g2).look, 40, sus: 1
 
   sleep 1
   #mbox :A4, 127, sus: 1 if spread(1,4).rot(2).look
 
-  with_transpose -12*0 {
-    ze (nit :g5 4 :A4 4 :E4 4).look,10                 if spread(7,11).look
-    ze (nit :g4 4 :A4 4 :E4 4 :a4 4 :e4 4 :c5 4).look, 5   if spread(3,8).look
-  }
+  ze (nit :g5 4 :A4 4 :E4 4).look,10, viz: true                      if spread(7,11).look
+  ze (nit :g4 4 :A4 4 :E4 4 :a4 4 :e4 4 :c5 4).look, 5, viz: false   if spread(3,8).look
   sleep 1
+
   #mbox :g4, 71-rand*5, sus: 2
   #mbox  (ing :a4 :c4 :f4 :c4  :d4 :d4 :c4 :a3).look,(ing 122 110 120 112).look, sus: 4
   #looper_cc drive: 0.0
@@ -159,22 +89,19 @@ live_loop :test, sync: :unsyncable do; tick #2*32
   end
   #ze :G5, 5 if spread(1,8).look
   #looper (ing :c6).look, 20, sus: 2#, motion: 0.5
-
   #mbox2 :C3, 70-rand*5, sus: 1
-
   #mbox2 (ing :c3 :e3 :a3 :e3  :f3 :f3 :c3 :g2).look,(ing 122 110 120 112).look, sus: (ing 2, 2, 4, 2, 4).look
-
   #mbox :G4, 127, sus: 1 if spread(1,4).rot(2).look
-
   sleep 1
 end
 
 live_loop :fast, sync: :unsyncable do
+  stop
   tick
   #qbitsea :B2, 80,  sus: 1/12.0   if spread(7,11).look
-  sopsea :c4, 55, sus: 1/8.0     if spread(7,11).look
-  sopsea :a3, 55, sus: 1/2.0     if spread(3,8).look
-  sopsea :f3, 55, sus: 1         if spread(1,8).look
+  qbitsea :c4, 55, sus: 1/8.0     if spread(7,11).look
+  qbitsea :a3, 55, sus: 1/2.0     if spread(3,8).look
+  qbitsea :f3, 55, sus: 1         if spread(1,8).look
 
   #mbox :C3, 127-rand*5, sus: 6 if spread(1,12).look
 
@@ -202,7 +129,6 @@ live_loop :fast, sync: :unsyncable do
 end
 
 live_loop :thing, sync: :unsyncable do
-  #stop
   tick
   score = (ing
     :A3 :F4 :C3  :A3 :E4 :F3 :C3 _
@@ -214,7 +140,7 @@ live_loop :thing, sync: :unsyncable do
     [:F4, :A6, :C5],
     [:C3, :E5, :G4],
     [:A3, :C5, :E4],
-    [:E4, :G5, :B3],  #inv
+    [:E4, :G5, :B3],
     [:F4, :A5, :C5, :E5],
     [:C3, :E5, :G4],
     [_],
@@ -234,8 +160,11 @@ live_loop :thing, sync: :unsyncable do
   at{
     v=0.8
     callstack c[0],114*v, sus: 8
+    linecolor 0.0
+    #unity "/linecolor/b",0.0
     sleep 1.0
     operator c[1],117*v, sus: 6
+    color c[1]
     sleep 2
     #operator c[1],59*v, sus: 6
     #operator c[2],105*v, sus: 9
@@ -244,13 +173,11 @@ live_loop :thing, sync: :unsyncable do
   }
 
   #at{ sleep 8/2.0; with_transpose -12*2 { qbitsea c[1], 20+rand_i(5), sus: 5 }}
-  #pads note, 1, sus: 8, drive: 0.0, thick: 6
+  #pads note, 1, sus: 8, drive: 0.0, pad: 1
   #deep note, 1, sus: 12, drive: 0.0
-  #sea wave: -1.0
   sleep 16/2.0
 end
 
-#start
 def start
   looper_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0
   mbox2_cc motion: 0.5, sat: 0.00, drive: 0.00
@@ -258,12 +185,44 @@ def start
   pads_cc amp: 0.85
   looper_cc amp: 0.85
 end
-#start
 def deepbase
   looper_cc motion: 1.00, drive: 0.30, fm: 0.00, mode: 0
 end
 #start
-#looper_cc motion: 0.50, drive: 0.20, fm: 0.00, mode: 4
+
+$factor = 1.0
+live_loop :tension  do
+  tick
+  unity "/cube/split/cubes", (ing 1.0, 1.1).look*$factor
+  unity "/cube/split/y",     (ing 2.08, 2.01).look*$factor
+  unity "/cube/split/z",     (line 2.2, 1.0, 128)+(line 1.0, 2.2, 128).look*$factor
+  sleep 1/8.0
+end
+$factor = 1.0
+#init!
+
+#create_cube
+#unity "/linecolor/b", 10.0
+#unity "/linecolor/cube/s", 1.0
+#unity "/linecolor/cube/h", 1.0
+
+
+#looper :A4 #vibrate shapes Joe
+#init!
+#cam :cube
+world time: 1.0
+#roots throttle: 0.0, drag: 1.0
+#create_cube
+unity "/burst", 1.0
+
+#world lightning: true
+#unity "/cubeinside", 0.0
+
+#looper_cc amp: 0.65
+#looper_on :f4
+looper_x
+
+#looper_cc motion: 0.12, drive: 0.15, fm: 0.00, mode: 4
 
 #mbox2_cc sat: 1.0, drive: 0.1
 #looper_cc motion: 0.26, fm: 0.00, drive: 0.20, mode: 1
