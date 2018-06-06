@@ -13,7 +13,7 @@ end
       velocity = args[0]
       args = args[1..-1]
     else
-      velocity = 40
+      velocity = 10
     end
     if n.is_a?(Array)
       args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
@@ -24,6 +24,15 @@ end
     end
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 15})
+      if $pmode == 0
+      at{
+         sleep 0.5
+         burst 0.8+velocity*0.01
+         sleep 0.5
+         burst 0.01
+         }
+      end
+
       nname = SonicPi::Note.new(n).midi_string
     end
   end
@@ -35,7 +44,7 @@ end
       velocity = args[0]
       args = args[1..-1]
     else
-      velocity = 40
+      velocity = 10
     end
     if n.is_a?(Array)
       args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
@@ -68,7 +77,7 @@ def ze(n,*args)
       velocity = args[0]
       args = args[1..-1]
     else
-      velocity = 30
+      velocity = 10
     end
     if n.is_a?(Array)
       args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
@@ -86,8 +95,11 @@ def ze(n,*args)
         at{
           world lightning: true
           sleep 0.5
-          unity "/cube/split/z", [$zslices, 10.0].min
-          #unity "/linecolor/cube/b", linear_map(64,72, 0.0,5.0, note(n))
+          unity "/cube/split/y", [$zslices, 10.0].min
+          #unity "/cube/split/z", [$zslices, 10.0].min
+          #unity "/cube/split/cubes", [$zslices, 10.0].min
+
+          unity "/linecolor/cube/b", linear_map(64,72, 0.0,2.0, note(n))
           cube_linecolor rand, rand, rand
           #light(size: linear_map(64,72, -0.02,0.0, note(n)))
           sleep 0.5
@@ -108,7 +120,7 @@ def pads(n,*args)
       velocity = args[0]
       args = args[1..-1]
     else
-      velocity = 30
+      velocity = 1
     end
     if n.is_a?(Array)
       args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
@@ -205,7 +217,7 @@ def deep(n,*args)
       velocity = args[0]
       args = args[1..-1]
     else
-      velocity = 30
+      velocity = 1
     end
     if n.is_a?(Array)
       args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
@@ -329,6 +341,12 @@ def mbox2(n,*args)
     end
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 9})
+      if $pmode == 1
+        at{
+          sleep 0.5
+          tree height: 1.1+rand*0.1
+        }
+      end
       nname = SonicPi::Note.new(n).midi_string
       mbox_cc args_h
     end

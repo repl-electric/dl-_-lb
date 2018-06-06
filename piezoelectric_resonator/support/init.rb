@@ -31,6 +31,9 @@ def star(*args)
   if (o=opts[:life])
     unity "/star/life",o
   end
+  if (o = opts[:size])
+    unity "/cubeinside", o
+  end
 end
 def scene(n)
   unity "/scene/#{n}"
@@ -60,6 +63,7 @@ def create_cube(n=0.0)
 end
 def explode_cube()
   unity "/cube/explode"
+  world time: 0.002
 end
 def explode_world()
   world time: 0.1
@@ -207,21 +211,25 @@ def vortex(*args)
     unity "/rocks/vortex/radius", opts[:radius]
   end
 end
-def light(*args)
-  opts = resolve_synth_opts_hash_or_array(args)
-  if (o = opts[:size])
-    unity "/cubeinside", o
-  end
-end
+#def light(*args)
+#end
 
 def cam(type=:main)
   if type == :main
     $pmode=1
     unity "/cam0"
     unity "/cubeinside", 0.25*3
+    unity "/sea/waveheight", 0.0
+    unity "/star/life", 2.0
+
+
   elsif type == :top
+    $pmode=2
     unity "/cam1"
   elsif type == :bird
+    $pmode=3
+    rocks orbit: 20.0
+    world time: 0.1
     unity "/cam2"
   elsif type == :cube
     $pmode=0
@@ -293,4 +301,5 @@ def init!
   create_cube -2
   create_aura -5
   unity "/cubeinside", -0.25
+  roots throttle: 0.0
 end
