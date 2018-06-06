@@ -68,26 +68,6 @@ live_loop :fast, sync: :unsyncable do
 
   #mbox :C3, 127-rand*5, sus: 6 if spread(1,12).look
 
-  if spread(7,11).look
-    #operator :e5, 127, sus: 1/8.0
-  end
-
-  if spread(6,12*2).look
-    no do
-    with_fx (knit :reverb, 12-6, :echo,6).tick(:inner), mix: 0.8, decay: 0.125, phase: 1/4.0 do
-      smp Corrupt[/kalimba/, /fx/, /\/c_/].look(:inner), slice: (ing
-        1 1 1
-        4 4 4
-        3 3 3
-        ).look, num_slices: (ing 32 32 32 16 16 16 16 32 16).look(:inner),
-      amp: (ing 1 0.6 1 0.8 0.7).look(:inner)*0.5
-      end
-    end
-    #with_fx :echo,rate: 1.0 do
-       #smp Frag[/coil/,3], start: 0.8, finish: 0.85, amp: 1
-       #smp Straw.slice(:D4).take(12).look, amp: 2
-     #end
-   end
   sleep 1/8.0
 end
 
@@ -160,7 +140,3 @@ live_loop :go, sync: :unsyncable do
   sleep 0.25
 end
 
-#eq lo: 0.85
-#eq hi: 0.85
-#looper_cc motion: 1.00
-#deepbase_init
