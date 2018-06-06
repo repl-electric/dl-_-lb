@@ -79,14 +79,19 @@ def ze(n,*args)
     end
     if n && ((n != "_") && n != :_)
       if $pmode == 0
+        if $zslices == nil
+          $zslices = 0.0
+        end
+        $zslices += 0.03
         at{
           world lightning: true
           sleep 0.5
-          unity "/linecolor/cube/b", linear_map(64,72, 0.0,10.0, note(n))
+          unity "/cube/split/z", [$zslices, 10.0].min
+          #unity "/linecolor/cube/b", linear_map(64,72, 0.0,5.0, note(n))
           cube_linecolor rand, rand, rand
-          light(size: linear_map(64,72, -0.02,0.0, note(n)))
+          #light(size: linear_map(64,72, -0.02,0.0, note(n)))
           sleep 0.5
-          light(size: 0.0)
+          #light(size: 0.0)
         }
       end
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 8})
@@ -227,6 +232,7 @@ def deep_cc(cc)
         when :drive
           sea ripple: cc[k]*1.5, delay: true
           51
+        when :sat; 52
         else
           nil
         end
@@ -395,10 +401,12 @@ def looper(n,*args)
     end
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 5})
-      at{
-        sleep 1
-        slice_cube x: (rand)
-      }
+      if $pmode == 0
+        at{
+          sleep 0.5
+          burst 0.05
+        }
+      end
       nname = SonicPi::Note.new(n).midi_string
       looper_cc args_h
     end
@@ -426,6 +434,12 @@ def looper_on(n,*args)
       nname = SonicPi::Note.new(n).midi_string
       looper_cc args_h
     end
+  end
+end
+
+def looper_off(n,*args)
+  if n
+    midi_note_off n, port: :iac_bus_2, channel: 5
   end
 end
 

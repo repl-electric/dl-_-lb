@@ -1,6 +1,42 @@
 $pmode=0
+def start
+  looper_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0
+  mbox2_cc motion: 0.5, sat: 0.00, drive: 0.00
+  mbox_cc  motion: 0.6
+  pads_cc amp: 0.85
+  looper_cc amp: 0.85
+end
+def deepbase_init
+  looper_cc motion: 1.00, drive: 0.30, fm: 0.00, mode: 0
+end
+def kickviz
+  at{
+    sleep 0.5
+    unity "/star", -0.1
+    light size: 0.04
+
+    star throttle: 0.1
+    star life: 2.0
+    sleep 0.25
+    star throttle: 0.02
+    sleep 0.25
+    light size: 0.0
+  }
+end
+def star(*args)
+  opts = resolve_synth_opts_hash_or_array(args)
+  if (o=opts[:throttle])
+    unity "/star/throttle",o
+  end
+  if (o=opts[:life])
+    unity "/star/life",o
+  end
+end
 def scene(n)
   unity "/scene/#{n}"
+end
+def burst(n=0.0)
+  unity "/burst", n
 end
 def create_tree(n=0.0)
  unity "/tree", n
@@ -20,6 +56,7 @@ end
 def create_cube(n=0.0)
   unity "/cube",n
   slice_cube y: 10, z: 10.0, cubes: 10.0
+  slice_cube y: 0.0, z: 0.0, cubes: 0.0
 end
 def explode_cube()
   unity "/cube/explode"
@@ -82,6 +119,10 @@ def sea(*args)
 end
 def roots(*args)
   opts = resolve_synth_opts_hash_or_array(args)
+  at{
+  if opts[:delay] == true
+    sleep 0.5
+  end
   if opts[:throttle]
     unity "/roots", opts[:throttle]
   end
@@ -98,7 +139,11 @@ def roots(*args)
     if o == :cube
       unity "/roots/target/cube", 1.0
     end
+    if o == :frag
+      unity "/roots/target/frag", 1.0
+    end
   end
+  }
 end
 def tree(*args)
   opts = resolve_synth_opts_hash_or_array(args)
@@ -110,13 +155,14 @@ def tree(*args)
   end
 end
 def rocksinit()
-  unity "/rocks/vortex",1.0
+  world time: 1.0
+  unity "/rocks/vortex", 1.0
   unity "/rocks/vortex/force",-1000.0
   unity "/rocks/turb",0.0
   unity "/rocks/vortex/radius",100.0
   unity "/rocks/pos",6.0
-  rocks 1.0
-  rocks 1.0, orbit: -40.0, rot: -100, noise: 10.8
+  rocks throttle: 1.0
+  rocks throttle: 1.0, orbit: -40.0, rot: -100, noise: 10.8
 end
 def rocks(*args)
   opts = resolve_synth_opts_hash_or_array(args)
@@ -138,21 +184,13 @@ def rocks(*args)
 end
 def vortex(*args)
   opts = resolve_synth_opts_hash_or_array(args)
-  if (o=opts[:on]) != nil
-    if o
-      unity "/rocks",1.0
-    else
-      unity "/rocks",1.0
-      unity "/rocks",0.0
-    end
-  end
   if o=opts[:throttle]
     unity "/rocks/throttle", o
   end
-  if opts[:turbulence]
+  if opts[:turb]
     unity "/rocks/turb", opts[:turbulence]
   end
-  if o=opts[:vortex]
+  if o=opts[:force]
     if o == 0.0
       unity "/rocks/vortex",0.0
       unity "/rocks/vortex/force",0.0
@@ -242,8 +280,10 @@ def color(factor=1)
   end
 end
 def init!
+  scene 1
+  $zslices=0.0
   defaultcolor
-  world :time, 0.01
+  world :time, 1.0
   create_tree -1
   create_sea -1
   create_island -1
