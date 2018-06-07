@@ -1,4 +1,6 @@
 Zz = [nil]
+S = 18
+T = 21
 $pmode=0
 def start
   looper_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0
@@ -217,6 +219,7 @@ end
 
 def cam(type=:main)
   if type == :exit
+    $pmode=1
     unity "/cubeinside", 0.25*3
     unity "/sea/waveheight", 0.0
     unity "/star/life", 2.0
