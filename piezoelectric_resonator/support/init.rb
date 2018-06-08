@@ -61,15 +61,19 @@ def create_island(n=0.0)
 end
 def create_cube(n=0.0)
   unity "/cube",n
-  slice_cube y: 10, z: 10.0, cubes: 10.0
+  slice_cube y: 10.0, z: 10.0, cubes: 10.0
   slice_cube y: 0.0, z: 0.0, cubes: 0.0
 end
 def explode_cube()
   unity "/cube/explode"
+  cube wires: 0.0
+  $pmode=-1
   world time: 0.002
 end
 def explode_world()
   world time: 0.1
+  cube wires: 0.0
+  $pmode=-1
   unity "/explode2"
 end
 def explode_aura()
@@ -214,23 +218,30 @@ def vortex(*args)
     unity "/rocks/vortex/radius", opts[:radius]
   end
 end
-#def light(*args)
-#end
 
 def cam(type=:main)
   if type == :exit
     $pmode=1
+    unity "/cubecam/zoomout", 0.0
+    unity "/cubecam/zoomout", 1.0
     unity "/cubeinside", 0.25*3
     unity "/sea/waveheight", 0.0
     unity "/star/life", 2.0
-    unity "/cubecam/zoomout", 1.0
+    at{
+      8.times{|n|
+        puts "tick"
+        roots throttle: 1.0* 1.0/n+1
+        sleep 1/2.0
+      }
+      roots throttle: 0.0
+      create_aura
+    }
   elsif type == :main
     $pmode=1
     unity "/cam0"
     unity "/cubeinside", 0.25*3
     unity "/sea/waveheight", 0.0
     unity "/star/life", 2.0
-    unity "/cubecam/zoomout", 1.0
   elsif type == :top
     $pmode=2
     unity "/cam1"
@@ -241,6 +252,8 @@ def cam(type=:main)
     unity "/cam2"
   elsif type == :cube
     $pmode=0
+    unity "/cubecam/zoomin", 0.0
+    unity "/cubecam/zoomin", 1.0
     unity "/cubeinside", 0.0
     unity "/cam4"
   end
@@ -295,11 +308,25 @@ def color(factor=1)
     }
   end
 end
-def init!
+
+def cube(*args)
+  opts = resolve_synth_opts_hash_or_array(args)
+  if (o=opts[:wires])
+    unity "/cube/wires/throttle", o
+  end
+  if (o=opts[:embers])
+    unity "/cube/embers/throttle", o
+  end
+end
+
+def init!(d=false)
   scene 1
+  if d
+    sleep 2
+  end
+  world :time, 1.0
   $zslices=0.0
   defaultcolor
-  world :time, 1.0
   create_tree -1
   create_sea -1
   create_island -1

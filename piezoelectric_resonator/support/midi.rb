@@ -95,12 +95,20 @@ def ze(n,*args)
         at{
           world lightning: true
           sleep 0.5
-          unity "/cube/split/y", [$zslices, 10.0].min
-          #unity "/cube/split/z", [$zslices, 10.0].min
-          #unity "/cube/split/cubes", [$zslices, 10.0].min
+          if args_h[:z]
+            unity "/cube/split/z", [$zslices, 10.0].min
+          end
+          if args_h[:y]
+            unity "/cube/split/y", [$zslices, 10.0].min
+          end
+          if args_h[:cubes]
+            unity "/cube/split/cubes", [$zslices, 10.0].min
+          end
 
-          unity "/linecolor/cube/b", linear_map(64,72, 0.0,2.0, note(n))
-          cube_linecolor rand, rand, rand
+          if args_h[:flash]
+            unity "/linecolor/cube/b", linear_map(64,72, 0.0,2.0, note(n))
+            cube_linecolor rand, rand, rand
+          end
           #light(size: linear_map(64,72, -0.02,0.0, note(n)))
           sleep 0.5
           #light(size: 0.0)
@@ -271,6 +279,16 @@ def mbox(n,*args)
     end
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 1})
+
+      if $pmode=1
+        at{
+          cube wires: 0.0
+          sleep 1.0
+          cube wires: 0.3
+
+          }
+      end
+
       nname = SonicPi::Note.new(n).midi_string
       mbox_cc args_h
     end
