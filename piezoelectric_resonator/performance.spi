@@ -1,5 +1,5 @@
 ROOT="/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/piezoelectric_resonator/support"; load "#{ROOT}/midi.rb";load "#{ROOT}/init.rb";use_bpm 127
-init! && deepbase_init
+#init!(true) && start
 
 live_loop :sea, sync: :unsyncable do; tick
   sleep 1
