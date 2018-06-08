@@ -31,6 +31,7 @@ def init!
   unity "/camera/0",1.0
   unity "/alive/length",0.0
   unity "/logo/person", 0.0
+  shard 0.0
 end
 
 def shard(f=0.0)

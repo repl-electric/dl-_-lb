@@ -32,6 +32,12 @@ end
          burst 0.01
          }
       end
+      if $pmode == 1
+        at{
+           sleep 0.5
+           tree height: 1.1+rand*0.1 * args_h[:f]
+        }
+      end
 
       nname = SonicPi::Note.new(n).midi_string
     end
@@ -91,7 +97,22 @@ def ze(n,*args)
         if $zslices == nil
           $zslices = 0.0
         end
-        $zslices += 0.03
+        if $yslices == nil
+          $yslices = 0.0
+        end
+        if $cslices == nil
+          $cslices = 0.0
+        end
+        if(args_h[:z])
+          $zslices += 0.03
+        end
+        if(args_h[:y])
+          $yslices += 0.03
+        end
+        if(args_h[:c])
+          $cslices += 0.03
+        end
+
         at{
           world lightning: true
           sleep 0.5
@@ -99,10 +120,10 @@ def ze(n,*args)
             unity "/cube/split/z", [$zslices, 10.0].min
           end
           if args_h[:y]
-            unity "/cube/split/y", [$zslices, 10.0].min
+            unity "/cube/split/y", [$yslices, 10.0].min
           end
-          if args_h[:cubes]
-            unity "/cube/split/cubes", [$zslices, 10.0].min
+          if args_h[:c]
+            unity "/cube/split/cubes", [$cslices, 10.0].min
           end
 
           if args_h[:flash]
@@ -238,7 +259,7 @@ def deep(n,*args)
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 7})
       nname = SonicPi::Note.new(n).midi_string
       puts "#{nname} [Deep]"
-      sea wave: linear_map(45,72, 0.3,6.0, note(n)), delay: true
+      sea wave: linear_map(45,72, 0.3,8.0, note(n)), delay: true
       deep_cc(args_h)
     end
   else
@@ -285,8 +306,7 @@ def mbox(n,*args)
           cube wires: 0.0
           sleep 1.0
           cube wires: 0.3
-
-          }
+        }
       end
 
       nname = SonicPi::Note.new(n).midi_string
@@ -359,13 +379,13 @@ def mbox2(n,*args)
     end
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 9})
-      if $pmode == 1
-        at{
-          sleep 0.5
-          tree height: 1.1+rand*0.1
-        }
-      end
       nname = SonicPi::Note.new(n).midi_string
+      at{
+        sleep 0.5
+        vortex throttle: rand*0.5
+        rocks throttle: 1.0
+        }
+
       mbox_cc args_h
     end
   end

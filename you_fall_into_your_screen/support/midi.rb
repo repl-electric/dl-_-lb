@@ -284,8 +284,8 @@ module ReplElectric
         if n && ((n != "_") && n != :_)
           midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 4})
           nname = SonicPi::Note.new(n).midi_string
-          puts "%s%s" %[nname.ljust(4, " "), "[QBitSea]"]  unless note(n) < MODE_NOTE
-          console("QbitSea #{nname}") unless note(n) < MODE_NOTE
+          #puts "%s%s" %[nname.ljust(4, " "), "[QBitSea]"]  unless note(n) < MODE_NOTE
+          #console("QbitSea #{nname}") unless note(n) < MODE_NOTE
           qbitsea_cc args_h
         end
       end
@@ -931,7 +931,7 @@ module ReplElectric
         end
         note = [
           :C2, :cs2, :d2, :ds2, :e2, :f2, :fs2, :g2, :gs2, :a2, :as2, :b2,
-          :C6, :cs6, :d6, :ds6, :e6, :f6, :fs6, :g6][n]
+          :C6, :cs6, :d6, :ds6, :e6, :f6, :fs6, :g6, :gs6, :a6][n]
 
         # note = [
         #   :C2, :cs2, :d2, :ds2, :e2, :f2, :fs2, :g2,

@@ -1,3 +1,5 @@
+ROOT="/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/you_fall_into_your_screen/support"; load "#{ROOT}/midi.rb";load "#{ROOT}/init.rb";use_bpm 127
+
 #camlogo
 #focus
 live_loop :fall_into_your_screen, sync: :unsyncable do; tick
