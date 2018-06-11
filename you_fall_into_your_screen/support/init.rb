@@ -1,21 +1,11 @@
-$mode=-1
-# unity "/alive/light", 0.5
-#unity "/sea/spacex", 0.1
-#unity "/sea/noise", 20.0
-# #unity "/alive/light",0.8
-# unity "/logo/person", 1.0
-# unity "/camera/4",1.0
-# unity "/glitch/block",0.05
-# unity "/glitch/slice",0.0
-# unity "/glitch/invert",1.0
-# #unity "/alive/length", 0.1
-
-# unity "/alive/thick",0.0144
-# unity "/alive/length",0.06
-#unity "/alive/spring", 200.0
-#unity "/alive/damp", 30.0
-#unity "/alive/maxtime", 0.006
-unity "/postfx",0.0
+def init!
+  $mode = -1
+  unity "/camera/0",1.0
+  unity "/alive/length",0.0
+  unity "/logo/person", 0.0
+  unity "/postfx",0.0
+  shard 0.0
+end
 
 def panic(f=false)
   if !f
@@ -27,20 +17,12 @@ def panic(f=false)
   end
 end
 
-def init!
-  unity "/camera/0",1.0
-  unity "/alive/length",0.0
-  unity "/logo/person", 0.0
-  shard 0.0
-end
-
 def shard(f=0.0)
   dviz shard: f
 end
 def spark(f=0.0)
   dviz shard: f
 end
-
 
 def spike(f=0.0)
   dviz :alive, shard: f
