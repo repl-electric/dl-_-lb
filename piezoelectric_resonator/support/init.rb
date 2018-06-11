@@ -62,6 +62,8 @@ def create_cube(n=0.0)
   unity "/cube",n
   slice_cube y: 10.0, z: 10.0, cubes: 10.0
   slice_cube y: 0.0, z: 0.0, cubes: 0.0
+  star size: 0.0, life: 2.0
+
 end
 def explode_cube()
   unity "/cube/explode"
@@ -147,6 +149,7 @@ def roots(*args)
       unity "/roots/target/bird", 1.0
     end
     if o == :cube
+      unity "/roots/target/cube", 0.0
       unity "/roots/target/cube", 1.0
     end
     if o == :frag
@@ -241,6 +244,7 @@ def cam(type=:main)
     unity "/cubeinside", 0.25*3
     unity "/sea/waveheight", 0.0
     unity "/star/life", 2.0
+    create_aura
   elsif type == :top
     $pmode=2
     unity "/cam1"
@@ -253,7 +257,7 @@ def cam(type=:main)
     $pmode=0
     unity "/cubecam/zoomin", 0.0
     unity "/cubecam/zoomin", 1.0
-    unity "/cubeinside", 0.0
+    #unity "/cubeinside", 0.0
     unity "/cam4"
   end
 end
@@ -270,21 +274,24 @@ def defaultcolor
   unity "/color3/s",0.0
   unity "/color3/b",0.0
 end
-def cube_linecolor(s=1,b=1,h=1)
-  at{
-    sleep 0.5
-    unity "/linecolor/cube/s",s
-    unity "/linecolor/cube/b",b
-    unity "/linecolor/cube/h",h
-  }
-end
-def linecolor(factor=1)
-  at{
-    sleep 0.5
-    unity "/linecolor/s",1.0
-    unity "/linecolor/b",1.0
-    unity "/linecolor/h",rand*factor
-  }
+def linecolor(*args)
+  opts = resolve_synth_opts_hash_or_array(args)
+  if (f=opts[:cube])
+    at{
+      sleep 0.5
+      unity "/linecolor/cube/s",rand*f
+      unity "/linecolor/cube/b",rand*f
+      unity "/linecolor/cube/h",rand*f
+      }
+  else
+    factor = opts[:factor] || 1.0
+    at{
+      sleep 0.5
+      unity "/linecolor/s",1.0
+      unity "/linecolor/b",1.0
+      unity "/linecolor/h",rand*factor
+    }
+  end
 end
 def linear_map(x0, x1, y0, y1, x)
   dydx = (y1 - y0) / (x1- x0)
@@ -337,4 +344,5 @@ def init!(d=false)
   create_aura -5
   unity "/cubeinside", -0.25
   roots throttle: 0.0
+  cam :cube
 end
