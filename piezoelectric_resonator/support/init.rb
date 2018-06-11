@@ -1,7 +1,6 @@
 Zz = [nil]
 S = 18
 T = 21
-$pmode=0
 def start
   looper_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0
   mbox2_cc motion: 0.5, sat: 0.00, drive: 0.00
@@ -320,6 +319,7 @@ def cube(*args)
 end
 
 def init!(d=false)
+  $pmode=0
   scene 1
   if d
     sleep 2
