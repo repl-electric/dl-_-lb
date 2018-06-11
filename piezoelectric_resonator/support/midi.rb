@@ -142,8 +142,7 @@ def ze(n,*args)
   end
 end
 
-
-def pads(n,*args)
+def overclock(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -158,32 +157,26 @@ def pads(n,*args)
     args_h = resolve_synth_opts_hash_or_array(args)
     if(args_h[:mode])
     end
+
     if n && ((n != "_") && n != :_)
-      if t = args_h[:pad]
-        if t == 0
+      args_h[:pads] ||= 0
+      pads = args_h[:pads]
+      if pads && !pads.is_a?(Array)
+        pads = [pads]
+      end
+      pads.map{|pad|
+        if pad == 0
           midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 10})
         end
-        if t == 1
+        if pad == 1
           midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 11})
         end
-        if t == 2
+        if pad == 2
           midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 12})
         end
-      else
-        if t = args_h[:thick]
-          if t >= 0
-            midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 10})
-          end
-          if t >= 1
-            midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 11})
-          end
-          if t >= 2
-            midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 12})
-          end
-        end
-      end
+      }
       nname = SonicPi::Note.new(n).midi_string
-      puts "Pads -> [#{nname}]"
+      puts "Overclock -> [#{nname}]"
       pads_cc args_h
     end
   end
