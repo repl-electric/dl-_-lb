@@ -26,16 +26,21 @@ end
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 15})
       if $pmode == 0
       at{
-         sleep 0.5
-         burst 0.8+velocity*0.01
-         sleep 0.5
-         burst 0.01
+           sleep 0.5
+           burst 0.8+velocity*0.01
+           sleep 0.5
+           burst 0.01
          }
       end
       if $pmode == 1
         at{
            sleep 0.5
-           tree height: 1.1+rand*0.1 * args_h[:f]
+           note_weight=linear_map(60,70, 0.0,0.1, note(n))
+           x=(line(1.0, 18.0,256)+line(18.0,1.0,256))
+           @polyidx ||= 0
+           @polyidx +=1
+           @polyidx = @polyidx % (x.length-1)
+           tree height:  (x[@polyidx]+note_weight)   * (args_h[:f]||1.0)
         }
       end
 
