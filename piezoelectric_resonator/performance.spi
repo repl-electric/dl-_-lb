@@ -9,18 +9,16 @@ live_loop :sea, sync: :unsyncable do; tick
   sleep 1
 end
 
-live_loop :wind, sync: :unsyncable do
-  tick
+live_loop :wind, sync: :unsyncable do; tick
   sleep 1/8.0
 end
 
-live_loop :light, sync: :unsyncable do
-  tick
+live_loop :light, sync: :unsyncable do; tick
   sleep 8
 end
 
-live_loop :pace, sync: :unsyncable do
-  tick
+live_loop :pace, sync: :unsyncable do; tick
+  stop
   sleep 0.25
 end
 
