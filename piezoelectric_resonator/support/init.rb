@@ -271,7 +271,7 @@ def defaultcolor
   unity "/color3/s",0.0
   unity "/color3/b",0.0
 end
-def cube_linecolor(s,b,h)
+def cube_linecolor(s=1,b=1,h=1)
   at{
     sleep 0.5
     unity "/linecolor/cube/s",s
