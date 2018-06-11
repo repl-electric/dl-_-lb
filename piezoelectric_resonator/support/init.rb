@@ -1,12 +1,12 @@
 Zz = [nil]
 S = 18
 T = 21
-def start
+def start_init
   looper_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0
   mbox2_cc motion: 0.5, sat: 0.00, drive: 0.00
   mbox_cc  motion: 0.6
   pads_cc amp: 0.85
-  looper_cc amp: 0.85
+  looper_cc amp: 0.8
 end
 def deepbase_init
   looper_cc motion: 1.00, drive: 0.30, fm: 0.00, mode: 0
@@ -63,7 +63,6 @@ def create_cube(n=0.0)
   slice_cube y: 10.0, z: 10.0, cubes: 10.0
   slice_cube y: 0.0, z: 0.0, cubes: 0.0
   star size: 0.0, life: 2.0
-
 end
 def explode_cube()
   unity "/cube/explode"
@@ -174,8 +173,7 @@ def rocksinit()
   unity "/rocks/turb",0.0
   unity "/rocks/vortex/radius",100.0
   unity "/rocks/pos",6.0
-  rocks throttle: 1.0
-  rocks throttle: 1.0, orbit: -40.0, rot: -100, noise: 10.8
+  rocks throttle: 1.0, orbit: 40.0, rot: -100, noise: 10.8
 end
 def rocks(*args)
   opts = resolve_synth_opts_hash_or_array(args)
@@ -223,21 +221,22 @@ end
 
 def cam(type=:main)
   if type == :exit
-    $pmode=1
-    unity "/cubecam/zoomout", 0.0
-    unity "/cubecam/zoomout", 1.0
-    unity "/cubeinside", 0.25*3
-    unity "/sea/waveheight", 0.0
-    unity "/star/life", 2.0
-    at{
-      8.times{|n|
-        puts "tick"
-        roots throttle: 1.0* 1.0/n+1
-        sleep 1/2.0
+    if $pmode !=1
+      $pmode=1
+      unity "/cubecam/zoomout", 0.0
+      unity "/cubecam/zoomout", 1.0
+      unity "/cubeinside", 0.25*3
+      unity "/sea/waveheight", 0.0
+      unity "/star/life", 2.0
+      at{
+        8.times{|n|
+          roots throttle: 1.0* (1.0/(n + 1.0))
+          sleep 1/2.0
+        }
+        roots throttle: 0.0
+        create_aura
       }
-      roots throttle: 0.0
-      create_aura
-    }
+    end
   elsif type == :main
     $pmode=1
     unity "/cam0"
@@ -257,7 +256,9 @@ def cam(type=:main)
     $pmode=0
     unity "/cubecam/zoomin", 0.0
     unity "/cubecam/zoomin", 1.0
-    #unity "/cubeinside", 0.0
+    unity "/cubeinside", -0.25
+    create_light 0
+    create_aura -5
     unity "/cam4"
   end
 end
@@ -325,24 +326,24 @@ def cube(*args)
   end
 end
 
-def init!(d=false)
-  $pmode=0
-  scene 1
-  if d
+def init!(force=false)
+  if force || $pmode !=0 #only init once
+    $pmode=0
+    scene 1
     sleep 2
+    world :time, 1.0
+    $zslices=0.0
+    defaultcolor
+    create_tree -1
+    create_sea -1
+    create_island -1
+    create_light 1
+    create_light 0
+    create_bird -1
+    create_cube -2
+    create_aura -5
+    unity "/cubeinside", -0.25
+    roots throttle: 0.0
+    cam :cube
   end
-  world :time, 1.0
-  $zslices=0.0
-  defaultcolor
-  create_tree -1
-  create_sea -1
-  create_island -1
-  create_light 1
-  create_light 0
-  create_bird -1
-  create_cube -2
-  create_aura -5
-  unity "/cubeinside", -0.25
-  roots throttle: 0.0
-  cam :cube
 end
