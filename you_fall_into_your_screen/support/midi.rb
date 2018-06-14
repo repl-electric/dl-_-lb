@@ -1097,6 +1097,15 @@ module ReplElectric
             end
         if n
           midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 1
+          if n == 7
+            midi_cc 7, 0.0*127,  port: :midi_fighter_twister, channel: 0
+          end
+          if n == 8
+            midi_cc 8, 0.0*127,  port: :midi_fighter_twister, channel: 0
+          end
+          if n == 9
+            midi_cc 9, 0.0*127,  port: :midi_fighter_twister, channel: 0
+          end
         end
       end
     end
