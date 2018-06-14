@@ -1,6 +1,4 @@
-ROOT="/Users/josephwilk/Workspace/repl-electric/adventures-in-algorhythm/piezoelectric_resonator/support"; load "#{ROOT}/midi.rb";load "#{ROOT}/init.rb";use_bpm 127
-#init!(true) && start
-#cam :cube && world time: 0.01
+load_support('piezoelectric_resonator'); use_bpm 127
 
 live_loop :sea, sync: :unsyncable do; tick
   sleep 1
