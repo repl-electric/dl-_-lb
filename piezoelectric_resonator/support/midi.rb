@@ -7,8 +7,26 @@ def linear_map(x0, x1, y0, y1, x)
 end
 
 
- def kal(n,*args)
-     if n
+def harp(n,*args)
+end
+
+
+def harp_cc(cc)
+  cc.keys.each do |k|
+    n = case k
+        when :on; 90
+        else
+          nil
+        end
+    if n
+      midi_cc n, cc[k]*127.0, port: :iac_bus_2, channel: 2
+    end
+  end
+end
+
+
+def kal(n,*args)
+  if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
       args = args[1..-1]
@@ -99,6 +117,7 @@ def ze(n,*args)
     end
     if n && ((n != "_") && n != :_)
       if $pmode == 0
+
         if $zslices == nil
           $zslices = 0.0
         end
@@ -132,8 +151,8 @@ def ze(n,*args)
           end
 
           if args_h[:flash]
-            unity "/linecolor/cube/b", linear_map(64,72, 0.0,2.0, note(n))
-            cube_linecolor rand, rand, rand
+            unity "/linecolor/cube/b", linear_map(64,72, 0.0,4.0, note(n))
+            linecolor cube: 1.0, s:  rand, h: rand, b: rand, delay: true
           end
           #light(size: linear_map(64,72, -0.02,0.0, note(n)))
           sleep 0.5
@@ -142,12 +161,25 @@ def ze(n,*args)
       end
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 8})
       nname = SonicPi::Note.new(n).midi_string
-      pads_cc args_h
+      ze_cc args_h
     end
   end
 end
 
-def overclock(n,*args)
+def ze_cc(cc)
+  cc.keys.each do |k|
+    n = case k
+        when :solo; 100
+        else
+          nil
+        end
+    if n
+      midi_cc n, cc[k]*127.0, port: :iac_bus_2, channel: 8
+    end
+  end
+end
+
+def heat(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -181,8 +213,8 @@ def overclock(n,*args)
         end
       }
       nname = SonicPi::Note.new(n).midi_string
-      puts "Overclock -> [#{nname}]"
-      pads_cc args_h
+      puts "Heat -> [#{nname}]"
+      heat_cc args_h
     end
   end
 end
@@ -224,7 +256,7 @@ def play_with(synths, *args)
   end
 end
 
-def pads_cc(cc)
+def heat_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :drive; 51
@@ -382,6 +414,9 @@ def mbox2(n,*args)
         sleep 0.5
         vortex throttle: rand*0.5
         rocks throttle: 1.0
+        rocks noise: 8.0
+        sleep 1
+        rocks noise: 0.0
         }
 
       mbox_cc args_h
@@ -437,7 +472,7 @@ end
 
 
 
-def looper(n,*args)
+def overclock(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -451,7 +486,7 @@ def looper(n,*args)
     end
     args_h = resolve_synth_opts_hash_or_array(args)
     if(m=args_h[:mode])
-      looper_mode(m)
+      overclock_mode(m)
     end
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 5})
@@ -462,12 +497,12 @@ def looper(n,*args)
         }
       end
       nname = SonicPi::Note.new(n).midi_string
-      looper_cc args_h
+      overclock_cc args_h
     end
   end
 end
 
-def looper_on(n,*args)
+def overclock_on(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -486,26 +521,26 @@ def looper_on(n,*args)
     if n && ((n != "_") && n != :_)
       midi_note_on n, velocity, *(args << {port: :iac_bus_2} << {channel: 5})
       nname = SonicPi::Note.new(n).midi_string
-      looper_cc args_h
+      overclock_cc args_h
     end
   end
 end
 
-def looper_off(n,*args)
+def overclock_off(n,*args)
   if n
     midi_note_off n, port: :iac_bus_2, channel: 5
   end
 end
 
-def looper_x(*args)
+def overclock_x(*args)
   midi_all_notes_off port: :iac_bus_2, channel: 5
 end
 
 
 
-def looper_mode(mode)
+def overlock_mode(mode)
   if mode
-    looper ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]
+    overclock ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]
   end
 end
 
@@ -525,13 +560,14 @@ def flow_oct(oct)
   48=> 0.83}[oct]
 end
 
-def looper_cc(cc)
+def overclock_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :motion; 1
         when :fm; 50
         when :drive; 51
         when :amp; 52
+        when :solo; 100
         when :oct
           f = flow_oct(cc[k])
           if f

@@ -432,6 +432,22 @@ module ReplElectric
       end
     end
 
+    def operator_cc(cc)
+      cc.keys.each do |k|
+        n = case k
+            when :solo; 100
+            else nil
+            end
+        if n
+          if n == :at
+            midi_channel_pressure cc[k]*127.0, channel: 3, port: :iac_bus_1
+          else
+            midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 3
+          end
+        end
+      end
+    end
+
     def operator_off(n)
       midi_note_off n, {port: :iac_bus_1,  channel: 3}
     end
