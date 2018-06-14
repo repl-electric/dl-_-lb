@@ -2,11 +2,31 @@ Zz = [nil]
 S = 18
 T = 21
 def start_init
-  looper_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0
-  mbox2_cc motion: 0.5, sat: 0.00, drive: 0.00
-  mbox_cc  motion: 0.6
-  pads_cc amp: 0.85
-  looper_cc amp: 0.8
+  if $pmode==0
+    looper_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0
+    mbox2_cc motion: 0.5, sat: 0.00, drive: 0.00
+    mbox_cc  motion: 0.6
+    pads_cc amp: 0.85
+    looper_cc amp: 0.8
+  end
+end
+def endit
+  create_cube 3
+  sea ripple: 13.0
+  burst 1.0
+  linecolor factor: -10
+  rocks orbit: 200.0, throttle: 1.0
+  star life: 10, size: 5.0 #4
+  roots throttle: 1.0, freq: 1.0, target: :bird, drag: 0.0, swirl: 1.0
+
+  vortex y: 7.0, force: -400, throttle: 1.0, radius: 4.9, throttle: 1.0
+  cam :top
+  burst 1.0
+  unity "/endit", 0.0
+  unity "/endit", 1.0
+end
+def theend
+  unity "/enditall",1.0
 end
 def deepbase_init
   looper_cc motion: 1.00, drive: 0.30, fm: 0.00, mode: 0
@@ -134,16 +154,22 @@ def roots(*args)
   if opts[:delay] == true
     sleep 0.5
   end
-  if opts[:throttle]
-    unity "/roots", opts[:throttle]
+  if (o=opts[:throttle])
+    unity "/roots", o
   end
-  if o=opts[:drag]
+  if (o=opts[:drag])
     unity "/roots/drag", o
   end
-  if o=opts[:freq]
+  if (o=opts[:freq])
     unity "/roots/freq", o
   end
-  if o=opts[:target]
+  if (o=opts[:swirl])
+    unity "/roots/swirl", o
+  end
+    if (o=opts[:alive])
+    unity "/roots/alive", o
+  end
+  if (o=opts[:target])
     if o == :bird
       unity "/roots/target/bird", 1.0
     end
@@ -173,7 +199,7 @@ def rocksinit()
   unity "/rocks/turb",0.0
   unity "/rocks/vortex/radius",100.0
   unity "/rocks/pos",6.0
-  rocks throttle: 1.0, orbit: 40.0, rot: -100, noise: 10.8
+  rocks throttle: 0.0, orbit: 0.0, rot: -100, noise: 10.8
 end
 def rocks(*args)
   opts = resolve_synth_opts_hash_or_array(args)
@@ -199,7 +225,7 @@ def vortex(*args)
     unity "/rocks/throttle", o
   end
   if opts[:turb]
-    unity "/rocks/turb", opts[:turbulence]
+    unity "/rocks/turb", opts[:turb]
   end
   if o=opts[:force]
     if o == 0.0
@@ -239,11 +265,13 @@ def cam(type=:main)
     end
   elsif type == :main
     $pmode=1
+    tree height: 1.0
     unity "/cam0"
     unity "/cubeinside", 0.25*3
     unity "/sea/waveheight", 0.0
     unity "/star/life", 2.0
     create_aura
+    roots throttle: 0.03, freq: 0.1, target: :bird, drag: 1.0
   elsif type == :top
     $pmode=2
     unity "/cam1"
@@ -279,15 +307,15 @@ def linecolor(*args)
   opts = resolve_synth_opts_hash_or_array(args)
   if (f=opts[:cube])
     at{
-      sleep 0.5
-      unity "/linecolor/cube/s",rand*f
-      unity "/linecolor/cube/b",rand*f
-      unity "/linecolor/cube/h",rand*f
+      sleep 0.5 if opts[:delay] == true
+      unity "/linecolor/cube/s",opts[:s] || 0.0
+      unity "/linecolor/cube/b",opts[:b] || 1.0+rand*f
+      unity "/linecolor/cube/h",opts[:h] || 1.0
       }
   else
     factor = opts[:factor] || 1.0
     at{
-      sleep 0.5
+      sleep 0.5 if opts[:delay] == true
       unity "/linecolor/s",1.0
       unity "/linecolor/b",1.0
       unity "/linecolor/h",rand*factor
@@ -324,11 +352,23 @@ def cube(*args)
   if (o=opts[:embers])
     unity "/cube/embers/throttle", o
   end
+  if (o=opts[:lightning])
+    if o > 0
+      unity "/cube/lightning/1", o
+    else
+      unity "/cube/lightning", o
+    end
+  end
 end
 
 def init!(force=false)
   if force || $pmode !=0 #only init once
     $pmode=0
+    start_init
+    $xslices=0.0
+    $yslices=0.0
+    $zslices=0.0
+    $cslices=0.0
     scene 1
     sleep 2
     world :time, 1.0
@@ -344,6 +384,7 @@ def init!(force=false)
     create_aura -5
     unity "/cubeinside", -0.25
     roots throttle: 0.0
+    rocksinit
     cam :cube
   end
 end
