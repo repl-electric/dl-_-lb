@@ -10,6 +10,22 @@ module ReplElectric
       (y0 + (dydx * dx))
     end
 
+    def flow_oct(oct)
+      {
+        -24 => 0,
+        -12 => 0.3,
+        -5 => 0.4,
+        0 =>  0.5,
+        7 => 0.65,
+        12 => 0.66,
+        19 => 0.7,
+        24 => 0.73,
+        31 => 0.75,
+        36 => 0.78,
+        43 => 0.8,
+        48=> 0.83}[oct]
+    end
+
     def find_chord(note)
       chord(note,ct(note))
     end
@@ -209,6 +225,10 @@ module ReplElectric
       qbitsea ['C-1','Cs-1','D-1','Ds-1','E-1', 'F-1', 'Fs-1', 'G-1', 'Gs-1', 'A-1', 'As-1', 'B-1'][mode]
     end
 
+    def qbitsea_x(*args)
+      midi_all_notes_off port: :iac_bus_1, channel: 4
+    end
+
     def qbitsea_cc(cc)
       cc.keys.each do |k|
         n = case k
@@ -223,7 +243,15 @@ module ReplElectric
             when :mul; 105
             when :atk; 106
             when :wav; 107
-            when :oct; 108
+            when :oct
+              f = flow_oct(cc[k])
+              if f
+                cc[k] = f
+              end
+              if cc[k] > 1
+                cc[k] = flow_oct(0)
+              end
+              108
             when :charge; 109
             when :width; 110
             when :center; 111
@@ -384,14 +412,15 @@ module ReplElectric
               if @thick > 0.03
                 @thick = 0.01
               end
-            if n == :d4 || n == :gs4
-              at{
-              sleep 0.5
-              unity "/shard", velocity*0.001
-              sleep 0.125
-              unity "/shard", 0.0
-              }
-            end
+              if n == :d4 || n == :gs4
+                at{
+                  sleep 0.5
+                  unity "/shard", velocity*0.001
+                  sleep 0.125
+                  unity "/shard", 0.0
+                }
+              end
+              operator_cc(args_h)
             end
 
             puts "#{SonicPi::Note.new(n).midi_string.ljust(4, " ")} [Operator]" unless note(n) < MODE_NOTE
