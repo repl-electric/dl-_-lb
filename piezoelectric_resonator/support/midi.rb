@@ -316,13 +316,14 @@ def deep_cc(cc)
   end
 end
 
-def glitch(n)
-  midi n, port: :iac_bus_2
+def glitch(n,vel=80)
+  midi n, vel, port: :iac_bus_2, channel: 3
 end
 
 def glitch_cc(kit)
-  kits = ['c-1', 'cs-1']
-  midi ['c-1', 'cs-1'][kit % kits.count], port: :iac_bus_2
+  kits = ['c-1','cs-1','d-1','ds-1','e-1','f-1','fs-1','g-1','gs-1', 'a-1', 'as-1',
+          'b-1', 'c0', 'cs0', 'd0', 'ds0', 'e0','f0']
+  midi kits[kit % kits.count], port: :iac_bus_2, channel: 3
 end
 
 def mbox(n,*args)
