@@ -1,23 +1,157 @@
 load_support('piezoelectric_resonator'); use_bpm 127
 
-live_loop :sea, sync: :unsyncable do; tick
-  sleep 1
-  sleep 1
-  sleep 1
-  sleep 1
+
+live_loop :go, sync: :unsyncable do
+  tick
+  if spread(1,8).look
+    midi :c3
+  end
+  if spread(7,11).look
+    #mt S, [100,80,90,70,100].choose, [100,80,90,70,100].choose
+    midi :f3
+  end
+  if spread(3,8).look
+    glitch_cc (ing 0 1).look
+    midi :c3
+    mt 6, 30, 100
+  end
+  sleep 1/2.0
 end
 
-live_loop :wind, sync: :unsyncable do; tick
-  sleep 1/8.0
+live_loop :ModularSynthsControlledByCode, sync: :unsyncable do; tick
+  mbox2 :F4, sus: 1/2.0 if spread(1,4).look
+  sleep 1
+  mbox2 :A3, sus: 4
+
+  # sleep (ing
+  #        1/2.0 1 1 1.0
+  #        1/2.0 1/2.0 1 1      1 1/2.0).look * 2
+  with_transpose -12*1 {
+    #mbox2 (ing :c3 :e3 :a3 :e3  :f3 :f3 :c3 :g2).look,(ing 122 110 120 112).look, sus: (ing 2, 2, 4, 2, 4).look
+  }
+  sleep 1
+  mbox2 (nit :e3   3 :e4   2 :f4     2 :G4   3  :a4    1  _ 1).look, 127,
+   sus: (nit 1/2.0 3 1/2.0 2 1.0/3.0 2 1/2.0 3   1/2.0 1  _ 1).look
+  # sleep (ing 1/2.0 1 1 1.0
+  #            1/2.0 1/2.0 1 1   1 1/2.0).look * 2
+  sleep 1/2.0
+  mbox (nit :F2,7, :G2 3 :a2 1 :c3 1).look,  127, sus: 1/2.0
+  sleep 1/2.0
+  mbox (nit :G2,7, :A2 3 :e2 1 :C3 1).look, 120, sus: 1.0
 end
+
+#keep
+#mbox_cc motion: 0.30, drive: 1.00, sat: 1.00
+#mbox2_cc sat: 1.00, motion: 0.50, drive: 0.00
+
+
+#world time: 1.0
+# live_loop :wind, sync: :unsyncable do; tick
+#   stop
+#   if spread(1,128).rot(-2).look
+#     mt S, 20, 20
+#   end
+
+#   s =(knit :A3, 128, _, 128).look
+#   #qbitsea s, (line 127,50,256*4).look, sus: (knit 1/4.0,32,1/2.0,31, 1, 1).look if spread(7*1,11*4).look
+
+#   if spread(7*1,11*4).look
+#     if spread(7*1,11*4*8).look
+#       #bitsea :A4, (line 127,100,256).look, sus: 2, hi: 0.85
+#     end
+#   end
+
+#   # qbitsea :G3, ((line 20,40,128)+(line 40,20,128)).look, sus: (ing 1/4.0 1/2.0 1/4.0).look if spread(3*4,8*4).look
+#   # qbitsea :E3, 50, sus: (ing 1/2.0 1 1).look if spread(1*4,8*4).look
+#   sleep 1/8.0
+# end
+#zero_x
 
 live_loop :light, sync: :unsyncable do; tick
-  sleep 8
+  scorez = (ing   #64
+    [[:A3 :C5 :E4] 4]
+    [[:F4 :A6 :C5] 8]
+    [[:C3 :E5 :G4] 8]
+    [[:A3 :C5 :E4] 4]
+    [[:E4 :G5 :B3] 4]
+    [[:F4 :A5 :C5 :E5] 8]
+    [[:F4 :A5 :C5 :E5] 8]
+    [[:C3 :E5 :G4] 8]
+    [Zz            8]
+
+    [[:A3 :C5 :E4] 4]
+    [[:F4 :A6 :C5] 8]
+    [[:C3 :E5 :G4] 8]
+    [Zz            8]
+    [[:A3 :C5 :E4] 4]
+    [[:E4 :G5 :B4] 4]
+    [[:G4 :C7 :D5] 8]
+    [[:G4 :B6 :D5] 8]
+    [[:C4 :E5 :G4] 8]
+    [Zz            8]
+    )
+  score = scorez.look[0]
+  sleeps = scorez.look[-1]
+
+  at{
+    v=0.8
+    callstack score[0], 114*v, sus: 8
+    sleep 1.0
+    operator score[1], (ing 100, 100, 50, 30).tick(:i), sus: (ing 1 0.25 0.25).tick(:s)
+    sleep 2
+    sleep 1.0
+  }
+
+  # at{
+  #   sleeps.times{
+  #     #operator score[-1], (ing 100, 100, 50, 30).tick(:i), sus: (ing 1 0.25 0.25).tick(:s)
+  #     sleep (ing
+  #            1/2.0
+  #            1/4.0 1/4.0
+  #            ).tick(:n)
+  #     #ze score[-1], 25
+  #   }
+  #   if score[0] == :C3
+  #     score[0] = :C4
+  #   end
+  #   if score[0] == nil
+  #     at{
+  #       #overclock :G4, 40, sus: 1.0
+  #       sleep 1+0.125
+  #       #qbitsea :G3, sus: 32
+  #     }
+  #   else
+  #     #overclock score[0], 100, sus: 1.0
+  #   end
+  # }
+  qbitsea_cc oct: (ing 0 7 0 12+5).look
+  heat score[0], (ing 10 30 50 10  10 30 40 50).look, sus: sleeps, pads: [0,1,2], sat: 0.0, drive: 0.00
+  deep root(score), sleeps*4, sus: sleeps*2, drive: 0.4, sat: 0.0
+  sleep sleeps
 end
+
+
+#deep_cc dirt: 1.0, wet: 1.0, tone: 1.0, filter: 1.0
+#heat_cc solo: 1.0
 
 live_loop :pace, sync: :unsyncable do; tick
-  stop
+  #overclock_cc oct: (ing 0,  -12, 0, 12).look
   sleep 0.25
+  tick
+  #overclock_cc oct: (ing 0,  -12, 0, 19).look
+  sleep 1
 end
 
-live_loop(:unsyncable) do; sleep 1.0 end
+#overclock_cc oct: 12
+#overclock_cc motion: 0.00, drive: 1.00, sat: 0.00
+
+live_loop(:unsyncable) do
+  sleep 1.0
+end
+
+#drums on: 1.0
+#lfo on: false, cutoff: 0.10
+#hfp on: true, cutoff: 0.00
+
+#mbox_cc motion: 0.30, drive: 1.00, sat: 1.00
+#mbox2_cc motion: 0.00, drive: 0.00
