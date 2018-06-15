@@ -245,7 +245,6 @@ def sopsea(n,*args)
   end
 end
 
-
 def play_with(synths, *args)
   synths.each do |s|
     begin
@@ -304,6 +303,10 @@ def deep_cc(cc)
           sea ripple: cc[k]*1.5, delay: true
           51
         when :sat; 52
+        when :dirt; 14
+        when :wet; 15
+        when :tone; 16
+        when :filter; 17
         else
           nil
         end
@@ -311,6 +314,15 @@ def deep_cc(cc)
       midi_cc n, cc[k]*127.0, port: :iac_bus_2, channel: 7
     end
   end
+end
+
+def glitch(n)
+  midi n, port: :iac_bus_2
+end
+
+def glitch_cc(kit)
+  kits = ['c-1', 'cs-1']
+  midi ['c-1', 'cs-1'][kit % kits.count], port: :iac_bus_2
 end
 
 def mbox(n,*args)
@@ -470,8 +482,6 @@ def mbox2_cc(cc)
   end
 end
 
-
-
 def overclock(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
@@ -535,8 +545,6 @@ end
 def overclock_x(*args)
   midi_all_notes_off port: :iac_bus_2, channel: 5
 end
-
-
 
 def overlock_mode(mode)
   if mode
