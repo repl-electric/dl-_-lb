@@ -6,6 +6,25 @@ def linear_map(x0, x1, y0, y1, x)
   (y0 + (dydx * dx))
 end
 
+def solo(k)
+  case k
+    when :pad
+      midi_cc 11,127, port: :iac_bus_2, channel: 1
+  end
+end
+
+def fx(cc)
+  cc.keys.each do |k|
+    n = case k
+        when :reverb; 12
+        else
+          nil
+        end
+    if n
+      midi_cc n, cc[k]*127.0, port: :iac_bus_2, channel: 1
+    end
+  end
+end
 
 def harp(n,*args)
 end
