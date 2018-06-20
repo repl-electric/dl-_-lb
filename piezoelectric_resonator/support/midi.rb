@@ -339,10 +339,19 @@ def glitch(n,vel=80)
   midi n, vel, port: :iac_bus_2, channel: 3
 end
 
-def glitch_cc(kit)
-  kits = ['c-1','cs-1','d-1','ds-1','e-1','f-1','fs-1','g-1','gs-1', 'a-1', 'as-1',
-          'b-1', 'c0', 'cs0', 'd0', 'ds0', 'e0','f0']
-  midi kits[kit % kits.count], port: :iac_bus_2, channel: 3
+def glitch_cc(cc)
+  cc.keys.each do |k|
+    case k
+    when :mode
+      kits = ['c-1','cs-1','d-1','ds-1','e-1','f-1','fs-1','g-1','gs-1', 'a-1', 'as-1',
+        'b-1', 'c0', 'cs0', 'd0', 'ds0', 'e0','f0']
+      midi kits[cc[k] % kits.count], port: :iac_bus_2, channel: 4
+    when :corode
+      midi_cc 50, 127*cc[k], port: :iac_bus_2, channel: 4
+    else
+      nil
+    end
+  end
 end
 
 def mbox(n,*args)
@@ -415,6 +424,9 @@ def mbox_cc(cc)
     n = case k
         when :motion; 1
         when :drive; 51
+        when :sat; 52
+        when :delay; 53
+        when :on; 54
         else
           nil
         end
@@ -493,6 +505,8 @@ def mbox2_cc(cc)
         when :motion; 1
         when :drive; 51
         when :sat; 52
+        when :delay; 53
+        when :on; 54
         else
           nil
         end
