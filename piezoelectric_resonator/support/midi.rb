@@ -336,7 +336,7 @@ def deep_cc(cc)
 end
 
 def glitch(n,vel=80)
-  midi n, vel, port: :iac_bus_2, channel: 3
+  midi n, vel, port: :iac_bus_2, channel: 4
 end
 
 def glitch_cc(cc)
