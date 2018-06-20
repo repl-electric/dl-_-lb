@@ -1,48 +1,83 @@
 load_support('piezoelectric_resonator'); use_bpm 127
-
+#overclock_x
 
 live_loop :go, sync: :unsyncable do
   tick
-  if spread(1,8).look
-    midi :c3
+  if spread(3,8).look
+    glitch :c3, (ing 120 90 100 100    100 90 90 90).look
+    glitch_cc corode: 0.4
   end
   if spread(7,11).look
+    glitch_cc mode: (ing 0 2 3 5).look
     #mt S, [100,80,90,70,100].choose, [100,80,90,70,100].choose
-    midi :f3
+    #glitch (ing :f3 :g3).look, 90
   end
   if spread(3,8).look
-    glitch_cc (ing 0 1).look
-    midi :c3
-    mt 6, 30, 100
+    #glitch :e3
+    #mt 6, 30, 100
   end
   sleep 1/2.0
 end
+#glitch_cc 5
+#overclock_on :F3
+#overclock_cc motion: 0.25, oct: 0
+#overclock_on :G3
+
+# E F A   E G B root
+
+# E G B D F
+# F A C E G
+# A C E G B
+
+#A B
+
+#overclock_on :E3
+
+#solo :pad
+
+fx reverb: 1.00
+#mbox on: 0.0
+#mbox2 on: 0.0
 
 live_loop :ModularSynthsControlledByCode, sync: :unsyncable do; tick
-  mbox2 :F4, sus: 1/2.0 if spread(1,4).look
-  sleep 1
-  mbox2 :A3, sus: 4
+  ratio = 1
+  with_bpm 127*1 do
+    kalshot :G3, [5,10,15,20].choose, sus: 6 if spread(1,12).look
 
-  # sleep (ing
-  #        1/2.0 1 1 1.0
-  #        1/2.0 1/2.0 1 1      1 1/2.0).look * 2
-  with_transpose -12*1 {
-    #mbox2 (ing :c3 :e3 :a3 :e3  :f3 :f3 :c3 :g2).look,(ing 122 110 120 112).look, sus: (ing 2, 2, 4, 2, 4).look
-  }
-  sleep 1
-  mbox2 (nit :e3   3 :e4   2 :f4     2 :G4   3  :a4    1  _ 1).look, 127,
-   sus: (nit 1/2.0 3 1/2.0 2 1.0/3.0 2 1/2.0 3   1/2.0 1  _ 1).look
-  # sleep (ing 1/2.0 1 1 1.0
-  #            1/2.0 1/2.0 1 1   1 1/2.0).look * 2
-  sleep 1/2.0
-  mbox (nit :F2,7, :G2 3 :a2 1 :c3 1).look,  127, sus: 1/2.0
-  sleep 1/2.0
-  mbox (nit :G2,7, :A2 3 :e2 1 :C3 1).look, 120, sus: 1.0
+    mbox2 :D4, 2*(ing 50 60 70 110).look, sus: 1.0/2.0 #if spread(1,2).look
+    sleep 1/2.0
+    mbox  :A3, 50, sus: 1.0
+    sleep 1/2.0
+
+    glitch_cc corode: (ine 0.2 0.7 128).look
+    glitch (ing :c3 :a3).look, 30 if spread(7,11).look
+
+    with_swing -0.1 {
+      mbox2 :E4, 5.5*(ing 50 60 70 110).look, sus: 1.0/2.0
+    }
+    sleep 1/2.0
+    sleep 1/2.0
+#    mbox :G3, 127, sus: 1.0/8.0 if spread(3,8).look
+    with_swing -0.1 {
+      mbox :f2, 127-rand*10, sus: 1.0/4.0
+    }
+
+    sleep 1
+    sleep 1
+  end
 end
 
 #keep
 #mbox_cc motion: 0.30, drive: 1.00, sat: 1.00
 #mbox2_cc sat: 1.00, motion: 0.50, drive: 0.00
+
+#mbox_cc motion: 0.70, drive: 0.00, sat: 0.00
+#mbox2_cc sat: 1.00, motion: 0.60, drive: 0.00
+
+##mbox_cc motion: 0.30, drive: 1.00, sat: 1.00
+#mbox2_cc sat: 1.00, motion: 0.30, drive: 0.65
+
+#overclock_cc motion: 0.45, drive: 0.60
 
 
 #world time: 1.0
@@ -69,35 +104,78 @@ end
 
 live_loop :light, sync: :unsyncable do; tick
   scorez = (ing   #64
-    [[:A3 :C5 :E4] 4]
-    [[:F4 :A6 :C5] 8]
-    [[:C3 :E5 :G4] 8]
-    [[:A3 :C5 :E4] 4]
-    [[:E4 :G5 :B3] 4]
-    [[:F4 :A5 :C5 :E5] 8]
-    [[:F4 :A5 :C5 :E5] 8]
-    [[:C3 :E5 :G4] 8]
-    [Zz            8]
+    # [[:A3 :C5 :E4] 4]
+    # [[:F4 :A6 :C5] 8]
+    # [[:C3 :E5 :G4] 4]
+    # [Zz 4]
+    # [[:A3 :C5 :E4] 8]
+    # [[:E4 :G5 :B3] 8]
+    # [[:F4 :A5 :C5 :E5] 4]
+    # [[:F4 :A5 :C5 :E5] 4]
+    # [[:C3 :E5 :G4] 8]
+    # [Zz            8]
 
-    [[:A3 :C5 :E4] 4]
+    # [[:A3 :C5 :E4] 8]
+    # [[:F4 :A6 :C5] 8]
+    # [[:C3 :E5 :G4] 8]
+    # #[Zz            4]
+    # [[:A3 :C5 :E4] 8]
+    # [[:E4 :G5 :B4] 8]
+    # [[:G4 :C7 :D5] 8]
+    # [[:G4 :B6 :D5] 4]
+    # [[:C4 :E5 :G4] 8]
+    # [Zz            8]
+
+    [[:A3 :C5 :E4] 8]
     [[:F4 :A6 :C5] 8]
-    [[:C3 :E5 :G4] 8]
-    [Zz            8]
-    [[:A3 :C5 :E4] 4]
-    [[:E4 :G5 :B4] 4]
-    [[:G4 :C7 :D5] 8]
-    [[:G4 :B6 :D5] 8]
-    [[:C4 :E5 :G4] 8]
-    [Zz            8]
+    [[:C3 :E5 :G4] 4]
+    [Zz 4]
+    # [[:A3 :C5 :E4] 8]
+    # [[:E4 :G5 :B3] 8]
+    # [[:F4 :A6 :C5 :E5] 8]
+    # [[:C3 :E5 :G4] 8]
+    # [Zz 8]
+
+    # [[:A3 :C5 :E4] 8]
+    # [[:F4 :A6 :C5] 8]
+    # [[:C3 :E5 :G4] 4]
+    # [Zz 4]
+    # [[:A3 :C5 :E4] 4]
+    # [[:A3 :C5 :E4] 4]
+    # [[:E4 :G5 :B3] 4]
+    # [[:E4 :G5 :B3] 4]
+    # [[:G4 :B6 :D5 :F4] 8]
+    # [[:C4 :E5 :G4] 8]
+    # [Zz 8]
+
+
+    # [[:G2 :B2 :D3] 8*2]      #  # 7thm
+    # [Zz 2]
+    # [[:G2 :B2 :D3 :F3] 8*2]  #   # 7thm
+    # [Zz 2]
+    # [[:G2 :B3 :D3 :F3] 8*2]  #   # 1 5 7 3  - 3 on top
+    # [Zz 2]
+    # [[:G2 :B3 :D3 :F4] 8*2]  #   # 1 5 3 7  - 7 on top
+    # [Zz 2]
+    # [[:G2 :B5 :D4 :F3] 8*2]  #   # 1 7 5 3  - shell
+    # [Zz 2]
+
+
+    # [[:C4 :E5 :G4] 8]
+    # [Zz            8]
+
     )
   score = scorez.look[0]
   sleeps = scorez.look[-1]
+  puts scorez.reduce(0){|s,a| s+=a[-1]}
+
+  puts score
 
   at{
     v=0.8
-    callstack score[0], 114*v, sus: 8
+#    callstack score[0], 114*v, sus: 8
     sleep 1.0
-    operator score[1], (ing 100, 100, 50, 30).tick(:i), sus: (ing 1 0.25 0.25).tick(:s)
+ #   operator score[1], (ing 100, 100, 50, 30).tick(:i), sus: (ing 1 0.25 0.25).tick(:s)
     sleep 2
     sleep 1.0
   }
@@ -124,21 +202,40 @@ live_loop :light, sync: :unsyncable do; tick
   #     #overclock score[0], 100, sus: 1.0
   #   end
   # }
-  qbitsea_cc oct: (ing 0 7 0 12+5).look
-  heat score[0], (ing 10 30 50 10  10 30 40 50).look, sus: sleeps, pads: [0,1,2], sat: 0.0, drive: 0.00
-  deep root(score), sleeps*4, sus: sleeps*2, drive: 0.4, sat: 0.0
+  #qbitsea_cc oct: (ing 0 7 0 12+5).look
+  heat score[0], 0.5*(ing 10 30 50 10  10 30 40 50).look, sus: sleeps, pads: [0,1,2], sat: 0.0, drive: 0.00
+  # heat score[1], 2*(ing 10 30 50 10  10 30 40 50).look, sus: sleeps, pads: [1], sat: 0.0, drive: 0.00
+  # heat score[2], 2*(ing 10 30 50 10  10 30 40 50).look, sus: sleeps, pads: [2], sat: 0.0, drive: 0.00
+  # heat score[3], 2*(ing 10 30 50 10  10 30 40 50).look, sus: sleeps, pads: [2], sat: 0.0, drive: 0.00
+
+  # with_transpose 12{
+  #   callstack score[0],127, sus: 16
+  #   sleep 0.125/2.0
+  #   callstack score[1],127, sus: 16
+  #   sleep 0.125/2.0
+
+  #   callstack score[2],127, sus: 16
+
+  #   sleep 0.125/2.0
+  #   callstack score[3],127, sus: 16
+  #   sleep 0.125/2.0
+
+  # }
+
+  #deep root(score), 127, sus: sleeps*2, drive: 0.0, sat: 0.0
   sleep sleeps
 end
 
+#overclock_on :E3
 
 #deep_cc dirt: 1.0, wet: 1.0, tone: 1.0, filter: 1.0
 #heat_cc solo: 1.0
 
 live_loop :pace, sync: :unsyncable do; tick
-  #overclock_cc oct: (ing 0,  -12, 0, 12).look
+#  overclock_cc oct: (ing 0,  -12, 0, 12).look
   sleep 0.25
   tick
-  #overclock_cc oct: (ing 0,  -12, 0, 19).look
+#  overclock_cc oct: (ing 0,  -12, 0, 19).look
   sleep 1
 end
 
