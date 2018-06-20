@@ -10,6 +10,9 @@ def start_init
     looper_cc amp: 0.8
   end
 end
+def bright
+  star life: 4, size: 15.0 #4
+end
 def endit
   create_cube 3
   sea ripple: 13.0
@@ -144,43 +147,74 @@ def sea(*args)
   end
   if o=opts[:ripple]
     unity "/sea/rippleheight", o
-    puts o
+  end
+  if o=opts[:dir]
+    unity "/sea/direction", o
+  end
+    if o=opts[:circle]
+    unity "/sea/circle", o
   end
   }
 end
 def roots(*args)
   opts = resolve_synth_opts_hash_or_array(args)
   at{
-  if opts[:delay] == true
+    if opts[:delay] == true
     sleep 0.5
-  end
-  if (o=opts[:throttle])
-    unity "/roots", o
-  end
-  if (o=opts[:drag])
-    unity "/roots/drag", o
-  end
-  if (o=opts[:freq])
-    unity "/roots/freq", o
-  end
-  if (o=opts[:swirl])
-    unity "/roots/swirl", o
-  end
+    end
+    if (o=opts[:throttle])
+      unity "/roots", o
+    end
+    if (o=opts[:drag])
+      unity "/roots/drag", o
+    end
+    if (o=opts[:freq])
+      unity "/roots/freq", o
+    end
+    if (o=opts[:swirl])
+      if (o=opts[:amp])
+        unity "/roots/swirl/amp", o
+      end
+      if (o=opts[:drag])
+        unity "/roots/swirl/drag", o
+      end
+
+      unity "/roots/swirl", o
+    end
     if (o=opts[:alive])
-    unity "/roots/alive", o
-  end
-  if (o=opts[:target])
-    if o == :bird
-      unity "/roots/target/bird", 1.0
+      unity "/roots/alive", o
     end
-    if o == :cube
-      unity "/roots/target/cube", 0.0
-      unity "/roots/target/cube", 1.0
+    if (o=opts[:chase])
+      unity "/knitroots/throttle", o
+      if (o=opts[:amp])
+        unity "/knitroots/amp", o
+      end
+      if (o=opts[:drag])
+        unity "/knitroots/drag", o
+      end
+      if (o=opts[:target])
+        if o == :spiral
+        unity "/knitroots/target/spiral", 1.0
+        elsif o == :cube
+          unity "/knitroots/target/cube", 1.0
+        elsif o == :none
+          unity "/knitroots/target/none", 1.0
+        end
+      end
     end
-    if o == :frag
-      unity "/roots/target/frag", 1.0
+    if (o=opts[:target])
+      if o == :bird
+        unity "/roots/target/bird", 1.0
+      end
+      if o == :cube
+        unity "/roots/target/cube", 0.0
+        unity "/roots/target/cube", 1.0
+      end
+      if o == :frag
+        unity "/roots/target/frag", 1.0
+      end
     end
-  end
+
   }
 end
 def tree(*args)
@@ -191,6 +225,10 @@ def tree(*args)
   if o=opts[:grow]
     unity "/tree/grow",o
   end
+  if o=opts[:circle]
+    unity "/tree/circle",o
+  end
+
 end
 def rocksinit()
   world time: 1.0
@@ -261,6 +299,7 @@ def cam(type=:main)
         }
         roots throttle: 0.0
         create_aura
+        cube aura: 1.47
       }
     end
   elsif type == :main
@@ -359,6 +398,13 @@ def cube(*args)
       unity "/cube/lightning", o
     end
   end
+  if (o=opts[:aura])
+    unity "/cube/aura/ripple", o
+  end
+  if (o=opts[:circle])
+    unity "/cube/aura/circle", o
+  end
+
 end
 
 def init!(force=false)
@@ -385,6 +431,7 @@ def init!(force=false)
     unity "/cubeinside", -0.25
     roots throttle: 0.0
     rocksinit
+    cube aura: 1.47
     cam :cube
   end
 end
