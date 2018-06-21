@@ -1,6 +1,15 @@
 Zz = [nil]
 S = 18
 T = 21
+
+def mbox_inits
+  #mbox_cc motion: 0.30, drive: 1.00, sat: 1.00
+  #mbox2_cc sat: 1.00, motion: 0.50, drive: 0.00
+
+  #mbox_cc motion: 0.70, drive: 0.00, sat: 0.00
+  #mbox2_cc sat: 1.00, motion: 0.60, drive: 0.00
+  #overclock_cc motion: 0.45, drive: 0.60
+end
 def slow_init
   vortex throttle: 1.0, y: 1.2, force: 100
   star life: 8, size: 0.125
