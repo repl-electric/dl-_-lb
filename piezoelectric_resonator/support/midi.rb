@@ -29,7 +29,6 @@ end
 def harp(n,*args)
 end
 
-
 def harp_cc(cc)
   cc.keys.each do |k|
     n = case k
@@ -101,7 +100,13 @@ def kal(n,*args)
     args_h = resolve_synth_opts_hash_or_array(args)
     if(args_h[:mode])
     end
-    if n && ((n != "_") && n != :_)
+       if n && ((n != "_") && n != :_)
+         at{
+         sleep 0.5
+         roots_chase radius: 2.01
+         sleep 1
+         roots_chase radius: 0.01
+         }
       midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 16})
       nname = SonicPi::Note.new(n).midi_string
     end
@@ -135,6 +140,11 @@ def ze(n,*args)
     if(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
+      if $pmode == 1 || $pmode == 0
+        unity "/linecolor/cube/b", linear_map(64,72, 0.0,4.0, note(n))
+        linecolor cube: 1.0, s:  rand, h: rand, b: rand, delay: true
+      end
+
       if $pmode == 0
 
         if $zslices == nil
@@ -335,8 +345,44 @@ def deep_cc(cc)
   end
 end
 
-def glitch(n,vel=80)
-  midi n, vel, port: :iac_bus_2, channel: 4
+def glitch(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+
+  if n
+    midi n, vel, port: :iac_bus_2, channel: 4
+    n_val = note(n)
+    if $pmode != 2
+    if n_val == note(:c3)
+      at{
+        sleep 0.5
+        cube rot: 20
+        sleep 1
+        cube rot: 1
+      }
+    end
+    if n_val == note(:f3)
+      at{
+        sleep 0.5
+        cube circle: 0.03
+        sleep 0.25
+        cube circle: 0
+      }
+    end
+    if n_val == note(:g3)
+      at{
+        sleep 0.5
+        #create_cube 1
+        slice_cube cubes: rand*0.2
+        #roots_chase amp: rand
+        sleep 1
+        #create_cube 0
+        roots_chase amp: 0.01
+      }
+    end
+    end
+  end
 end
 
 def glitch_cc(cc)
@@ -374,9 +420,10 @@ def mbox(n,*args)
 
       if $pmode=1
         at{
-          cube wires: 0.0
+          sleep 0.5
+          cube aura: 2
           sleep 1.0
-          cube wires: 0.3
+          cube aura: rand(1.8)
         }
       end
 
@@ -458,7 +505,8 @@ def mbox2(n,*args)
         sleep 0.5
         vortex throttle: rand*0.5
         rocks throttle: 1.0
-        rocks noise: 8.0
+        note_weight=linear_map(60,70, 0.0,0.5, note(n))
+        rocks noise: 8.0 + note_weight
         sleep 1
         rocks noise: 0.0
         }
@@ -561,6 +609,9 @@ def overclock_on(n,*args)
     args_h = resolve_synth_opts_hash_or_array(args)
     if(m=args_h[:mode])
       looper_mode(m)
+    end
+    if(m=args_h[:to])
+      midi_note_off m, port: :iac_bus_2, channel: 5
     end
     if n && ((n != "_") && n != :_)
       midi_note_on n, velocity, *(args << {port: :iac_bus_2} << {channel: 5})

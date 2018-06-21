@@ -1,38 +1,52 @@
 Zz = [nil]
 S = 18
 T = 21
+def slow_init
+  vortex throttle: 1.0, y: 1.2, force: 100
+  star life: 8, size: 0.125
+  roots throttle: 1.0, freq: 0.8
+  rocks throttle: 1.0
+  burst 1.0
+end
 def start_init
   if $pmode==0
-    looper_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0
+    overclock_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0
     mbox2_cc motion: 0.5, sat: 0.00, drive: 0.00
     mbox_cc  motion: 0.6
-    pads_cc amp: 0.85
-    looper_cc amp: 0.8
+    heat_cc amp: 0.85
+    overclock_cc amp: 0.8
   end
 end
 def bright
   star life: 4, size: 15.0 #4
 end
-def endit
+def end1
+  create_sea -2
+  create_tree -2
+
   create_cube 3
   sea ripple: 13.0
   burst 1.0
   linecolor factor: -10
   rocks orbit: 200.0, throttle: 1.0
-  star life: 10, size: 5.0 #4
+  star life: 5, size: 10.0 #4
   roots throttle: 1.0, freq: 1.0, target: :bird, drag: 0.0, swirl: 1.0
 
-  vortex y: 7.0, force: -400, throttle: 1.0, radius: 4.9, throttle: 1.0
+  #vortex y: 7.0, force: -400, throttle: 1.0, radius: 4.9, throttle: 1.0
   cam :top
+  vortex throttle: 0.0
+  rocks throttle: 0.0
+
   burst 1.0
   unity "/endit", 0.0
   unity "/endit", 1.0
 end
-def theend
+def end2
+  star life: 5, size: 12.0 #4
   unity "/enditall",1.0
 end
 def deepbase_init
-  looper_cc motion: 1.00, drive: 0.30, fm: 0.00, mode: 0
+  overclock_cc motion: 1.00, drive: 0.30, fm: 0.00, mode: 0
 end
 def kickviz
   at{
@@ -94,6 +108,7 @@ def explode_cube()
   world time: 0.002
 end
 def explode_world()
+  star size: 12, life: 5
   world time: 0.1
   cube wires: 0.0
   $pmode=-1
@@ -156,41 +171,76 @@ def sea(*args)
   end
   }
 end
+def roots_chase(*args)
+  opts = resolve_synth_opts_hash_or_array(args)
+  if (o=opts[:radius])
+    unity "/knitroots/radius", o
+  end
+  if (o=opts[:amp])
+    unity "/knitroots/amp", o
+  end
+  if (o=opts[:freq])
+    unity "/knitroots/freq", o
+  end
+
+
+end
+
 def roots(*args)
   opts = resolve_synth_opts_hash_or_array(args)
   at{
     if opts[:delay] == true
-    sleep 0.5
+      sleep 0.5
     end
-    if (o=opts[:throttle])
-      unity "/roots", o
-    end
-    if (o=opts[:drag])
-      unity "/roots/drag", o
-    end
-    if (o=opts[:freq])
-      unity "/roots/freq", o
+    if !opts[:alive] && !opts[:chase] && !opts[:swirl]
+      if (o=opts[:throttle])
+        unity "/roots", o
+      end
+      if (o=opts[:drag])
+        unity "/roots/drag", o
+      end
+      if (o=opts[:freq])
+        unity "/roots/freq", o
+      end
+      if (o=opts[:target])
+        if o == :bird
+          unity "/roots/target/bird", 1.0
+        end
+        if o == :cube
+          unity "/roots/target/cube", 0.0
+          unity "/roots/target/cube", 1.0
+        end
+        if o == :frag
+          unity "/roots/target/frag", 1.0
+        end
+      end
     end
     if (o=opts[:swirl])
+      unity "/roots/swirl/throttle", o
       if (o=opts[:amp])
         unity "/roots/swirl/amp", o
       end
       if (o=opts[:drag])
         unity "/roots/swirl/drag", o
       end
-
-      unity "/roots/swirl", o
     end
     if (o=opts[:alive])
       unity "/roots/alive", o
     end
     if (o=opts[:chase])
       unity "/knitroots/throttle", o
+
       if (o=opts[:amp])
         unity "/knitroots/amp", o
       end
       if (o=opts[:drag])
         unity "/knitroots/drag", o
+      end
+      if (o=opts[:force])
+        unity "/knitroots/force", o
+      end
+      if (o=opts[:radius])
+        unity "/knitroots/radius", o
       end
       if (o=opts[:target])
         if o == :spiral
@@ -200,18 +250,6 @@ def roots(*args)
         elsif o == :none
           unity "/knitroots/target/none", 1.0
         end
-      end
-    end
-    if (o=opts[:target])
-      if o == :bird
-        unity "/roots/target/bird", 1.0
-      end
-      if o == :cube
-        unity "/roots/target/cube", 0.0
-        unity "/roots/target/cube", 1.0
-      end
-      if o == :frag
-        unity "/roots/target/frag", 1.0
       end
     end
 
@@ -283,9 +321,9 @@ def vortex(*args)
   end
 end
 
-def cam(type=:main)
+def cam(type=:main, f=false)
   if type == :exit
-    if $pmode !=1
+    if $pmode !=1 || f
       $pmode=1
       unity "/cubecam/zoomout", 0.0
       unity "/cubecam/zoomout", 1.0
@@ -309,8 +347,12 @@ def cam(type=:main)
     unity "/cubeinside", 0.25*3
     unity "/sea/waveheight", 0.0
     unity "/star/life", 2.0
+    vortex throttle: 0.01
+    create_light
+    burst 0
     create_aura
-    roots throttle: 0.03, freq: 0.1, target: :bird, drag: 1.0
+    roots throttle: 0.0, freq: 0.1, target: :bird, drag: 1.0
+    roots chase: 0.1, force: 1, target: :spiral, drag: 3
   elsif type == :top
     $pmode=2
     unity "/cam1"
@@ -404,7 +446,14 @@ def cube(*args)
   if (o=opts[:circle])
     unity "/cube/aura/circle", o
   end
+  if (o=opts[:rot])
+    unity "/cube/rotate/speed", o
+  end
 
+end
+
+def roots_init()
+  roots chase: 0.0, force: 18.87, radius: 0.01
 end
 
 def init!(force=false)
@@ -432,6 +481,9 @@ def init!(force=false)
     roots throttle: 0.0
     rocksinit
     cube aura: 1.47
+    cube rot: 1
     cam :cube
+    roots_init
+    vortex throttle: 0.0
   end
 end
