@@ -428,8 +428,9 @@ def mbox(n,*args)
           cube aura: rand(1.8)
         }
       end
-
       nname = SonicPi::Note.new(n).midi_string
+      puts "Mbox -> [#{nname}]"
+
       mbox_cc args_h
     end
   end
