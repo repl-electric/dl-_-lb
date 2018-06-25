@@ -394,6 +394,8 @@ def glitch_cc(cc)
       midi kits[cc[k] % kits.count], port: :iac_bus_2, channel: 4
     when :corode
       midi_cc 50, 127*cc[k], port: :iac_bus_2, channel: 4
+    when :tubes
+      midi_cc 51, 127*cc[k], port: :iac_bus_2, channel: 4
     else
       nil
     end
