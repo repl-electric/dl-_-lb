@@ -394,7 +394,6 @@ module ReplElectric
           end
           if n && ((n != "_") && n != :_)
             args_h = resolve_synth_opts_hash_or_array(args)
-
             midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 3})
             #dshader(:decay, :iHarp, (note(n)/69.0), 0.0041) if n && note(n)
             #dshader(:iBright, velocity/127.0) if velocity
