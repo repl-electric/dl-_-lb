@@ -6,10 +6,10 @@ def linear_map(x0, x1, y0, y1, x)
   (y0 + (dydx * dx))
 end
 
-def solo(k)
+def eject_cpu_core(k=:pad)
   case k
     when :pad
-      midi_cc 11,127, port: :iac_bus_2, channel: 1
+      midi_cc 11,127, port: :iac_bus_1, channel: 1
   end
 end
 
@@ -21,7 +21,7 @@ def fx(cc)
           nil
         end
     if n
-      midi_cc n, cc[k]*127.0, port: :iac_bus_2, channel: 1
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 1
     end
   end
 end
@@ -37,7 +37,7 @@ def harp_cc(cc)
           nil
         end
     if n
-      midi_cc n, cc[k]*127.0, port: :iac_bus_2, channel: 2
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 2
     end
   end
 end
@@ -59,7 +59,7 @@ def kal(n,*args)
     if(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
-      midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 15})
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 15})
       if $pmode == 0
       at{
            sleep 0.5
@@ -107,7 +107,7 @@ def kal(n,*args)
          sleep 1
          roots_chase radius: 0.01
          }
-      midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 16})
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 16})
       nname = SonicPi::Note.new(n).midi_string
     end
   end
@@ -188,7 +188,7 @@ def ze(n,*args)
           #light(size: 0.0)
         }
       end
-      midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 8})
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 8})
       nname = SonicPi::Note.new(n).midi_string
       ze_cc args_h
     end
@@ -203,7 +203,7 @@ def ze_cc(cc)
           nil
         end
     if n
-      midi_cc n, cc[k]*127.0, port: :iac_bus_2, channel: 8
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 8
     end
   end
 end
@@ -232,13 +232,13 @@ def heat(n,*args)
       end
       pads.map{|pad|
         if pad == 0
-          midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 10})
+          midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
         end
         if pad == 1
-          midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 11})
+          midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 11})
         end
         if pad == 2
-          midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 12})
+          midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 12})
         end
       }
       nname = SonicPi::Note.new(n).midi_string
@@ -265,7 +265,7 @@ def sopsea(n,*args)
       qbitsea_mode(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
-      midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 4})
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 4})
       nname = SonicPi::Note.new(n).midi_string
       #puts "%s%s" %[nname.ljust(4, " "), "[QBitSea]"]  unless note(n) < MODE_NOTE
       #          console("QbitSea #{nname}") unless note(n) < MODE_NOTE
@@ -293,7 +293,7 @@ def heat_cc(cc)
           nil
         end
     if n
-      midi_cc n, cc[k]*127.0, port: :iac_bus_2, channel: 10
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 10
     end
   end
 end
@@ -314,7 +314,7 @@ def deep(n,*args)
     if(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
-      midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 7})
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 7})
       nname = SonicPi::Note.new(n).midi_string
       puts "#{nname} [Deep]"
       sea wave: linear_map(45,72, 0.3,8.0, note(n)), delay: true
@@ -340,7 +340,7 @@ def deep_cc(cc)
           nil
         end
     if n
-      midi_cc n, cc[k]*127.0, port: :iac_bus_2, channel: 7
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 7
     end
   end
 end
@@ -351,7 +351,7 @@ def glitch(*args)
   n, vel = *params
 
   if n
-    midi n, vel, port: :iac_bus_2, channel: 4
+    midi n, vel, port: :iac_bus_1, channel: 4
     n_val = note(n)
     if $pmode != 2
     if n_val == note(:c3)
@@ -391,18 +391,18 @@ def glitch_cc(cc)
     when :mode
       kits = ['c-1','cs-1','d-1','ds-1','e-1','f-1','fs-1','g-1','gs-1', 'a-1', 'as-1',
         'b-1', 'c0', 'cs0', 'd0', 'ds0', 'e0','f0']
-      midi kits[cc[k] % kits.count], port: :iac_bus_2, channel: 4
+      midi kits[cc[k] % kits.count], port: :iac_bus_1, channel: 4
     when :corode
-      midi_cc 50, 127*cc[k], port: :iac_bus_2, channel: 4
+      midi_cc 50, 127*cc[k], port: :iac_bus_1, channel: 4
     when :tubes
-      midi_cc 51, 127*cc[k], port: :iac_bus_2, channel: 4
+      midi_cc 51, 127*cc[k], port: :iac_bus_1, channel: 4
     else
       nil
     end
   end
 end
 
-def mbox(n,*args)
+def flip(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -418,7 +418,7 @@ def mbox(n,*args)
     if(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
-      midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 1})
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 1})
 
       if $pmode=1
         at{
@@ -429,14 +429,14 @@ def mbox(n,*args)
         }
       end
       nname = SonicPi::Note.new(n).midi_string
-      puts "Mbox -> [#{nname}]"
+      puts "Flip -> [#{nname}]"
 
-      mbox_cc args_h
+      flip_cc args_h
     end
   end
 end
 
-def mbox_on(n,*args)
+def flip_on(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -452,24 +452,24 @@ def mbox_on(n,*args)
     if(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
-      midi_note_on n, velocity, *(args << {port: :iac_bus_2} << {channel: 1})
+      midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 1})
       nname = SonicPi::Note.new(n).midi_string
-      mbox_cc args_h
+      flip_cc args_h
     end
   end
 end
 
-def mbox_of(n)
+def flip_of(n)
   if n
-    midi_note_off n, port: :iac_bus_2, channel: 1
+    midi_note_off n, port: :iac_bus_1, channel: 1
   end
 end
 
-def mbox_x(*args)
-  midi_all_notes_off port: :iac_bus_2, channel: 1
+def flip_x(*args)
+  midi_all_notes_off port: :iac_bus_1, channel: 1
 end
 
-def mbox_cc(cc)
+def flip_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :motion; 1
@@ -481,12 +481,12 @@ def mbox_cc(cc)
           nil
         end
     if n
-      midi_cc n, cc[k]*127.0, port: :iac_bus_2, channel: 1
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 1
     end
   end
 end
 
-def mbox2(n,*args)
+def flop(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -502,7 +502,7 @@ def mbox2(n,*args)
     if(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
-      midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 9})
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 9})
       nname = SonicPi::Note.new(n).midi_string
       at{
         sleep 0.5
@@ -514,12 +514,12 @@ def mbox2(n,*args)
         rocks noise: 0.0
         }
 
-      mbox_cc args_h
+      flop_cc args_h
     end
   end
 end
 
-def mbox2_on(n,*args)
+def flop_on(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -535,22 +535,22 @@ def mbox2_on(n,*args)
     if(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
-      midi_note_on n, velocity, *(args << {port: :iac_bus_2} << {channel: 9})
+      midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 9})
     end
   end
 end
 
-def mbox2_x(*args)
-  midi_all_notes_off port: :iac_bus_2, channel: 9
+def flop_x(*args)
+  midi_all_notes_off port: :iac_bus_1, channel: 9
 end
 
-def mbox2_of(n)
+def flop_of(n)
   if n
-    midi_note_off n, port: :iac_bus_2, channel: 9
+    midi_note_off n, port: :iac_bus_1, channel: 9
   end
 end
 
-def mbox2_cc(cc)
+def flop_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :motion; 1
@@ -562,7 +562,7 @@ def mbox2_cc(cc)
           nil
         end
     if n
-      midi_cc n, cc[k]*127.0, port: :iac_bus_2, channel: 9
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 9
     end
   end
 end
@@ -584,7 +584,7 @@ def overclock(n,*args)
       overclock_mode(m)
     end
     if n && ((n != "_") && n != :_)
-      midi n, velocity, *(args << {port: :iac_bus_2} << {channel: 5})
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 5})
       if $pmode == 0
         at{
           sleep 0.5
@@ -614,10 +614,10 @@ def overclock_on(n,*args)
       looper_mode(m)
     end
     if(m=args_h[:to])
-      midi_note_off m, port: :iac_bus_2, channel: 5
+      midi_note_off m, port: :iac_bus_1, channel: 5
     end
     if n && ((n != "_") && n != :_)
-      midi_note_on n, velocity, *(args << {port: :iac_bus_2} << {channel: 5})
+      midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 5})
       nname = SonicPi::Note.new(n).midi_string
       overclock_cc args_h
     end
@@ -626,12 +626,12 @@ end
 
 def overclock_off(n,*args)
   if n
-    midi_note_off n, port: :iac_bus_2, channel: 5
+    midi_note_off n, port: :iac_bus_1, channel: 5
   end
 end
 
 def overclock_x(*args)
-  midi_all_notes_off port: :iac_bus_2, channel: 5
+  midi_all_notes_off port: :iac_bus_1, channel: 5
 end
 
 def overlock_mode(mode)
@@ -674,7 +674,7 @@ def overclock_cc(cc)
           nil
         end
     if n
-      midi_cc n, cc[k]*127.0, port: :iac_bus_2, channel: 5
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 5
     end
   end
 end
