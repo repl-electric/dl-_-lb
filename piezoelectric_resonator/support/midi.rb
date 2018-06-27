@@ -17,6 +17,7 @@ def fx(cc)
   cc.keys.each do |k|
     n = case k
         when :reverb; 12
+        when :tube; 13
         else
           nil
         end
