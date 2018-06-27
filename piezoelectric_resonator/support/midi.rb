@@ -356,6 +356,23 @@ def dark(*args)
   end
 end
 
+def dark_cc(cc)
+    cc.keys.each do |k|
+    case k
+    when :mode
+      kits = ['c-1','cs-1','d-1','ds-1','e-1','f-1','fs-1','g-1','gs-1', 'a-1', 'as-1',
+        'b-1', 'c0', 'cs0', 'd0', 'ds0', 'e0','f0']
+      midi kits[cc[k] % kits.count], port: :iac_bus_1, channel: 2
+    when :corode
+      midi_cc 50, 127*cc[k], port: :iac_bus_1, channel: 2
+    when :tubes
+      midi_cc 51, 127*cc[k], port: :iac_bus_1, channel: 2
+    else
+      nil
+    end
+  end
+end
+
 def glitch(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
