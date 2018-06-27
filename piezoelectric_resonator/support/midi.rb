@@ -346,6 +346,16 @@ def deep_cc(cc)
   end
 end
 
+def dark(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+
+  if n
+    midi n, vel, port: :iac_bus_1, channel: 2
+  end
+end
+
 def glitch(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
