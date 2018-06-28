@@ -3,10 +3,10 @@ load_support('piezoelectric_resonator'); use_bpm 127
 #glitch_cc mode: 0, corode: 0.5
 #glitch_cc mode: 0
 
-eject_cpu_core
+#eject_cpu_core
 #stop
 #glitch_cc tubes: 0.0
-fx reverb: 1.00, tube: 1.00
+fx reverb: 1.00, tube: 0.60
 #stop
 
 #overclock_on :f3
@@ -19,10 +19,11 @@ fx reverb: 1.00, tube: 1.00
 #overclock_cc drive: 0.80
 #overclock_cc amp: 0.85
 
-overclock_cc motion: 0.50
+#overclock_cc motion: 0.50
 
 #flop_cc motion: 0.30,  drive: 0.00
 #flip_cc motion: 0.50, drive: 0.00
+
 #glitch_cc tubes: 0.50
 #glitch_cc corode: 0.30
 
@@ -39,6 +40,12 @@ overclock_cc motion: 0.50
 
 #overclock_on :E3
 
+flop_cc motion: 0.30,  drive: 0.00
+flip_cc motion: 0.50, drive: 0.00
+glitch_cc tubes: 0.50
+glitch_cc corode: 0.30
+
+
 live_loop :ModularSynthsControlledByCode, sync: :unsyncable do; tick
   with_bpm 127*1 do
     #kalshot :G3, [5,10,15,20].choose, sus: 6 if spread(1,12).look
@@ -46,11 +53,11 @@ live_loop :ModularSynthsControlledByCode, sync: :unsyncable do; tick
       glitch_cc mode: (ing 0 2 3 5).look
     end
     if spread(8,8).look
-      dark :e3, 122
+      #dark :e3, 122
       if spread(3,8).look
       at{
         sleep 0.5
-        dark :e3, 110
+        #dark :e3, 110
         }
       end
     end
@@ -74,7 +81,7 @@ live_loop :ModularSynthsControlledByCode, sync: :unsyncable do; tick
         #glitch :ds3,2# if spread(1,4).look
         sleep 1/4.0
       else
-        flop :E4, 1*(ing 50 60 70 110).look, sus: 1.0/2.0
+        #flop :E4, 1*(ing 50 60 70 110).look, sus: 1.0/2.0
         sleep 1/4.0
         #glitch :as3,2# if spread(1,4).look
         sleep 1/4.0
@@ -84,16 +91,16 @@ live_loop :ModularSynthsControlledByCode, sync: :unsyncable do; tick
       sleep 1/2.0
     else
       #glitch :gs3,3# if spread(1,4).look
-      flop :A3, 1*(ing 50 60 70 110).look, sus: 1.0/2.0  #plays off the c3 lovely....
+      #flop :A3, 1*(ing 50 60 70 110).look, sus: 1.0/2.0  #plays off the c3 lovely....
       sleep 1/2.0
       glitch :ds3, 127# if spread(1,4).look
-      flip :g3, 90, sus: 4.0  #lovely riser
+      #flip :g3, 90, sus: 4.0  #lovely riser
       sleep 1/2.0
 
       #flop_cc motion: 0.4
 
       bitsea :a4, 80, sus: 2
-      flip :c4, 100, sus: 2.0
+      flip :g4, 100, sus: 2.0
       #flop :A4, 15, sus: 4.0
       glitch :fs3,20# if spread(1,4).look
 
@@ -115,7 +122,7 @@ live_loop :ModularSynthsControlledByCode, sync: :unsyncable do; tick
     sleep 1/4.0
     #glitch :fs3, 40
     sleep 1/4.0
-    dark :e3, 110 if spread(1,2).look
+    #dark :e3, 110 if spread(1,2).look
     #flip  :f3, 15, sus: 2.0
     sleep 1/4.0
     #glitch :ds3, 127
@@ -130,18 +137,18 @@ live_loop :ModularSynthsControlledByCode, sync: :unsyncable do; tick
     }
 
     sleep 1/2.0
-    flip :e3, 127-rand*10, sus: 1.25
+    #flip :e3, 127-rand*10, sus: 1.25
     glitch :gs3, 80 if spread(1,8).look
     sleep 1/2.0
     glitch :gs3, 90 if spread(1,8).look
     #flop_cc motion: 0.52
 
     flop :c4, 127-rand*10, sus: 2.0
-    dark :cs3, 122
+    #dark :cs3, 122
     sleep 1/2.0
-    flop :c4, 127-rand*10, sus: 1.0/2.0
+    #flop :c4, 127-rand*10, sus: 1.0/2.0
     #flop_cc drive: rand, sat: 1.00
-    dark :e3, 100
+    #dark :e3, 100
     glitch (ing :cs4 :cs4 :cs4 :d4).look,127
     sleep 1/2.0
   end
@@ -168,6 +175,117 @@ live_loop :wind, sync: :unsyncable do; tick
 #   qbitsea :E3, 50, sus: (ing 1/2.0 1 1).look if spread(1*4,8*4).look
   sleep 1/8.0
 end
+
+live_loop :ModularSynthsControlledByCode, sync: :unsyncable do; tick
+  with_bpm 127*1 do
+    #kalshot :G3, [5,10,15,20].choose, sus: 6 if spread(1,12).look
+    if spread(4,8).look
+      glitch_cc mode: (ing 0 2 3 5).look
+    end
+    if spread(8,8).look
+      #dark :e3, 122
+      if spread(3,8).look
+        at{
+          sleep 0.5
+          #dark :e3, 110
+        }
+      end
+    end
+
+    glitch_cc corode: 1.0
+    glitch :c3, 10.5*(ing 65 60 60 60).look
+
+    at{
+      sleep 0.25
+      glitch :c3, 2.1*(ing 120 90 100 100    100 90 90 90).look
+    }
+
+    glitch_cc corode: 0.8
+
+    if spread(7,11).look
+      if spread(1,4).look
+        flip :F3, 1*(ing 50 60 70 110).look, sus: 1.0#/2.0
+        sleep 1/4.0
+        #flop :E3, 1*(ing 50 60 70 110).look, sus: 2.0#/2.0
+        #flop :D4, 2*(ing 50 60 70 110).look, sus: 1.0/8.0
+        #glitch :ds3,2# if spread(1,4).look
+        sleep 1/4.0
+      else
+        #flop :G4, 2*(ing 50 60 70 110).look, sus: 1.0/2.0
+        sleep 1/4.0
+        #glitch :as3,2# if spread(1,4).look
+        sleep 1/4.0
+      end
+
+      #flip (knit :A5, 4 ,:F5,4, :E5,8).look, (ing 80 70 60 40).look, sus: 4.0
+      sleep 1/2.0
+    else
+      #glitch :gs3,3# if spread(1,4).look
+      #flop :A3, 1*(ing 50 60 70 110).look, sus: 1.0/2.0 #lovely with c3
+      sleep 1/2.0
+      glitch :ds3, 127# if spread(1,4).look
+      # flip :E3, 50, sus: 1.0 KEEP
+      #flip :g3, 90, sus: 4.0  #lovely riser
+      sleep 1/2.0
+
+      #flop_cc motion: 0.4
+
+      bitsea :a4, 80, sus: 1
+      flip :c3, 50, sus: 1.0
+      #flop :A4, 15, sus: 4.0
+      glitch :fs3,20# if spread(1,4).look
+
+      at{
+        sleep 1/2.0
+        glitch :g3, 50# if spread(1,4).look
+        #flop_cc motion: 0.50
+        }
+    end
+
+    glitch_cc corode: (ine 0.2 0.7 128).look
+    #glitch (ing :c3 :a3).look, 30 if spread(7,11).look
+
+    #with_swing -0.1 {
+      #flop :E4, 5.5*(ing 50 60 70 110).look, sus: 1.0/2.0
+    #}
+    #flop_cc motion: 0.45
+    sleep 1/4.0
+    #glitch :fs3, 40
+    sleep 1/4.0
+
+    #dark :e3, 110 if spread(1,2).look
+    #flip  :f3, 15, sus: 2.0
+    sleep 1/4.0
+    #glitch :ds3, 127
+    sleep 1/4.0
+
+    #flop_cc motion: 0.48
+
+    with_swing 0.1 {#((knit -0.1/2.0, 4, 0.1,4).look) {
+      glitch :gs3, 40
+      #flip :c3, 127-rand*10, sus: 1.0/4.0
+      #flip (knit :f4,3,:D4,3,:C4,3).look, 127-rand*20, sus: 1.0#/2.0
+    }
+
+    sleep 1/2.0
+    glitch :gs3, 80 if spread(1,8).look
+    sleep 1/2.0
+    glitch :gs3, 90 if spread(1,8).look
+    #flop_cc motion: 0.52
+
+    flop :c4, 100-rand*10, sus: 2.0
+
+    #dark :cs3, 100
+
+    sleep 1/2.0
+    #dark :e3, 100
+    #flop :c4, 127-rand*10, sus: 1.0/2.0
+    glitch (ing :cs4 :cs4 :cs4 :d4).look,127
+    sleep 1/2.0
+  end
+end
+
+
 
 # A F E
 # F D C
