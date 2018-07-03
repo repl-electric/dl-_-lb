@@ -249,7 +249,7 @@ def heat(n,*args)
   end
 end
 
-def sopsea(n,*args)
+def bitsea(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -266,14 +266,37 @@ def sopsea(n,*args)
       qbitsea_mode(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
-      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 4})
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 6})
       nname = SonicPi::Note.new(n).midi_string
-      #puts "%s%s" %[nname.ljust(4, " "), "[QBitSea]"]  unless note(n) < MODE_NOTE
-      #          console("QbitSea #{nname}") unless note(n) < MODE_NOTE
-      qbitsea_cc args_h
-        end
+      #bitsea_cc args_h
+    end
   end
 end
+
+def qbitsea(n,*args)
+  if n
+    if args && args[0].is_a?(Numeric)
+      velocity = args[0]
+      args = args[1..-1]
+    else
+      velocity = 30
+    end
+    if n.is_a?(Array)
+      args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
+      n = n[0]
+    end
+        args_h = resolve_synth_opts_hash_or_array(args)
+    if(args_h[:mode])
+      qbitsea_mode(args_h[:mode])
+    end
+    if n && ((n != "_") && n != :_)
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 13})
+      nname = SonicPi::Note.new(n).midi_string
+      #bitsea_cc args_h
+    end
+  end
+end
+
 
 def play_with(synths, *args)
   synths.each do |s|
@@ -382,23 +405,59 @@ def glitch(*args)
     midi n, vel, port: :iac_bus_1, channel: 4
     n_val = note(n)
     if $pmode != 2
-    if n_val == note(:c3)
+
+    if n_val == note(:cs4) || n_val == note(:d4)
       at{
-        sleep 0.5
-        cube rot: 20
-        sleep 1
-        cube rot: 1
+          sleep 0.5
+          cube rot: 20
+          sleep 1
+          cube rot: 1
+        }
+    end
+      if n_val == note(:d4)
+        at{
+          sleep 0.5
+          vortex turb: 10.0
+          vortex force: 0
+          sleep 0.5
+          rocks turb: 0.0
+
+        }
+      end
+
+
+      if n_val == note(:c3)
+      at{
+          sleep 0.5
+          rocks speed: 0.1*vel
+          rocks rot: 1
+          #slice_cube y: (rand*0.2)+3
+          #cube circle: 0.03
+          sleep 0.25
+          rocks speed: 0
+          #cube circle: 0
       }
     end
-    if n_val == note(:f3)
-      at{
-        sleep 0.5
-        cube circle: 0.03
-        sleep 0.25
-        cube circle: 0
-      }
-    end
-    if n_val == note(:g3)
+      if n_val == note(:fs3)
+        at{
+          sleep 0.5
+          slice_cube y: (rand*0.2)+0.35
+#          slice_cube z: rand*-1.8
+          sleep 1
+          slice_cube y: 0
+          }
+      end
+      if n_val == note(:ds3)
+        at{
+          sleep 0.5
+          cube circle: 0.25
+          8.times{|n|
+            sleep 0.5
+            cube circle: 0.25*(1/(n+1))
+          }
+        }
+      end
+    if n_val == note(:gs3)
       at{
         sleep 0.5
         #create_cube 1
@@ -448,7 +507,15 @@ def flip(n,*args)
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 1})
 
-      if $pmode=1
+      if $pmode==4
+        if($triggered_flip)
+          roots throttle: 1, target: :cube, drag: 3
+          star size: 1.0
+          create_aura
+          $triggered_flip=false
+        end
+      end
+      if $pmode==1 || $pmode==4
         at{
           sleep 0.5
           cube aura: 2
@@ -646,6 +713,14 @@ def overclock_on(n,*args)
     end
     if n && ((n != "_") && n != :_)
       midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 5})
+
+      if $pmode==0
+        if(!$triggered)
+          roots throttle: 1, freq: args_h[:freq]||0.0
+          star size: 1.0
+          $triggered = true
+        end
+      end
       nname = SonicPi::Note.new(n).midi_string
       overclock_cc args_h
     end
@@ -705,4 +780,55 @@ def overclock_cc(cc)
       midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 5
     end
   end
+end
+
+def callstack(n,*args)
+  if n
+    if args && args[0].is_a?(Numeric)
+      velocity = args[0]
+      args = args[1..-1]
+    else
+      velocity = 30
+    end
+    if n.is_a?(Array) && n[1].is_a?(Symbol)
+      bonus = n[1]
+      n = n[0]
+      at {
+        sleep 1/8.0
+        midi bonus, 60, *(args << {port: :iac_bus_1} << {channel: 14} << {sus: 1/4.0})
+      }
+    end
+    if n.is_a?(Array)
+      args[0] =  {sus: n[-1]}.merge(args[0] || {})
+      n = n[0]
+    end
+    if n
+      puts "#{SonicPi::Note.new(n).midi_string.ljust(6, " ")}[Callstack]" unless note(n) < MODE_NOTE
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 14})
+    end
+  end
+end
+
+def operator(n,*args)
+      begin
+        if n
+          velocity = 40
+          if n.is_a?(Array)
+            args =  args  << {sus: n[1]}
+            n = n[0]
+          end
+          if args && args[0].is_a?(Numeric)
+            velocity = args[0]
+            args = args[1..-1]
+          end
+          if n && ((n != "_") && n != :_)
+            args_h = resolve_synth_opts_hash_or_array(args)
+            midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 3})
+            puts "#{SonicPi::Note.new(n).midi_string.ljust(4, " ")} [Operator]" unless note(n) < MODE_NOTE
+          end
+        end
+      rescue
+        puts $!.message
+        puts $!.backtrace
+      end
 end

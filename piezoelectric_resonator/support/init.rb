@@ -20,8 +20,8 @@ end
 def start_init
   if $pmode==0
     overclock_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0
-    mbox2_cc motion: 0.5, sat: 0.00, drive: 0.00
-    mbox_cc  motion: 0.6
+    flop_cc motion: 0.5, sat: 0.00, drive: 0.00
+    flip_cc  motion: 0.6
     heat_cc amp: 0.85
     overclock_cc amp: 0.8
   end
@@ -166,18 +166,22 @@ def sea(*args)
     if opts[:delay]
       sleep 0.5
     end
-  if o=opts[:wave]
-    unity "/sea/waveheight", o
-  end
-  if o=opts[:ripple]
-    unity "/sea/rippleheight", o
-  end
-  if o=opts[:dir]
-    unity "/sea/direction", o
-  end
+    if o=opts[:wave]
+      unity "/sea/waveheight", o
+    end
+    if o=opts[:ripple]
+      unity "/sea/rippleheight", o
+    end
+    if o=opts[:dir]
+      unity "/sea/direction", o
+    end
     if o=opts[:circle]
-    unity "/sea/circle", o
-  end
+      unity "/sea/circle", o
+    end
+    if o=opts[:sphere]
+      unity "/sea/sphere", o
+    end
+
   }
 end
 def roots_chase(*args)
@@ -275,7 +279,9 @@ def tree(*args)
   if o=opts[:circle]
     unity "/tree/circle",o
   end
-
+  if o=opts[:sphere]
+    unity "/tree/sphere",o
+  end
 end
 def rocksinit()
   world time: 1.0
@@ -300,9 +306,19 @@ def rocks(*args)
   if o=opts[:rot]
     unity "/rockcircle/rot",o
   end
+  if o=opts[:rotate]
+    unity "/rockcircle/rot",o
+  end
+  if o=opts[:speed]
+    unity "/rockcircle/rotate/speed", o
+  end
   if o=opts[:freq]
     unity "/rockcircle/freq",o
   end
+  if o=opts[:y]
+    unity "/rockcircle/y",o
+  end
+
 end
 def vortex(*args)
   opts = resolve_synth_opts_hash_or_array(args)
@@ -330,6 +346,11 @@ def vortex(*args)
   end
 end
 
+def zoomout
+  unity "/cubecam/zoomout", 0.0
+  unity "/cubecam/zoomout", 1.0
+  $pmode=4
+end
 def cam(type=:main, f=false)
   if type == :exit
     if $pmode !=1 || f
@@ -358,8 +379,9 @@ def cam(type=:main, f=false)
     unity "/star/life", 2.0
     vortex throttle: 0.01
     create_light
-    burst 0
     create_aura
+    burst 0.0
+    shard 0.0
     roots throttle: 0.0, freq: 0.1, target: :bird, drag: 1.0
     roots chase: 0.1, force: 1, target: :spiral, drag: 3
   elsif type == :top
@@ -489,10 +511,17 @@ def init!(force=false)
     unity "/cubeinside", -0.25
     roots throttle: 0.0
     rocksinit
+    rocks throttle: 1
+    vortex y: 1.25, throttle: 0.2, turb: 0, force: 0
     cube aura: 1.47
     cube rot: 1
     cam :cube
     roots_init
     vortex throttle: 0.0
+    fx reverb: 1.00, tube: 0.60
+    flop_cc motion: 0.30,  drive: 0.00
+    flip_cc motion: 0.50, drive: 0.00
+    glitch_cc tubes: 0.50, corode: 0.30
+    roots swirl: 0.0, drag: 6.0, freq: 0.0, amp: 0.1
   end
 end
