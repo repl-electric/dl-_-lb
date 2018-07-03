@@ -405,15 +405,14 @@ def glitch(*args)
     midi n, vel, port: :iac_bus_1, channel: 4
     n_val = note(n)
     if $pmode != 2
-
-    if n_val == note(:cs4) || n_val == note(:d4)
-      at{
+      if n_val == note(:cs4) || n_val == note(:d4)
+        at{
           sleep 0.5
           cube rot: 20
           sleep 1
           cube rot: 1
         }
-    end
+      end
       if n_val == note(:d4)
         at{
           sleep 0.5
@@ -421,13 +420,10 @@ def glitch(*args)
           vortex force: 0
           sleep 0.5
           rocks turb: 0.0
-
         }
       end
-
-
       if n_val == note(:c3)
-      at{
+        at{
           sleep 0.5
           rocks speed: 0.1*vel
           rocks rot: 1
@@ -436,16 +432,16 @@ def glitch(*args)
           sleep 0.25
           rocks speed: 0
           #cube circle: 0
-      }
-    end
+        }
+      end
       if n_val == note(:fs3)
         at{
           sleep 0.5
           slice_cube y: (rand*0.2)+0.35
-#          slice_cube z: rand*-1.8
+          #          slice_cube z: rand*-1.8
           sleep 1
           slice_cube y: 0
-          }
+        }
       end
       if n_val == note(:ds3)
         at{
@@ -457,17 +453,17 @@ def glitch(*args)
           }
         }
       end
-    if n_val == note(:gs3)
-      at{
-        sleep 0.5
-        #create_cube 1
-        slice_cube cubes: rand*0.2
-        #roots_chase amp: rand
-        sleep 1
-        #create_cube 0
-        roots_chase amp: 0.01
-      }
-    end
+      if n_val == note(:gs3)
+        at{
+          sleep 0.5
+          #create_cube 1
+          slice_cube cubes: rand*0.2
+          #roots_chase amp: rand
+          sleep 1
+          #create_cube 0
+          roots_chase amp: 0.01
+        }
+      end
     end
   end
 end
