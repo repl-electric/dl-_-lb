@@ -32,7 +32,6 @@ end
 def end1
   create_sea -2
   create_tree -2
-
   create_cube 3
   sea ripple: 13.0
   burst 1.0
@@ -40,12 +39,10 @@ def end1
   rocks orbit: 200.0, throttle: 1.0
   star life: 5, size: 10.0 #4
   roots throttle: 1.0, freq: 1.0, target: :bird, drag: 0.0, swirl: 1.0
-
   #vortex y: 7.0, force: -400, throttle: 1.0, radius: 4.9, throttle: 1.0
   cam :top
   vortex throttle: 0.0
   rocks throttle: 0.0
-
   burst 1.0
   unity "/endit", 0.0
   unity "/endit", 1.0
