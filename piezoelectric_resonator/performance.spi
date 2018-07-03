@@ -76,7 +76,7 @@ live_loop :ModularSynthsControlledByCode, sync: :unsyncable do; tick
 
       #flop_cc motion: 0.4
 
-      qbitsea :a4, 80, sus: 1
+      #qbitsea :a4, 80, sus: 1
       flip :g3, 50, sus: 4.0
       #flop :A4, 15, sus: 4.0
       glitch :fs3,20# if spread(1,4).look
