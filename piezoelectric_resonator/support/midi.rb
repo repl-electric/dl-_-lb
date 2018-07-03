@@ -404,6 +404,18 @@ def glitch(*args)
   if n
     midi n, vel, port: :iac_bus_1, channel: 4
     n_val = note(n)
+
+    if n_val == note(:c3) && $p_glitch != n_val #a double tap
+      f = (ing 500, 0, 100, 0).look
+      at{
+        sleep 0.5
+        vortex force: f, throttle: 0.05
+        linecolor cube: rand*1.5
+        sleep 0.5
+        linecolor cube: rand*0.4
+      }
+    end
+
     if $pmode != 2
       if n_val == note(:cs4) || n_val == note(:d4)
         at{
@@ -465,6 +477,7 @@ def glitch(*args)
         }
       end
     end
+    $p_glitch = n_val
   end
 end
 

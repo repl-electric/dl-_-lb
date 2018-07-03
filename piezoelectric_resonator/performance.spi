@@ -22,6 +22,7 @@ live_loop :wind, sync: :unsyncable do; tick
 end
 
 live_loop :ModularSynthsControlledByCode, sync: :unsyncable do; tick
+  stop
   with_bpm 127*1 do
     #kalshot :G3, [5,10,15,20].choose, sus: 6 if spread(1,12).look
     if spread(4,8).look
@@ -38,14 +39,6 @@ live_loop :ModularSynthsControlledByCode, sync: :unsyncable do; tick
     end
     glitch_cc corode: 1.0
     glitch :c3, (ing 65 60 60 60).look
-    at{
-      sleep 0.5
-      linecolor cube: rand*1.5
-      sleep 0.5
-      linecolor cube: rand*0.4
-    }
-
-    vortex force: (ing 500, 0, 100, 0).look,throttle: 0.05
     at{
       sleep 0.25
       glitch :c3, 2.1*(ing 120 90 100 100    100 90 90 90).look
