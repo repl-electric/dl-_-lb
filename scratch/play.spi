@@ -1,0 +1,33 @@
+live_loop :go do  #Bmajor    (B) C (D) E (F) G A
+  tick
+  midi  :B2,60,  channel: 1, sustain: 6           #B (D4) F  - open doubles
+  midi  :Fs3,50, channel: 1, sustain: 6
+  midi  :Ds4,50, channel: 1, sustain: 6
+  midi  :Ds5,50, channel: 1, sustain: 6, sus: 6
+
+  sleep 4
+  midi  :ds3,60,  channel: 1, sustain: 6          #D (F) A
+  midi  :as3,50, channel: 1, sustain: 6
+  midi  :fs4,50, channel: 1, sustain: 6
+  midi  :fs5,50, channel: 1, sustain: 6
+  sleep 2
+
+  midi  :fs3,60,  channel: 1, sustain: 6          #F A C
+  midi  :as4,50, channel: 1, sustain: 6
+  midi  :cs4,50, channel: 1, sustain: 6
+  sleep 2
+
+  midi  :as2,60,  channel: 1, sustain: 6          #A
+  midi  :f3,50, channel: 1, sustain: 6
+  midi  :cs4,50, channel: 1, sustain: 6
+  midi  :cs5,50, channel: 1, sustain: 6
+  sleep 4
+
+  midi  :gs3,60,  channel: 1, sustain: 6          #G
+  midi  :b4,50, channel: 1,   sustain: 6
+  midi  :ds4,50, channel: 1,  sustain: 6
+  sleep 4
+
+#  sleep 4
+
+end

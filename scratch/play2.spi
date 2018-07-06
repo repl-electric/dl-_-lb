@@ -1,0 +1,177 @@
+load_support('working_title'); use_bpm 127/2.0
+live_loop(:unsyncable) do; sleep 1.0;end
+
+live_loop :form, sync: :unsyncable do
+  tick
+  score = (ing
+   # [:e3  :g4 :b3]
+
+    #PART 4
+    # [:e3  :gs4 :b3]
+    # [:fs3 :a3  :cs4]
+    # [:a3  :cs4  :e4]
+    # [:b3  :ds4  :fs4 ]
+    # [:cs3  :e4  :gs4]
+    # [:gs3  :b4  :ds4]
+
+    # [:e3  :gs3 :b3]
+    # [:fs3 :a3  :cs4]
+    # [:a3  :cs5  :e4 :gs4]
+    # [:b3  :ds4  :fs4]
+    # [:cs3 :e4  :gs4]
+    # [:b3  :ds4  :fs4]
+
+    #PART 3
+    # [:e3 :gs4 :b3]
+    # [:a3 :cs4 :e4 :gs4]
+    # [:b3 :ds4 :fs4]
+    # [:e3 :gs4 :b4]
+    # [:a3 :cs5 :e4 :gs4]
+    # [:b3 :ds4 :fs4]
+
+    #PART 2
+    [:e3  :g4  :b3 :fs3]
+    # [:b3  :ds4 :fs4]
+    # [:cs3 :e4  :gs3]
+    # [:a2  :cs4 :e3 ]
+    # [:b2  :ds4 :fs3]
+    # [:cs3 :fs4 :gs4]
+    # [:cs3 :e4  :gs5]
+
+    #COMPOS 1
+     # [:cs3 :e4 :gs3]
+     # [:b2 :ds4 :fs3] #long
+     # [:b2 :ds4 :fs3] #long
+     # [:a2 :cs4 :e3]
+     # [:e3 :gs4 :b3]     #LOVELY
+     # [:cs3 :es4 :gs3]
+     # [:cs3 :e4 :gs3]
+
+
+    # [:gs3 :b4 :ds4]
+    # [:b3  :ds4 :fs3]
+    # [:ds3  :fs4 :as3]
+    # [:cs4  :e4 :gs3]
+    #[_ _ _ _]
+
+    ).look
+
+  puts score
+
+  #glitch :C3, 85
+
+  if score[0] == _
+    #vox :e2, sus:2.0
+  else
+    with_transpose 12{
+      #vox root(score), sus:2.0
+    }
+  end
+  #end
+
+  with_transpose 0{
+    at{
+      #bass root(score),120, sus: 2.5
+      #midi :e3, channel: 4, sustain: 4, sus: 2
+      sleep 3.0
+      #midi :e5,127, channel: 4, sustain: 4, sus: 2
+      sleep 0.5
+      #bass root(score),105, sus: 0.5
+      }
+  }
+
+  with_transpose 0{
+    s = (ing
+      [:a4 :a4]
+      [:fs5 _ :fs5]
+      [:a3 :b4 :b5]
+      [:a4 :cs4 :Cs5]
+      [:fs4 :fs4]
+      [:gs4 :gs4]
+      [:e5 :e4]
+
+      [:e4 :e5]
+      [:ds4]
+      [:fs4]
+      [:cs4]
+      [:gs4]
+      [:es4]
+      [:e4 :e5 :e4 :e4]
+      ).look
+    at{
+      sleep 1.5
+      s.each{|n|
+        with_swing 0.02{
+          #midi n, (ing 80 60 50).look,  sus: 0.25,  channel: 6# if spread(7,11).tick(:n1)
+        }
+        sleep 0.25
+      }
+    }
+  }
+
+  if true#(ing 1 1 0 0 1 1 1).look == 1
+
+  #if (ing 1 1).look == 1
+    #if (ing 1 1 0 1 1 1).look == 1
+
+    vox    :e3,           sus: 1.5
+    looper :E3,           sus: 0.0125
+    #vox  score[1],     sus:3.5
+    #vox  score[2], 80,  sus:1.5
+    #vox  score[3], 80,  sus:3.5
+    with_transpose 12{
+      #piano score[1],62,sus:2
+    }
+    sleep 1/2.0
+    sleep 1/2.0
+
+    #piano score[1], 60, sus:2  if spread(1,2).look
+    with_transpose 12{
+      #piano score[1], 62, sus:2
+    }
+
+    #vox  score[3], 80,  sus: 2.5
+
+    sleep 1/2.0
+    glitch :f3, 60
+    sleep 1/2.0
+
+    glitch :as3,50
+    sleep 1/2.0
+
+    glitch :e3, 60+rand*5 if spread(1,2).look
+    sleep 1/2.0
+    glitch :d3, 60+rand*5 if spread(1,2).rot(-1).look
+    sleep 1/2.0
+
+    #midi score[1], 32,  sus:4,  channel: 5
+
+    glitch :fs3, 60+rand*5 if spread(2,3).look
+    sleep 1/4.0
+    glitch :fs3, 70+rand*5 if spread(4,5).look
+    sleep 1/4.0
+  else
+    vox score[0],       sus:2
+    #vox score[1],       sus:1
+    #vox score[2], 80,   sus:1
+    with_transpose 12{
+      piano score[1],82, sus:1
+    }
+    sleep 1/2.0
+    with_transpose 12{
+      piano score[1],60, sus:1
+    }
+
+    glitch :a3,40
+    sleep 1/4.0
+    sleep 1/4.0
+
+    piano score[1],82, sus:1
+    sleep 1/2.0
+    glitch :C3, 50
+    glitch :fs3,70
+    sleep 1/4.0
+    glitch :a3,127
+    sleep 1/4.0
+  end
+end

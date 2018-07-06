@@ -1,0 +1,86 @@
+#load_support('piezoelectric_resonator');
+use_bpm 127
+live_loop(:unsyncable) do;  sleep 1.0;end
+
+#E, F♯, G♯, A, B, C♯, and D♯.
+live_loop :name, sync: :unsyncable do
+  tick
+
+  midi scale(:E3, :major_pentatonic).choose, channel: 4, port: :iac_bus_1, sus: 2
+  midi scale(:E3, :major_pentatonic).choose, channel: 5, port: :iac_bus_1, sus: 6
+
+  midi :e3, channel: 3, port: :iac_bus_1, sus: 8
+
+  midi :c3,127, channel: 2, port: :iac_bus_1
+  if spread(3,8).look
+    at{sleep 1
+      midi :cs3,127, channel: 2, port: :iac_bus_1
+    }
+  end
+
+  s = (ing [:e3 :Gs4 :B3 :Ds4]
+           [:gs2 :b4 :ds3]
+    ).look
+
+  midi s[0],       channel: 1, port: :iac_bus_1, sus: 4
+  midi s[1],  70,  channel: 1, port: :iac_bus_1, sus: 2
+  midi s[2],  55,  channel: 1, port: :iac_bus_1, sus: 2
+  midi s[3], 100,  channel: 1, port: :iac_bus_1, sus: 1
+
+  sleep 2
+  midi :e3, channel: 6, port: :iac_bus_1, sus: 2
+  midi :c3, 80, channel: 7, port: :iac_bus_1
+  #midi :b2, channel: 3, port: :iac_bus_1, sus: 8-2
+
+#  with_swing 0.1{
+    midi :e3,50, channel: 2, port: :iac_bus_1
+ # }
+  sleep 2
+  midi :ds3, 80, channel: 7, port: :iac_bus_1
+
+  midi :c3,50, channel: 2, port: :iac_bus_1
+
+  sleep 2
+  with_swing 0.1{
+    midi :fs3, 65, channel: 2, port: :iac_bus_1
+  }
+  sleep 2
+end
+
+live_loop :perc2, sync: :unsyncable do
+  tick
+  a=(ing
+    _ _ _ _    _ _ _ _    _ _ _ _   _ _ _ _
+    _ _ _ _    _ _ _ _    _ _ _ _   _ _ _ _
+
+    _ _ _ _    _ _ _ _    _ _ _ _   _ _ _ _
+    _ _ _ _    _ _ _ _    _ _ _ _   _ _ _ _
+
+    _ _ _ _    _ _ _ _    _ _ _ _   _ _ _ _
+    _ _ _ _    _ _ _ _    _ _ _ _   _ _ _ true
+
+    _ _ _ _    _ _ _ _    _ _ _ _   _ _ _ _
+    _ _ _ _    _ _ _ _    _ _ _ _   _ _ _ _
+
+    ).look
+  if a
+    midi [:ds4,:c4].choose,127, channel: 2, port: :iac_bus_1
+    puts :hit
+  end
+  sleep 1/4.0
+end
+
+live_loop :perc, sync: :unsyncable do
+  tick
+  if spread(7,11).look
+    with_swing -0.03{
+      midi :fs3,20*rand+20, channel: 2, port: :iac_bus_1
+    }
+  end
+  if spread(3,8).look
+    with_swing -0.02{
+      midi :ds3,20*rand+20, channel: 2, port: :iac_bus_1
+    }
+  end
+  sleep 1/2.0
+end
