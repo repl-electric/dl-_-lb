@@ -33,7 +33,6 @@ def glitch_cc(cc)
   end
 end
 
-
 def piano(*args)
   #return
   params, opts = split_params_and_merge_opts_array(args)
@@ -44,7 +43,7 @@ def piano(*args)
   end
 end
 def vox(*args)
-  #looper(*args)
+
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
@@ -65,6 +64,31 @@ def looper(*args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
   if n
-    midi n,vel, *(args << {channel: 7})
+    if opts[:elec] != nil && opts[:elec]
+      midi n,vel, *(args << {channel: 8})
+      looper_cc(opts)
+    elsif opts[:pat] == 1/8.0
+      midi n,vel, *(args << {channel: 9})
+
+    else
+      midi n,vel, *(args << {channel: 7})
+      looper_cc(opts)
+    end
+  end
+end
+def looper_cc(cc)
+  cc.keys.each do |k|
+    n = case k
+    when :tune; 50
+    else
+      nil
+    end
+    if n == 50
+      midi_pitch_bend cc[k], channel: 7
+      midi_pitch_bend cc[k], channel: 8
+    elsif n
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 7
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 8
+    end
   end
 end
