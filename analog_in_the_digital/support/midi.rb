@@ -65,10 +65,27 @@ def looper(*args)
   n, vel = *params
   if n
     if opts[:elec] != nil && opts[:elec]
+      p = opts[:pat]
+      if p == 1/2.0
+        midi_cc 51, 127.0, port: :iac_bus_1, channel: 8
+        midi_cc 52, 0.0, port: :iac_bus_1, channel: 8
+      elsif p == 1/4.0
+        midi_cc 51, 0.0, port: :iac_bus_1, channel: 8
+        midi_cc 52, 127.0, port: :iac_bus_1, channel: 8
+      end
       midi n,vel, *(args << {channel: 8})
       looper_cc(opts)
-    elsif opts[:pat] == 1/8.0
-      midi n,vel, *(args << {channel: 9})
+    elsif p=opts[:pat]
+      if p == 1/2.0
+        midi n,vel, *(args << {channel: 7})
+        looper_cc(opts)
+      elsif p == 1/4.0
+        looper_cc bcutoff: 1.0, acutoff: 0.0
+        midi n,vel, *(args << {channel: 9})
+      elsif p == '1/2d'
+        looper_cc bcutoff: 0.0, acutoff: 1.0
+        midi n,vel, *(args << {channel: 9})
+      end
 
     else
       midi n,vel, *(args << {channel: 7})
@@ -79,16 +96,33 @@ end
 def looper_cc(cc)
   cc.keys.each do |k|
     n = case k
-    when :tune; 50
-    else
-      nil
-    end
+        when :tune; 50
+        when :acutoff; 51
+        when :bcutoff; 52
+        when :atk; 53
+        when :cutoff; 54
+        when :abite; 55
+        when :bbite; 56
+        when :reverb; 57
+        when :creverb; 58
+
+        else
+          nil
+        end
     if n == 50
       midi_pitch_bend cc[k], channel: 7
       midi_pitch_bend cc[k], channel: 8
+      midi_pitch_bend cc[k], channel: 9
     elsif n
-      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 7
-      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 8
+      v = if n == 53
+            (1.0- cc[k]) * 127.0
+          else
+            cc[k] * 127.0
+          end
+
+      midi_cc n, v, port: :iac_bus_1, channel: 7
+      midi_cc n, v, port: :iac_bus_1, channel: 8
+      midi_cc n, v, port: :iac_bus_1, channel: 9
     end
   end
 end
