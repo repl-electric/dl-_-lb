@@ -80,10 +80,13 @@ def looper(*args)
         midi n,vel, *(args << {channel: 7})
         looper_cc(opts)
       elsif p == 1/4.0
-        looper_cc bcutoff: 1.0, acutoff: 0.0
+        midi_cc 51, 127.0, port: :iac_bus_1, channel: 9
+        midi_cc 52, 0.0, port: :iac_bus_1, channel: 9
         midi n,vel, *(args << {channel: 9})
       elsif p == '1/2d'
-        looper_cc bcutoff: 0.0, acutoff: 1.0
+        midi_cc 51, 0.0, port: :iac_bus_1, channel: 9
+        midi_cc 52, 127.0, port: :iac_bus_1, channel: 9
+
         midi n,vel, *(args << {channel: 9})
       end
 
@@ -105,7 +108,6 @@ def looper_cc(cc)
         when :bbite; 56
         when :reverb; 57
         when :creverb; 58
-
         else
           nil
         end
