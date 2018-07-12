@@ -7,6 +7,15 @@ def warm
     }
 end
 
+def sop(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n,vel, *(args << {port: :iac_bus_1} << {channel: 5})
+  end
+end
+
 def glitch(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
@@ -43,7 +52,6 @@ def piano(*args)
   end
 end
 def vox(*args)
-
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
@@ -51,6 +59,55 @@ def vox(*args)
     midi n,vel, *(args << {port: :iac_bus_1} << {channel: 2})
   end
 end
+def vox_cc(cc)
+  cc.keys.each do |k|
+    n = case k
+        when :wet; 51
+        when :sync; 52
+        when :spray; 54
+        else
+          nil
+        end
+    if n == 50
+      midi_pitch_bend cc[k], channel: 2
+    elsif n == 52
+      midi_cc 53, (1.0-cc[k])*127.0, port: :iac_bus_1, channel: 2
+      midi_cc 52, cc[k]*127.0, port: :iac_bus_1, channel: 2
+
+    else
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 2
+    end
+  end
+end
+def vox2(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n,vel, *(args << {port: :iac_bus_1} << {channel: 10})
+  end
+end
+def vox_on(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi_note_on n,vel, *(args << {port: :iac_bus_1} << {channel: 2})
+  end
+end
+def vox_off(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi_note_off n,vel, *(args << {port: :iac_bus_1} << {channel: 2})
+  end
+end
+def vox_x(*args)
+  midi_all_notes_off  *(args << {port: :iac_bus_1} << {channel: 2})
+end
+
+
 def bass(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
