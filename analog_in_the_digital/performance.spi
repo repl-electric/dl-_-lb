@@ -1,45 +1,13 @@
 load_support('analog_in_the_digital'); use_bpm 127/2.0
 live_loop(:unsyncable) do; sleep 1.0;end
-#glitch_cc mode: 0
+# F# -1- G -2- A -2-  B -1- C -2- D -2- E -2
 
-
+#vox_cc semitone: -7-2
 #vox_cc sync: 0, wet: 1.0, spray: 0.0
-
-# D - 2 - E -2- Fs -1 - G                     D->G   5 sem
-# F# -1- G -2- A -2-  B -1- C -2- D -2- E -2    F->B   5 sem   B->E          F->D#
-
-#vox_on :d3
-#vox_on :fs3
-
-
-#stop
-# 1 -> 5 -> 6 -> 4 -> 5 -> 6
-#[:e3  :g4  :b3]
-#[:b3  :ds4 :fs4]
-#[:cs3 :e4  :gs3]
-#[:a2  :cs4 :e3 ]
-#[:b2  :ds4 :fs3]
-#[:cs3 :fs4 :gs4]
-#[:cs3 :e4  :gs5]
-
-# puts scale(:e, :minor).map{|n| note_inspect(n)} #-           E F# G A B C  D  E5
-# puts scale(:e, :harmonic_minor).map{|n| note_inspect(n)}  #- E F# G A B C  D# E5
-# puts scale(:e, :melodic_minor).map{|n| note_inspect(n)}   #- E F# G A B C# D# E5
-
-
-#vox :e3,127, sus: 4 #=> C3
-#midi :fs3, sus: 4, channel: 10  # F# -1-  G -2- A -2- B -1- C -2- D -2- E -2-
-
-#sleep 12
-#stop
-
 glitch_cc mode: 4
-#vox_cc sync: 0, wet: 1.0, spray: 0.0
 
-#stop
 live_loop :form, sync: :unsyncable do
   tick
-#stop
   score = (ing
     #P1
     # [:e3   :g4  :b3     :fs3]
@@ -96,7 +64,7 @@ live_loop :form, sync: :unsyncable do
       #midi :e3, channel: 4, sustain: 4, sus: 2
       sleep 3.0
       #midi :g5,127, channel: 4, sustain: 4, sus: 2
-      bass root(score)-5,115, sus: 0.5 if s
+      #bass root(score)-5,115, sus: 0.5 if s
       sleep 0.5
       #bass root(score),105, sus: 0.5
       }
@@ -123,9 +91,9 @@ live_loop :form, sync: :unsyncable do
     #if (ing 1 1 0 1 1 1).look == 1
     #vox   score[0],  sus: 0.125         #0
     if (ing 1 0).look == 0
-      #vox   score[0],  sus: 1.5         #0
+#      vox   score[0],  sus: 1.5         #0
     else
-      #vox2   score[0],  sus: 1.5         #0
+ #     vox2   score[0],  sus: 1.5         #0
     end
     #looper score[0],  sus: 1.5, pat: (ing 1/2.0 '1/2d').look#, elec: false, cutoff: (ramp 0.9, 1.0,256).tick(:hitit), abite: 0.0, bbite:  0.0, atk: 0.6, reverb: 1.0, creverb: 1.0
     #vox   score[1],     sus:3.5
@@ -147,12 +115,12 @@ live_loop :form, sync: :unsyncable do
    # vox   score[3], 80,  sus: 2.5    # 3
 
     if (ing 1 0).look == 0
-      #vox   score[3], 80,  sus: 2.5    # 3
+  #   vox   score[3], 80,  sus: 2.5    # 3
     else
-      #vox2  score[3], 80,  sus: 2.5    # 3
+   #  vox2  score[3], 80,  sus: 2.5    # 3
 
     end
-    looper score[3], 80,  sus: 2.5, pat: 1/8.0         #0
+    #looper score[3], 80,  sus: 2.5, pat: 1/8.0         #0
 
     sleep 1/2.0
     #glitch :f3, 60
@@ -166,7 +134,7 @@ live_loop :form, sync: :unsyncable do
     #glitch :d3, 60+rand*5 if spread(1,2).rot(-1).look
     sleep 1/2.0
 
-    sop score[2], 50, sus:4    #2
+    #sop score[2], 50, sus:4    #2
 
     #glitch :fs3, 60+rand*5 if spread(2,3).look
     sleep 1/4.0
