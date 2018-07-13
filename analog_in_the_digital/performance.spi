@@ -5,6 +5,8 @@ live_loop(:unsyncable) do; sleep 1.0;end
 #vox_cc semitone: -7-2
 #vox_cc sync: 0, wet: 1.0, spray: 0.0
 glitch_cc mode: 4
+glitch_cc wash: 0.125
+glitch_cc rdelay: 8, ldelay: 6, cdelay: 2
 
 live_loop :form, sync: :unsyncable do
   tick
@@ -45,7 +47,12 @@ live_loop :form, sync: :unsyncable do
     ).look
   puts score
 
-  #glitch :C3, 85
+  glitch_cc wash: 0.25*1
+  glitch :C3, 85
+  at{
+    sleep 2
+    glitch_cc wash: 0.0
+    }
 
   if score[0] == _
     #vox :e2, sus:2.0
@@ -84,7 +91,7 @@ live_loop :form, sync: :unsyncable do
       }
     }
   }
-
+  #vox_cc semitone: 5
   if true#(ing 1 1 0 0 1 1 1).look == 1
 
   #if (ing 1 1).look == 1
