@@ -62,9 +62,11 @@ end
 def vox_cc(cc)
   cc.keys.each do |k|
     n = case k
+        when :tune; 50
         when :wet; 51
         when :sync; 52
         when :spray; 54
+        when :semitone; 55
         else
           nil
         end
@@ -73,6 +75,12 @@ def vox_cc(cc)
     elsif n == 52
       midi_cc 53, (1.0-cc[k])*127.0, port: :iac_bus_1, channel: 2
       midi_cc 52, cc[k]*127.0, port: :iac_bus_1, channel: 2
+    elsif n == 55
+      m={-12 => 0.0,-11 => 0.05, -10 => 0.1, -9 => 0.11, -8 => 0.15, -7 => 0.2, -6 => 0.25, -5 => 0.3, -4 => 0.35, -3=> 0.36,
+        -2  => 0.4, -1 => 0.45 , 0 => 0.5,
+        1=> 0.55, 2 => 0.6 ,3 => 0.63 ,4 => 0.65 ,5=> 0.7 ,6 => 0.75 ,7 => 0.8 ,8 => 0.85 ,9 => 0.86 ,10 => 0.9 ,11 => 0.95 ,12 => 1.0
+      }
+      midi_cc n, m[cc[k]]*127.0, port: :iac_bus_1, channel: 2
 
     else
       midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 2
