@@ -7,6 +7,19 @@ def warm
     }
 end
 
+def fx(cc)
+  cc.keys.each do |k|
+    n = case k
+        when :wash; 12
+        else
+          nil
+        end
+    if n
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 1
+    end
+  end
+end
+
 def sop(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
@@ -36,6 +49,20 @@ def glitch_cc(cc)
       midi_cc 50, 127*cc[k], port: :iac_bus_1, channel: 3
     when :tubes
       midi_cc 51, 127*cc[k], port: :iac_bus_1, channel: 3
+    when :wash
+      midi_cc 52, 127*cc[k], port: :iac_bus_1, channel: 3
+    when :cdelay
+      m={2 => 0.2, 3=>0.25, 4=> 0.4, 5=> 0.5, 6 => 0.65, 8 => 0.8, 16=> 1.0}
+      v = m[cc[k]]
+      midi_cc 53, 127*v, port: :iac_bus_1, channel: 3
+    when :ldelay
+      m={2 => 0.2, 3=>0.25, 4=> 0.4, 5=> 0.5, 6 => 0.65, 8 => 0.8, 16=> 1.0}
+      v = m[cc[k]]
+      midi_cc 54, 127*v, port: :iac_bus_1, channel: 3
+    when :rdelay
+      m={2 => 0.2, 3=>0.25, 4=> 0.4, 5=> 0.5, 6 => 0.65, 8 => 0.8, 16=> 1.0}
+      v = m[cc[k]]
+      midi_cc 55, 127*v, port: :iac_bus_1, channel: 3
     else
       nil
     end
