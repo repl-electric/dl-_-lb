@@ -119,10 +119,41 @@ def vox2(*args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
   if n
+    midi n,vel, *(args << {port: :iac_bus_1} << {channel: 11})
+  end
+end
+def voxe(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
     midi n,vel, *(args << {port: :iac_bus_1} << {channel: 10})
   end
 end
-def vox2_on(*args)
+
+def voxe_cc(cc)
+  cc.keys.each do |k|
+    n = case k
+        when :detune; 50
+        when :semitone; 55
+        else
+          nil
+        end
+    if n == 50
+      midi_pitch_bend cc[k], channel: 10
+    elsif n == 55
+      m={-12 => 0.0,-11 => 0.05, -10 => 0.1, -9 => 0.11, -8 => 0.15, -7 => 0.2, -6 => 0.25, -5 => 0.3, -4 => 0.35, -3=> 0.36,
+        -2  => 0.4, -1 => 0.45 , 0 => 0.5,
+        1=> 0.55, 2 => 0.6 ,3 => 0.63 ,4 => 0.65 ,5=> 0.7 ,6 => 0.75 ,7 => 0.8 ,8 => 0.85 ,9 => 0.86 ,10 => 0.9 ,11 => 0.95 ,12 => 1.0
+      }
+      midi_cc n, m[cc[k]]*127.0, port: :iac_bus_1, channel: 10
+    else
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 10
+    end
+  end
+end
+
+def voxe_on(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
@@ -130,7 +161,7 @@ def vox2_on(*args)
     midi_note_on n,vel, *(args << {port: :iac_bus_1} << {channel: 10})
   end
 end
-def vox2_off(*args)
+def voxe_off(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
@@ -138,7 +169,7 @@ def vox2_off(*args)
     midi_note_off n,vel, *(args << {port: :iac_bus_1} << {channel: 10})
   end
 end
-def vox2_x(*args)
+def voxe_x(*args)
   midi_all_notes_off  *(args << {port: :iac_bus_1} << {channel: 10})
 end
 
