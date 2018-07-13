@@ -95,6 +95,26 @@ def vox2(*args)
     midi n,vel, *(args << {port: :iac_bus_1} << {channel: 10})
   end
 end
+def vox2_on(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi_note_on n,vel, *(args << {port: :iac_bus_1} << {channel: 10})
+  end
+end
+def vox2_off(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi_note_off n,vel, *(args << {port: :iac_bus_1} << {channel: 10})
+  end
+end
+def vox2_x(*args)
+  midi_all_notes_off  *(args << {port: :iac_bus_1} << {channel: 10})
+end
+
 def vox_on(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
