@@ -1,0 +1,139 @@
+load_support('working'); use_bpm 126
+live_loop(:unsyncable) do; sleep 1.0;end
+# D, E, F♯, G, A, B, and C♯
+
+live_loop :melo, sync: :name do
+  tick
+  score = (ing
+    [:D4 127 1]
+    [:D4 110 1]
+    [:E4 122 1/2.0]
+    [:Fs4 80 1/2.0]
+    [:E4 122 1/2.0]
+    [:A3 122 1/2.0]
+    [:D4 110 1]
+    [:b3  110 1/4.0]
+    [:fs4 110 1/4.0]
+    [:d4 110 1/2.0]
+
+    [:D4 127 1]
+    [:D4 110 1]
+    [:E4 122 1/2.0]
+    [:Fs4 80 1/2.0]
+    [:E4 122 1/2.0]
+    [:A3 122 1/2.0]
+    [:E4 110 1]
+    [:b3  110 1/4.0]              #B D F A
+
+    #[:fs4 110 1/4.0]
+    [_ _ 1/4.0]
+    [[:d4 110  1.0] [:a4 110  1.0/2.0]]
+
+    # [:D4 127 1]
+    # [:D4 110 1]
+    # [:E4 122 1/2.0]
+    # [:Fs4 80 1/2.0]
+    # [:E4 122 1/2.0]
+    # [:B3 122 1/2.0]
+    # [:D4 110 1]
+    # [:D4 110 1]
+    # [:E4 122 1/2.0]
+    # [:Fs4 80 1/2.0]
+    # [:E4 122 1/2.0]
+    # [:B3 122 1/2.0]
+    # [:D4 110 2]
+    [_ _ 4]
+    )
+
+  s = score.look
+  puts score.reduce(0){|s,n|
+    if n[0].is_a?(Array)
+      puts n
+      s+= [n[0][-1], n[1][-1]].min
+      else
+      s+=n[-1]
+    end
+  }
+
+  if s[0].is_a?(Array)
+    s.each{|s1|
+      midi s1[0], s1[1], sus: s1[-1]/2.0, channel: 9, port: :iac_bus_1
+    }
+    s[-1] = [s[0][-1], s[1][-1]].min
+  else
+    midi s[0], s[1], sus: s[-1]/2.0, channel: 9, port: :iac_bus_1
+  end
+  sleep s[-1]
+end
+
+
+live_loop :name do  #8
+  tick
+  s = (ing
+    [:D3  :Fs4  :a3]
+    [:Fs3 :a4   :cs4]
+    [:B2  :d4   :Fs3]
+    [:G3  :B4   :D4]
+    [:A3  :Cs4  :E4] ).look
+  score = s[0]
+  puts score
+  midi score, 25, sus: 4, channel:  1, port: :iac_bus_1
+  midi s[0], 127, sus: 1.0, channel: 3, port: :iac_bus_1
+
+  if spread(1,4).look
+    at{
+      [s[-1], s[-1]+12].each{|n|  #:Fs4, :fs5, :cs5
+        midi n,2, channel: 5, sus: 12
+        sleep 1
+      }
+      if s!=:a4
+        midi (s[1] - 12), 127, channel: 7, sus: 2 #a4
+      else
+        midi s[1], 127, channel: 7, sus: 2 #a4
+      end
+    }
+  end
+
+  if spread(1,2).look
+    midi score, 50, sus: 8.2, channel: 2, port: :iac_bus_1
+  end
+  rot_a = [4,3,2].choose
+  8.times{
+    sleep 1
+    midi root(s),127, channel: 10, sus: 1.5 if spread(3,5).look(:inside)
+    midi (nit :A3 8).look,127, channel: 6, sus: 1.5 if spread(3,5).look(:inside)
+    midi (nit :A3 7 :A3 1  :Fs3 7 :A3 1).look,127, channel: 8, sus: 1.5 if spread(1,6).rot(rot_a).look(:inside)
+
+    if !spread(1,64).rot(-6).tick(:inside)
+      midi :c3, 100-5.0*rand, channel: 4, port: :iac_bus_1
+      if spread(1,2).rot(0).look(:inside)
+        #midi :g3, 100-5.0*rand, channel: 4, port: :iac_bus_1
+      end
+    else
+      at{
+        midi :c3, 80, channel: 4, port: :iac_bus_1
+        sleep 0.25
+        midi :g3, 100-5.0*rand, channel: 4, port: :iac_bus_1
+        midi (ing :as3).look, channel: 4
+        sleep 0.25
+        midi :c3, 105, channel: 4, port: :iac_bus_1
+      }
+    end
+    }
+end
+live_loop :name3, sync: :name do
+  tick
+  sleep 1/2.0
+  if spread(1,16).look
+    at{
+      #midi (ing :f3 :ds3).look, channel: 4
+      sleep 1/2.0
+      #midi (ing :f3 :ds4).look, 80, channel: 4
+      }
+  else
+    #with_swing -0.05{
+    #  midi (ing :fs4).look,10, channel: 4 if spread(7,11).look
+    #}
+  end
+  sleep 1/2.0
+end
