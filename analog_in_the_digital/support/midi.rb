@@ -42,6 +42,12 @@ end
 def glitch_cc(cc)
   cc.keys.each do |k|
     case k
+    when :kick
+      if cc[k]
+        midi_cc 56, 127, port: :iac_bus_1, channel: 3
+      else
+        midi_cc 56, 0, port: :iac_bus_1, channel: 3
+      end
     when :mode
       kits = ['c-1','cs-1','d-1','ds-1','e-1','f-1','fs-1','g-1','gs-1']
       midi kits[cc[k] % kits.count], port: :iac_bus_1, channel: 3
