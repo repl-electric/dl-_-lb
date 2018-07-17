@@ -4,6 +4,8 @@ live_loop(:unsyncable) do; sleep 1.0;end
 
 #sop :b3, sus: 4
 
+
+
 #vox_cc semitone: 5
 #vox_cc sync: 0, wet: 1.0, spray: 1.0
 #stop
@@ -34,8 +36,8 @@ live_loop :form, sync: :unsyncable do
     [:e3    :g4    :b3   :fs3]
     [:e3    :g4    :b3   :fs3]         #cs
 
-    #[:e3     _     :c4   :g3]
-    #[:e3     _     :d4   :fs3]
+    # [:e3     _     :c4   :g3]
+    # [:e3     _     :d4   :fs3]
 
     # [:d3   :fs3    :a2   :e3]
     # [:d3   :fs3    :b2   :g3]
@@ -51,7 +53,7 @@ live_loop :form, sync: :unsyncable do
     ).look
   puts score
 
-  voxe_cc semitone: 5
+  #voxe_cc semitone: 5
 
   yes{
   d=[8,6].shuffle
@@ -101,7 +103,7 @@ live_loop :form, sync: :unsyncable do
     }
   }
   #vox_cc semitone: 5
-  if true#(ing 1 1 0 0 1 1 1).look == 1
+  if false#(ing 1 1 0 0 1 1 1).look == 1
     vox_cc sync: 0, wet: 0
   #if (ing 1 1).look == 1
     #if (ing 1 1 0 1 1 1).look == 1
@@ -158,14 +160,21 @@ live_loop :form, sync: :unsyncable do
     with_swing -0.05{ glitch :fs3, 70+rand*5  if spread(4,5).look }
     sleep 1/4.0
   else
+    sop_on :A3
+    stop
+    # stop
     fx wash: 0.0
-    vox  score[0]-7,   sus: 1.5
-    vox_cc sync: 1, wet: 0
+    vox  :g3,   sus: 1.5
+    vox_cc sync: 1, wet: 1
     #vox_cc
 
     #piano score[2],82, sus:2.5
     sleep 1/2.0
 
+    at{
+      sleep 0.5
+      piano score[1], 62, sus:0.25
+    }
     with_transpose 12{
       piano score[0],82, sus:1
      # piano score[1],60, sus:1
@@ -175,20 +184,21 @@ live_loop :form, sync: :unsyncable do
     sleep 1/4.0
 
     sleep 1/4.0
-    vox  score[3]-7, 120,  sus: 2.5
+    vox  :b3, 45,  sus: 2.5
+    vox  :d4, 50,  sus: 1.5
 
-    piano score[1],82, sus:1
+    piano :d5, 72, sus:1
     sleep 1/2.0
-    #glitch :C3, 50
     glitch :fs3,30 if spread(1,2).look
     sleep 1/4.0
-    piano score[-1],82, sus:1
+    piano score[-1]+12,82, sus:1
     #glitch :a3,127
 
     sleep 1/4.0
-    sop score[1]
+    sop :fs4, 20
     sleep 1
-    looper score[-2], 80
+    looper score[-2]+5, 80
+    glitch :b4, 50
     sleep 1
   end
 end
