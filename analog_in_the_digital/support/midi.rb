@@ -38,6 +38,16 @@ def sop_on(*args)
   end
 end
 
+def sop_cc(cc)
+  cc.keys.each do |k|
+    case k
+    when :mode
+      kits = ['c-1','cs-1','d-1','ds-1','e-1','f-1','fs-1','g-1','gs-1']
+      midi kits[cc[k] % kits.count], port: :iac_bus_1, channel: 5
+    end
+  end
+end
+
 def sop_x(*args)
   midi_all_notes_off port: :iac_bus_1, channel: 5
 end
