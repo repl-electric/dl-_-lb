@@ -171,6 +171,7 @@ live_loop :form, sync: :unsyncable do
     vox  :g3,   sus: 1.5
     vox_cc sync: 1, wet: 1
     #vox_cc
+    sop_cc mode: (ing 0 4 0 3).look
 
     #piano score[2],82, sus:2.5
     sleep 1/2.0
