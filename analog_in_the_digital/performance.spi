@@ -1,16 +1,19 @@
 load_support('analog_in_the_digital'); use_bpm 127/2.0
 live_loop(:unsyncable) do; sleep 1.0;end
 # F# -1- G -2- A -2-  B -1- C -2- D -2- E -2
-
+def init!
+  fx wash: 0
+  glitch_cc kick: false
+  vox_cc tune: 0.5, semitone: 5
+  voxe_cc semitone: 5
+end
+#init!
 #sop :b3, sus: 4
-
-
 
 #vox_cc semitone: 5
 #vox_cc sync: 0, wet: 1.0, spray: 1.0
 #stop
-
-glitch_cc mode: 2
+#glitch_cc mode: 2, wash: 0
 #glitch_cc wash: 0.125
 #glitch_cc rdelay: 8, ldelay: 6, cdelay: 2, wash: 0
 
@@ -30,7 +33,6 @@ live_loop :form, sync: :unsyncable do
 
     # [:a3   :c3   :fs4   :e4]
     # [:d3   :fs4  [:E4].choose :cs5]
-
 
     #P2
     [:e3    :g4    :b3   :fs3]
@@ -55,7 +57,7 @@ live_loop :form, sync: :unsyncable do
 
   #voxe_cc semitone: 5
 
-  yes{
+  no{
     d=[8,6].shuffle
     glitch_cc ldelay: d[0], cdelay: (knit 2,4,3,4).look, rdelay: d[1], wash: 0.25*(ing 1.0 0.0 0.0 0.0).look
     glitch :C3, 85*1
@@ -82,13 +84,13 @@ live_loop :form, sync: :unsyncable do
     s = spread(3,4).look
 
     at{
-      bass root(score),120, sus: 2.5*2
+      #bass root(score),120, sus: 2.5*2
       #midi :e3, channel: 4, sustain: 4, sus: 2
       sleep 3.0
       #midi :g5,127, channel: 4, sustain: 4, sus: 2
-      bass root(score)-5,115, sus: 0.5 if s
+      #bass root(score)-5,115, sus: 0.5 if s
       sleep 0.5
-      bass root(score),105, sus: 0.5
+      #bass root(score),105, sus: 0.5
       }
   }
 
@@ -100,24 +102,28 @@ live_loop :form, sync: :unsyncable do
       sleep 1.5
       s.each{|n|
         with_swing 0.02{
-          midi n, (ing 80 60 50).look,  sus: 0.25,  channel: 6# if spread(7,11).tick(:n1)
+          #midi n, (ing 80 60 50).look,  sus: 0.25,  channel: 6# if spread(7,11).tick(:n1)
         }
         sleep 0.25
       }
     }
   }
   #vox_cc semitone: 5
-  if false#(ing 1 1 0 0 1 1 1).look == 1
-    vox_cc sync: 0, wet: 0
+  #glitch_cc kick: true
+  if true#(ing 1 1 0 0 1 1 1).look == 1
+    #vox_on score[0]
+    #stop
+
+    #vox_cc sync: 0, wet: 0
   #if (ing 1 1).look == 1
     #if (ing 1 1 0 1 1 1).look == 1
     #vox  score[0],  sus: 1.5         #0
     if (ing 1 0).look == 0
-      vox   score[0],  sus: 1.5         #0
+      #vox   score[0],  sus: 1.5         #0
     else
-      voxe  score[0],  sus: 1.5         #0
+      #voxe  score[0],  sus: 1.5         #0
     end
-    looper score[0],  sus: 1.5, pat: (ing 1/2.0 '1/2d').look#, elec: false, cutoff: (ramp 0.9, 1.0,256).tick(:hitit), abite: 0.0, bbite:  0.0, atk: 0.6, reverb: 1.0, creverb: 1.0
+    #looper score[0],  sus: 1.5, pat: (ing 1/2.0 '1/2d').look#, elec: false, cutoff: (ramp 0.9, 1.0,256).tick(:hitit), abite: 0.0, bbite:  0.0, atk: 0.6, reverb: 1.0, creverb: 1.0
     #vox   score[1],     sus:3.5
     #vox  score[2], 80,  sus:1.5
     #vox  score[3], 80,  sus:3.5
@@ -136,11 +142,11 @@ live_loop :form, sync: :unsyncable do
     #vox2  score[3], 80,  sus: 2.5    # 3
     #vox   score[3], 80,  sus: 2.5     # 3
     if (ing 1 0).look == 0
-      vox   score[3], 80,  sus: 2.5     # 3
+      #vox   score[3], 80,  sus: 2.5     # 3
     else
-      voxe  score[3], 80,  sus: 2.5    # 3
+      #voxe  score[3], 80,  sus: 2.5    # 3
     end
-    looper score[3], 80,  sus: 2.5, pat: 1/8.0         #0
+    #looper score[3], 80,  sus: 2.5, pat: 1/8.0         #0
 
     sleep 1/2.0
     glitch :f3, 60
@@ -157,23 +163,22 @@ live_loop :form, sync: :unsyncable do
 
     sleep 1/2.0
 
-    sop score[2], 50, sus:4    #2
+    #sop score[2], 20, sus:4    #2
 
     glitch :fs3, 60+rand*5 if spread(2,3).look
     sleep 1/4.0
     with_swing -0.05{ glitch :fs3, 70+rand*5  if spread(4,5).look }
     sleep 1/4.0
   else
-    sop_on :A3
-    stop
-    # stop
-    fx wash: 0.0
-    vox  :g3,   sus: 1.5
-    vox_cc sync: 1, wet: 1
-    #vox_cc
     sop_cc mode: (ing 0 4 0 3).look
+    #sop_x :B2  # G A B C D E F
+    #stop
+    #stop
 
-    #piano score[2],82, sus:2.5
+    fx wash: 0.0
+    vox  :fs3,   sus: 1.5
+    vox_cc sync: 0, wet: 0.5, tune: 0.5, semitone: 5
+    #vox_cc #piano score[2],82, sus:2.5
     sleep 1/2.0
 
     at{
@@ -200,34 +205,36 @@ live_loop :form, sync: :unsyncable do
     #glitch :a3,127
 
     sleep 1/4.0
-    sop :fs4, 20
+    sop :fs4, 40
     sleep 1
     looper score[-2]+5, 80
     glitch :b4, 50
     sleep 1
   end
 end
-#glitch_cc kick: true
 
 live_loop :name, sync: :unsyncable do
   tick
-  N = 1; H = 1/2.0; F = 1/4.0; E = 1/8.0; S = 1/16.0
+  N = 1
+  H = 1/2.0
+  F = 1/4.0
+  E = 1/8.0
+  S = 1/16.0
   score = (ing
     [:E3 F]   [_ F]
-    [:G5 E]   [_ E]
-    [:G4 E]   [_ E]
-    [:G3 E]   [_ E+F]
+    [:B2 E]   [_ E]
+    [:B2 E]   [_ E]
+    [:B2 E]   [_ E+F]
 
-    [:D4 F]   [_ F]
-    [:D4 E]   [_ E+F]
-    [:D4 F] [_ F]
-    [[:A4 :G4 :E3].choose N [2,1].choose]
+    [:B2 F]   [_ F]
+    [:B2 E]   [_ E+F]
+    [:B2 F] [_ F]
+    [[:D3 :D3 :D3].choose N [2,1].choose]
     )
-  @sleep ||= 0
   note = score.look
   if note[0]
   with_swing((line 0, -0.04, 8).look(:note)){
-    midi note[0], (ing 100 127 50 60  85 95 110 120).tick(:note),  sus: note[-1],  channel: 6
+    #midi note[0], (ing 100 127 50 60  85 95 110 120).tick(:note),  sus: note[-1],  channel: 6
     }
   end
   sleep note[1]
