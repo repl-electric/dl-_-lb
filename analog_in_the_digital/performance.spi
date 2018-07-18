@@ -56,12 +56,16 @@ live_loop :form, sync: :unsyncable do
   #voxe_cc semitone: 5
 
   yes{
-  d=[8,6].shuffle
-  glitch_cc ldelay: d[0], cdelay: (knit 2,4,3,4).look, rdelay: d[1], wash: 0.25*(ing 1 0 0 0).look
-  glitch :C3, 85*1
-  at{
-    sleep 4
-    glitch_cc wash: 0.0
+    d=[8,6].shuffle
+    glitch_cc ldelay: d[0], cdelay: (knit 2,4,3,4).look, rdelay: d[1], wash: 0.25*(ing 1.0 0.0 0.0 0.0).look
+    glitch :C3, 85*1
+    at{
+      if dice(32) > 16
+        sleep 4
+      else
+        sleep 3
+      end
+      glitch_cc wash: 0.0
     }
   }
 
