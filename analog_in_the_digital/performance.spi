@@ -207,3 +207,28 @@ live_loop :form, sync: :unsyncable do
     sleep 1
   end
 end
+#glitch_cc kick: true
+
+live_loop :name, sync: :unsyncable do
+  tick
+  N = 1; H = 1/2.0; F = 1/4.0; E = 1/8.0; S = 1/16.0
+  score = (ing
+    [:E3 F]   [_ F]
+    [:G5 E]   [_ E]
+    [:G4 E]   [_ E]
+    [:G3 E]   [_ E+F]
+
+    [:D4 F]   [_ F]
+    [:D4 E]   [_ E+F]
+    [:D4 F] [_ F]
+    [[:A4 :G4 :E3].choose N [2,1].choose]
+    )
+  @sleep ||= 0
+  note = score.look
+  if note[0]
+  with_swing((line 0, -0.04, 8).look(:note)){
+    midi note[0], (ing 100 127 50 60  85 95 110 120).tick(:note),  sus: note[-1],  channel: 6
+    }
+  end
+  sleep note[1]
+end
