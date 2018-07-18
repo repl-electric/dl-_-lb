@@ -56,6 +56,11 @@ def glitch(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
+  puts vel
+  if vel == nil
+    vel = 30
+  end
+
   if n
     midi n,vel, channel: 3
     glitch_cc opts
@@ -103,6 +108,10 @@ def piano(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
+
+  if vel == nil
+    vel = 70
+  end
   if n
     midi n,vel, *(args << {port: :iac_bus_1} << {channel: 1})
   end
@@ -111,6 +120,9 @@ def vox(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
+  if vel == nil
+    vel = 60
+  end
   if n
     midi n,vel, *(args << {port: :iac_bus_1} << {channel: 2})
   end
@@ -235,6 +247,9 @@ def looper(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
+  if vel == nil
+    vel = 60
+  end
   if n
     if opts[:elec] != nil && opts[:elec]
       p = opts[:pat]
