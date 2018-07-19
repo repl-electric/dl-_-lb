@@ -157,7 +157,7 @@ end
 def vox_cc(cc)
   cc.keys.each do |k|
     n = case k
-        when :tune; 50
+        when :detune; 50
         when :wet; 51
         when :sync; 52
         when :spray; 54
@@ -308,7 +308,7 @@ end
 def looper_cc(cc)
   cc.keys.each do |k|
     n = case k
-        when :tune; 50
+        when :detune; 50
         when :acutoff; 51
         when :bcutoff; 52
         when :atk; 53
