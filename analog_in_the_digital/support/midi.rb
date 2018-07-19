@@ -55,6 +55,16 @@ def sop_on(*args)
   end
 end
 
+def sop_off(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi_note_off n, *(args << {port: :iac_bus_1} << {channel: 5})
+  end
+end
+
+
 def sop_cc(cc)
   cc.keys.each do |k|
     case k
