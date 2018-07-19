@@ -263,8 +263,29 @@ def bass(*args)
   n, vel = *params
   if n
     midi n,vel, *(args << {channel: 4})
+    bass_cc opts
   end
 end
+
+def bass_cc(args)
+  cc.keys.each do |k|
+    n = case k
+        when :detune; 50
+        when :atk; 14
+        when :wet; 17
+        when :shape; 15
+        when :more; 16
+        else
+          nil
+        end
+    if n == 50
+      midi_pitch_bend cc[k], channel: 2
+    else
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 2
+    end
+  end
+end
+
 def looper(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
