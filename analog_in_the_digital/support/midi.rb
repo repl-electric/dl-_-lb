@@ -15,6 +15,15 @@ def semitone_to_midi(m)
   map[m]*127
 end
 
+def octave(n, oct)
+  if n
+    note = SonicPi::Note.new(n)
+    "#{note.pitch_class}#{oct}"
+  else
+    n
+  end
+end
+
 def fx(cc)
   cc.keys.each do |k|
     n = case k
