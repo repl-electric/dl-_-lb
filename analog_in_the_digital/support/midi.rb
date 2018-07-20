@@ -83,7 +83,6 @@ def glitch(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
-  puts vel
   if vel == nil
     vel = 30
   end
