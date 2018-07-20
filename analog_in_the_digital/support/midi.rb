@@ -262,11 +262,11 @@ def bass(*args)
   n, vel = *params
   if n
     midi n,vel, *(args << {channel: 4})
-    bass_cc opts
+    bass_cc(opts)
   end
 end
 
-def bass_cc(args)
+def bass_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :detune; 50
@@ -278,9 +278,9 @@ def bass_cc(args)
           nil
         end
     if n == 50
-      midi_pitch_bend cc[k], channel: 2
-    else
-      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 2
+      midi_pitch_bend cc[k], channel: 4
+    elsif n
+      midi_cc n, cc[k]*127.0, channel: 4
     end
   end
 end
