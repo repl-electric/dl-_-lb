@@ -8,33 +8,18 @@ def init!
   voxe_cc semitone: 8
   bass_cc wet: 1, shape: 0, more: 0
   glitch_cc mode: 2
+  sop_cc mode: 0
 end
 
-init!
+#init!
 #sop :b3, sus: 4
-
 #vox_cc semitone: 5
-vox_cc sync: 0, wet: 1.0, spray: 1.0
+#vox_cc sync: 0, wet: 1.0, spray: 1.0
 #stop
 #glitch_cc mode: 2, wash: 0
 #glitch_cc wash: 0.125
 #glitch_cc rdelay: 8, ldelay: 6, cdelay: 2, wash: 0
-
 #vox_cc semitone: 5
-
-
-#SIMPLE CHD
-#    [:e2    :g3    :b3   :fs3]
-#    [:c3    :e3           _   _]         #cs
-#    [:d3    :fs3         _   _]         #cs
-#    [:g3    :b3          _   _]         #cs
-#[:e3    :g4    :b3   :fs3]         #cs
-#[:fs3    :g4    :b3   :g3]         #cs
-#[:c3    :e3     :A3   :e3]         #cs
-#[:d3    :fs3    :D3   :a3]         #cs
-#[:g3    :b3     :B3   :D3]         #cs
-#def glitch(*args)
-#end
 
 live_loop :form, sync: :unsyncable do
   tick
@@ -54,7 +39,7 @@ live_loop :form, sync: :unsyncable do
     # [:d3   :fs4  [:E4].choose :cs5]
 
     #P2
-    [:e3    :g3     _   :fs3]
+    [:e3    :g3    _   :fs3]
     [:fs3   :g3    _    :a3]
     # [:e3     _     :c4   :g3]
     # [:e3     _     :d4   :fs3]
@@ -146,7 +131,7 @@ live_loop :form, sync: :unsyncable do
     else
       #vox2  score[0],  sus: 1.5
     end
-    #looper score[0],  sus: 1.5, pat: (ing 1/2.0 '1/2d' 1/2.0 1/4.0).look#, elec: false, cutoff: (ramp 0.9, 1.0,256).tick(:hitit), abite: 0.0, bbite:  0.0, atk: 0.6, reverb: 1.0, creverb: 1.0
+    #looper score[0],  sus: 1.5, pat: (ing 1/2.0 '1/2d').look#, elec: false, cutoff: (ramp 0.9, 1.0,256).tick(:hitit), abite: 0.0, bbite:  0.0, atk: 0.6, reverb: 1.0, creverb: 1.0
     with_transpose 12{
       piano score[1],62,sus:2
     }
@@ -194,7 +179,7 @@ live_loop :form, sync: :unsyncable do
     #with_swing -0.05{ glitch :fs3, 70+rand*5  if spread(4,5).look }
     piano score[0]-5, 60, sus:2  if spread(1,3).rot(-2).look
     sleep 1/4.0
-  elsif false
+  elsif true
     sop_cc mode: (ing 0 4 0 3).look
     #sop_off :B3  # G A B C D E F
     #sop_on :A3  # G A B C D E F
