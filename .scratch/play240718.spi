@@ -1,0 +1,121 @@
+#NICE place to finish at.
+#One last thing, vocals need more texture...
+
+
+use_bpm 127
+
+
+def pad(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi_note_on n,vel, *(args << {channel: 1})
+  end
+end
+
+def pad_cc(cc)
+  cc.keys.each do |k|
+    n = case k
+        when :tone; 50
+        when :pitch; 51
+        when :motion; 52
+        when :fx; 53
+        else
+          nil
+        end
+    if n
+      midi_cc n, cc[k]*127.0, channel: 1
+    end
+  end
+end
+
+def octave(n, oct)
+  if n
+    note = SonicPi::Note.new(n)
+    note("#{note.pitch_class}#{oct}")
+  else
+    n
+  end
+end
+#scale C, D, E♭, F, G, A♭, and B♭.
+def kick(v=100)
+  midi :C3 ,v, channel:7
+end
+
+live_loop :test do
+  tick
+  score = (ing
+    # [[:C3   :Eb3  :G3]  8]
+    # [[:F3   :Ab3  :C4] 4]
+    # [[:Eb3  :G3   :Bb3] 4]
+    # [[:Ab3  :C4   :Eb4]  8]
+    [[_] 4]
+    )
+  #tick_reset_all
+  s = score.look
+
+  midi :c3,120, channel: 3
+  x = spread(1,4).look
+  at{
+    sleep s[-1] - (s[-1]/2.0)
+    #kick 127
+    sleep (s[-1]/2.0)
+    #kick 127 if x
+  }
+
+  at{
+    16.times{
+      sleep 1/4.0
+      #midi (ing :gs3 :as3).look(:in2), (ramp 75, 100, 128).look(:in2), channel: 3 if spread(3,7).tick(:in2)
+    }
+  }
+
+  at{
+    #sleep (s[-1]/4.0)*2
+    midi octave(root(s[0]),2),10, sus: s[-1]/2.0, channel: 4
+    sleep s[-1] - (s[-1]/4.0)
+    midi octave(root(s[0]),2), 100, sus: 0.5, channel: 4
+  }
+  if s[0][0] == nil
+    #more tension....
+    midi :G3, 127, sus: s[-1], channel: 4
+    vocal_note =  (ing :G4 :G4 :Eb4 :Bb4).look
+    early = spread(1,3).look
+    at{
+      sleep 1/8.0
+      midi :G2, 127, sus: s[-1] - 1/8.0, channel: 4
+
+      midi vocal_note, 100-(rand*10.0), channel: 6, sus: 6 if early
+      sleep 3/8.0
+      #vocals
+      midi vocal_note, 127-(rand*10.0), channel: 6, sus: 7
+    }
+  end
+
+  midi s[0][0], 80,  sus: s[-1], channel: 5
+  pad s[0][0],100, sus: s[-1]+0.2, channel: 1, port: :iac_bus_1
+  pad s[0][1],120, sus: s[-1]+0.0, channel: 1, port: :iac_bus_1
+  pad_cc tone: ((line 0.0, 0.5, 128) + (line 0.5, 0.0, 128)).look
+  pad_cc motion: ((line 0.0, 1.0, 128) + (line 1.0, 0.0, 128)).look
+
+  with_transpose 12{
+    midi s[0][-1], 75, channel: 2, sus: s[-1]
+  }
+  s[-1].times{
+    sleep 1/2.0
+    tick(:in)
+    midi :fs3, 75, channel: 3 if spread(3,5).look(:in)
+
+    with_swing((line 0, -0.05, 128).look(:in)){
+      midi s[0][-1], (ing 82 82 95).look,  sus: s[-1], channel: 5 if spread(7,11).look(:in)
+    }
+
+    sleep 1/2.0
+    midi :fs3, 75, channel: 3 if spread(3,5).rot(-1).look(:in)
+
+    with_transpose 12{
+      midi s[0][1], (ing 80 100 110).look,  sus: s[-1], channel: 5 if spread(2,3).look(:in)
+    }
+  }
+end
