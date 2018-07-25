@@ -266,6 +266,20 @@ def bass(*args)
   end
 end
 
+def bass_on(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi_note_on n,vel, *(args << {channel: 4})
+    bass_cc(opts)
+  end
+end
+
+def bass_x(*args)
+  midi_all_notes_off channel: 4
+end
+
 def bass_cc(cc)
   cc.keys.each do |k|
     n = case k
