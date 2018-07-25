@@ -1,3 +1,10 @@
+def solo(thing)
+  case thing
+  when :piano
+    midi_cc 20, 127.0, port: :iac_bus_1, channel: 1
+  end
+end
+
 def warm
   [:c3, :cs3, :d3, :ds3, :e3, :f3, :fs3, :g3, :gs3, :a3, :as3, :b3,
    :c4, :cs4, :d4, :ds4, :e4, :f4, :fs4, :g4, :gs4, :a4, :as4, :b4,
