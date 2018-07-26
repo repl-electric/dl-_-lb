@@ -50,6 +50,9 @@ def sop(*args)
   n, vel = *params
   if n
     midi n,vel, *(args << {port: :iac_bus_1} << {channel: 5})
+    if opts[:more]
+      midi n+12,vel, *(args << {port: :iac_bus_1} << {channel: 13})
+    end
   end
 end
 
