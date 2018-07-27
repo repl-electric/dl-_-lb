@@ -152,6 +152,20 @@ def piano(*args)
     midi n,vel, *(args << {port: :iac_bus_1} << {channel: 1})
   end
 end
+def piano_cc(cc)
+  cc.keys.each do |k|
+    n = case k
+        when :detune; 50
+        else
+          nil
+        end
+    if n == 50
+      midi_pitch_bend cc[k], channel: 1
+    elsif n
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 1
+    end
+  end
+end
 def vox(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
