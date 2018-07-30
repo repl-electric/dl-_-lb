@@ -222,6 +222,8 @@ def voxe_cc(cc)
     n = case k
         when :detune; 50
         when :semitone; 55
+        when :x; 56
+        when :y; 57
         else
           nil
         end
