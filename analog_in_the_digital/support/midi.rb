@@ -291,6 +291,19 @@ def bass(*args)
     bass_cc(opts)
   end
 end
+def voltage(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  vel = if !vel
+          30
+        else
+          vel
+        end
+  if n
+    midi n,vel, *(args << {channel: 14})
+  end
+end
 
 def bass_on(*args)
   params, opts = split_params_and_merge_opts_array(args)
