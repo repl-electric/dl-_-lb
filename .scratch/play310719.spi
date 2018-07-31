@@ -35,27 +35,24 @@ end
 live_loop :start do
   tick
   if spread(1,32).rot(-6).look
-    midi :cs3, 65, channel: 6
+#    midi :cs3, 65, channel: 6
   end
   if spread(15,16).look
-    midi :c3, (ing 78 62 68 61).look, channel: 6
+ #   midi :c3, (ing 78 62 68 61).look, channel: 6
   end
   mscore = (ing
-    [:c3 :eb4 :G3 :Bb4]
-    [:c3 :eb4 :G3 :Bb4]
-    [:c3 :eb4 :G3 :Bb4]
-    [:c3 :eb4 :G3 :Bb4]
+      [:c3 :eb4  :G3 :as4]
+      [:c3 :eb4 :G3 :Bb4]
+     # [:f3 :ab4 :c4]
+     # [:Ab3 :C5 :eb4]
+     # [:ab3 :Bb5 :eb4]
 
-    [:c3 :eb4 :G3 :Bb4]
-    [:f3 :ab4 :c4]
-    [:Ab3 :C5 :eb4]
-    [:ab3 :Bb5 :eb4]
-
-    [:c3 :eb4 :G3 :Bb4]
-    [:f3 :ab4 :c4]
-    [:Ab3 :D5 :eb4]
-    [:ab3 :c5 :eb4]
+     # [:c3 :eb4 :G3 :Bb4]
+     # [:f3 :ab4 :c4]
+     # [:Ab3 :D5 :eb4]
+     # [:ab3 :c5 :eb4]
     )
+  #tick_reset_all
   score = mscore.look
 
   if spread(1,8).look
@@ -101,9 +98,9 @@ live_loop :start do
     midi_cc 52, 0.1, channel: 2 #filter
   end
 
-  with_transpose 12{
-    midi_cc 50, (line 0, 1.0, 128).look*127.0, channel: 2
-    dragon score2, (ing 100 80 70).look, sus: 2.5
+  with_transpose 12*1{
+    midi_cc 50, (line 0.9, 1.0, 128).look*127.0, channel: 2
+    dragon score2, (ing 100 80 70).look, sus: 2.5+2
   }
 
   with_transpose 12{
@@ -115,7 +112,7 @@ live_loop :start do
   }
 
   if spread(1,2).look
-    midi :c3, 60, channel: 6
+  #  midi :c3, 60, channel: 6
   end
 
   sleep 1/2.0
@@ -140,6 +137,6 @@ end
 live_loop :control, sync: :start do
   tick
   midi_cc 51, ((line 0, 1.0, 128).look+(line 1.0, 0.0, 128).look)*127.0, channel: 2 #pulse
-  #midi_cc 52, 0.6, channel: 2 #filter
+  midi_cc 52, 0.7, channel: 2 #filter
   sleep 1/2.0
 end
