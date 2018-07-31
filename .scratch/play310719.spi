@@ -1,0 +1,145 @@
+use_bpm 127.0
+# c minor
+# C, D, E♭, F, G, A♭, and B♭.
+
+#fin...
+# Lots more to do there, progression on the chords required!
+
+def octave(n, oct)
+  if n
+    note = SonicPi::Note.new(n)
+    "#{note.pitch_class}#{oct}"
+  else
+    n
+  end
+end
+
+def harp(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n,vel, *(args << {channel: 1})
+  end
+end
+
+def dragon(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n,vel, *(args << {channel: 2})
+  end
+end
+
+live_loop :start do
+  tick
+  if spread(1,32).rot(-6).look
+    midi :cs3, 65, channel: 6
+  end
+  if spread(15,16).look
+    midi :c3, (ing 78 62 68 61).look, channel: 6
+  end
+  mscore = (ing
+    [:c3 :eb4 :G3 :Bb4]
+    [:c3 :eb4 :G3 :Bb4]
+    [:c3 :eb4 :G3 :Bb4]
+    [:c3 :eb4 :G3 :Bb4]
+
+    [:c3 :eb4 :G3 :Bb4]
+    [:f3 :ab4 :c4]
+    [:Ab3 :C5 :eb4]
+    [:ab3 :Bb5 :eb4]
+
+    [:c3 :eb4 :G3 :Bb4]
+    [:f3 :ab4 :c4]
+    [:Ab3 :D5 :eb4]
+    [:ab3 :c5 :eb4]
+    )
+  score = mscore.look
+
+  if spread(1,8).look
+    midi octave(score[0],3), channel: 3, sus: 4*4
+  end
+
+  puts score
+  at{
+    midi score[-1],100, channel: 5, sus: 4
+    sleep 1/2.0
+    with_transpose 0{
+      midi_cc 50, (ing 0 0 127 0).look, channel: 5 #odd...
+      midi score[-2], channel: 5, sus: 2 #odd...
+    }
+    sleep 2.5
+    midi score[-3], channel: 5, sus: 1
+  }
+
+  at{
+    sleep 2
+    midi score[1], 85, channel: 4, sus: 1
+    sleep 1
+    midi score[0], 95, channel: 4, sus: 1
+  }
+  #end
+
+  harp score[0], 100, sus: 3.5
+
+  sleep 1
+  sleep 1
+
+  score2 = (ing
+    [:c2 :C3].choose
+    [:f4 :c4].choose
+    [:Ab3 :G4].choose
+    _).look
+
+  if score2 == _
+    puts :HIT
+    midi_cc 52, 1.0, channel: 2 #filter
+    midi [:c5, :eb5, :g5].choose,100, channel: 1, sus: 4+2
+  else
+    midi_cc 52, 0.1, channel: 2 #filter
+  end
+
+  with_transpose 12{
+    midi_cc 50, (line 0, 1.0, 128).look*127.0, channel: 2
+    dragon score2, (ing 100 80 70).look, sus: 2.5
+  }
+
+  with_transpose 12{
+    midi mscore.look(offset: 1)[-1], 75, channel: 4, sus: 2
+  }
+  sleep 1/2.0
+  with_transpose 12{
+    midi mscore.look(offset: 1)[1], 85, channel: 4, sus: 2
+  }
+
+  if spread(1,2).look
+    midi :c3, 60, channel: 6
+  end
+
+  sleep 1/2.0
+
+  if spread(7,11).look
+    midi :d3, 75+rand*2.0, channel: 6
+  else
+    at{
+      sleep 1/2.0
+      midi :e3, 75, channel: 6
+    }
+  end
+
+  if spread(1,4).look
+    with_transpose 12{
+      midi mscore.look(offset: 1)[0], 95, channel: 4, sus: 5
+    }
+  end
+  sleep 1
+end
+
+live_loop :control, sync: :start do
+  tick
+  midi_cc 51, ((line 0, 1.0, 128).look+(line 1.0, 0.0, 128).look)*127.0, channel: 2 #pulse
+  #midi_cc 52, 0.6, channel: 2 #filter
+  sleep 1/2.0
+end
