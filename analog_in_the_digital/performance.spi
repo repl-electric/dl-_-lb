@@ -1,7 +1,7 @@
 load_support('analog_in_the_digital'); use_bpm 127/2.0
 #init!
-vox_cc sync: 0
-#glitch_cc mode: 2
+#vox_cc sync: 0
+glitch_cc mode: 2
 #bass_cc shape: 1, more: 1.0, wet: 0
 #glitch_cc kick: 1
 #bass_on :A3
@@ -11,19 +11,19 @@ live_loop :form, sync: :unsyncable do
   tick
   score = (ing
     #P0
-     [:e3    :g3                :a3   :fs3]
-     [:fs3   [:g3 :a3].choose   :b3    :g3]
-    # [:d3    :b3                :b3    :fs3]
-    # [:e3    :g3                :d4   :fs3]
+     [:e3    :g3                _   :fs3]
+     [:fs3   [:g3 :a3].choose   _    :g3]
+    # [:d3    :b3                 _    :fs3]
+    # [:e3    :g3                _   :fs3]
 
     # [:e3    :g3                :a3   :fs3]
     # [:fs3   [:g3 :a3].choose   :b3    :g3]
     # [:d3    :b3                :b3    :fs3]
-    # [:e3    :g3                :d4   :fs3]
+    # [:e3    :g3                :e4   :fs3]
 
     #P1--------------------------------------
 
-    # [:e3    :g3                :fs3   :fs3]
+    #[:e3    :g3                :fs3   :fs3]
     # [:fs3   [:g3 :a3].choose   :a3    :g3]
     # [:d3    :b3                :b3    :fs3]
     # [:e3    :g3                :e3    :fs3]
@@ -60,7 +60,7 @@ live_loop :form, sync: :unsyncable do
     # [:e3    :g3    _     :fs3]
 
     ).look
-  #puts score
+  puts score
 
   voxe_cc semitone: 5
   no{
@@ -170,11 +170,12 @@ live_loop :form, sync: :unsyncable do
 
     #bass_on :G4
     #vox score[0], 30, sus: 1.5
-    voxe_cc x: (ing 0.0 0.0 1.0 1.0).look-(rand*0.1), y: (ing 0.0 1.0 1.0 0.0).look-(rand*0.1)
+    #voxe_cc x: (ing 0.0 0.0 1.0 1.0).look-(rand*0.1), y: (ing 0.0 1.0 1.0 0.0).look-(rand*0.1)
     if (ing 1 0).look == 0
-      #voxe  score[0],  sus: 1.5
+      #vox  score[0],  sus: 1.5
     else
-      #vox2  score[0],  sus: 1.5
+      #voxe  score[0],  sus: 1.5
+      #at{sleep 2.0; vox2 score[0], 50, sus: 1}
     end
 
     with_transpose 12*0{
@@ -218,7 +219,7 @@ live_loop :form, sync: :unsyncable do
     sleep 1/2.0
     piano score[-1]+12+5, 55+5, sus:2  if spread(2,2).rot(0).look
 
-    sop score[2], 1*(ing 5.5 10).look, sus: 4.1, more: false
+    sop score[2], 1*(ing 5.5 10).look, sus: 4.0, more: false
 
     #glitch :fs3, 60+rand*5 if spread(2,3).look
     sleep 1/4.0
