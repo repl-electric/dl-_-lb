@@ -1,0 +1,9 @@
+load_support('workingtitle'); use_bpm 127.0
+
+live_loop :pattern, sync: :unsyncable do
+  tick
+  sleep 1
+  sleep 1
+end
+
+live_loop(:unsyncable) do; sleep 1.0;end
