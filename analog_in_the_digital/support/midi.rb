@@ -35,6 +35,7 @@ def fx(cc)
   cc.keys.each do |k|
     n = case k
         when :wash; 12
+        when :smear; 13
         else
           nil
         end
