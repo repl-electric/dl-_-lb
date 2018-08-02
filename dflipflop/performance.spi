@@ -1,0 +1,144 @@
+load_support('dflipflop'); use_bpm 127.0
+# c minor
+# C, D, E♭, F, G, A♭, and B♭.
+
+#dragon_cc detune: 0.50
+
+
+#midi_cc 50, 127, channel: 5 #odd...
+
+#stop
+
+live_loop :start, sync: :unsyncable do
+  tick
+  if spread(1,32).rot(-6).look
+#    midi :cs3, 65, channel: 6
+  end
+  if spread(15,16).look
+ #   midi :c3, (ing 78 62 68 61).look, channel: 6
+  end
+  mscore = (ing
+     #[[:c3 :Eb4  :G3 :as4] 4]
+     #[[:c3 :Eb4 :G3  :Bb4] 4]
+     #[[:f3 :ab4 :c4] 4]
+     #[[:Ab3 :C5 :eb4] 4]
+     #[[:ab3 :Bb5 :eb4] 4]
+
+    [[:f3 :ab4 :c3 :f3] 4]
+    [[:f3 :a4 :c3 :f3]  4]
+
+    # [[:c3 :eb4 :G3 :Bb4] 4]
+    # [[:f3 :ab4 :c4] 4]
+    # [[:Ab3 :D5 :eb4] 4]
+    # [[:ab3 :c5 :eb4] 4]
+    )
+  #tick_reset_all
+  score = mscore.look
+  zzz   = score[-1]
+  score = score[0]
+
+  if spread(1,8).look
+    hpad octave(score[0],3), sus: 4*4
+  end
+
+  puts score
+  at{
+    bass score[-1],100, sus: zzz
+    sleep 1/2.0
+    with_transpose 0{
+      bass_cc ryth: 1.0
+      bass score[-2], sus: 2
+    }
+    sleep 2.5
+    bass score[-3], sus: 1
+  }
+
+  at{
+    sleep 2
+    piano score[1], 85, sus: 1
+    sleep 1
+    piano score[0], 95, sus: 1
+  }
+  #end
+
+  wpiano score[0], 100, sus: 3.5
+
+  sleep zzz / 4.0
+  with_swing ((line 0.0, -0.05,9).look){
+    zero score[0]+12,10, detune: 0.5, sus: 2
+  }
+  sleep zzz / 4.0
+
+  score2 = (ing
+    [:c2 :C3].choose
+    [:f4 :c4].choose
+    [:Ab3 :G4].choose
+    _).look
+
+  if score2 == _
+    puts "#{zzz} HIT"
+    dragon_cc filter: 0.01
+    wpiano [:c5, :eb5, :g5].choose,100, sus: zzz+2
+  else
+    dragon_cc filter: 0.01
+  end
+
+  with_transpose 12*1{
+    dragon_cc more: (line 0.9, 1.0, 128).look
+    dragon score2, (ing 100 80 70).look, sus: 2.5+2
+  }
+
+  with_transpose 12{
+    piano mscore.look(offset: 1)[0][-1], 75, sus: 2
+  }
+
+  sleep (zzz / 4.0 / 2.0)
+
+  with_transpose 12{
+    piano mscore.look(offset: 1)[0][1], 85, sus: 2
+  }
+
+  if spread(1,2).look
+     #glitch :c3, 60, channel: 6
+  end
+
+  sleep (zzz / 4.0 / 2.0)
+
+  if spread(7,11).look
+    glitch :d3, 75+rand*2.0, channel: 6
+  else
+    at{
+      sleep 1/2.0
+      glitch :e3, 75, channel: 6
+    }
+  end
+
+  if spread(1,3).look
+    with_transpose 12*2{
+      #piano :f3, 100, sus: 1
+    }
+  end
+  at{
+    sleep 1/2.0
+    with_transpose 12*3{
+      #piano [:c3, :eb3].choose, 115, sus: 1
+    }
+  }
+
+  if spread(1,4).look
+    with_transpose 12{
+      piano mscore.look(offset: 1)[0][0], 95, sus: 5
+    }
+  end
+
+  sleep (zzz / 4.0)
+end
+
+live_loop :control, sync: :start do
+  tick
+  dragon_cc pulse: ((line 0, 1.0, 128).look+(line 1.0, 0.0, 128).look)
+  dragon_cc filter: 0.1
+  sleep 1/2.0
+end
+
+live_loop(:unsyncable) do;  sleep 1.0;end
