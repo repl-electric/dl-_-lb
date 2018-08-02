@@ -1,3 +1,34 @@
+def solo(thing)
+  case thing
+  when :piano
+    midi_cc 20, 127.0, port: :iac_bus_1, channel: 1
+  end
+end
+
+def alive(args)
+  _, opts = split_params_and_merge_opts_array(args)
+  puts opts
+  opts.each{|s|
+    v = (s[1] == 0.0) ? 127 : 0
+    case s[0]
+    when :wpiano
+      midi_cc 20, v, port: :iac_bus_1, channel: 1
+    when :dragon
+      midi_cc 20, v, port: :iac_bus_1, channel: 2
+    when :hpad
+      midi_cc 20, v, port: :iac_bus_1, channel: 3
+    when :piano
+      midi_cc 20, v, port: :iac_bus_1, channel: 4
+    when :bass
+      midi_cc 20, v, port: :iac_bus_1, channel: 5
+    when :glitch
+      midi_cc 20, v, port: :iac_bus_1, channel: 6
+    when :zero
+      midi_cc 20, v, port: :iac_bus_1, channel: 7
+    end
+  }
+end
+
 def octave(n, oct)
   if n
     note = SonicPi::Note.new(n)
@@ -17,7 +48,7 @@ def dragon(*args)
 end
 
 def zero(*args)
-    params, opts = split_params_and_merge_opts_array(args)
+  params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
   if n

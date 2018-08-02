@@ -1,9 +1,17 @@
 load_support('dflipflop'); use_bpm 127.0
+
+alive dragon: 0.0, bass: 0.0, hpad: 0, glitch: 0, zero: 0.0, piano: 0, wpiano: 0
+
+#stop
+#stop
+
+#solo :piano
+
+#stop
 # c minor
 # C, D, E♭, F, G, A♭, and B♭.
 
 #dragon_cc detune: 0.50
-
 
 #midi_cc 50, 127, channel: 5 #odd...
 
@@ -84,7 +92,8 @@ live_loop :start, sync: :unsyncable do
   end
 
   with_transpose 12*1{
-    dragon_cc more: (line 0.9, 1.0, 128).look
+    dragon_cc more: 0.0
+    #dragon_cc more: (line 0.9, 1.0, 128).look
     dragon score2, (ing 100 80 70).look, sus: 2.5+2
   }
 
