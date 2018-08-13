@@ -7,7 +7,6 @@ end
 
 def alive(args)
   _, opts = split_params_and_merge_opts_array(args)
-  puts opts
   opts.each{|s|
     v = (s[1] == 0.0) ? 127 : 0
     case s[0]
@@ -19,12 +18,20 @@ def alive(args)
       midi_cc 20, v, port: :iac_bus_1, channel: 3
     when :piano
       midi_cc 20, v, port: :iac_bus_1, channel: 4
-    when :bass
+    when :pluck
       midi_cc 20, v, port: :iac_bus_1, channel: 5
     when :glitch
       midi_cc 20, v, port: :iac_bus_1, channel: 6
     when :zero
       midi_cc 20, v, port: :iac_bus_1, channel: 7
+    when :bass
+      midi_cc 20, v, port: :iac_bus_1, channel: 9
+    when :piano_echos
+      midi_cc 20, v, port: :iac_bus_1, channel: 16
+    when :marimba
+      midi_cc 19, v, port: :iac_bus_1, channel: 3
+    when :spad
+      midi_cc 19, v, port: :iac_bus_1, channel: 2
     end
   }
 end
@@ -44,6 +51,26 @@ def dragon(*args)
   n, vel = *params
   if n
     midi n,vel, *(args << {channel: 2})
+    dragon_cc opts
+  end
+end
+
+def dragon_cc(cc)
+  cc.keys.each do |k|
+    n = case k
+        when :detune; 49
+        when :more; 50
+        when :pulse; 51
+        when :filter; 52
+        when :wet; 53
+        else
+          nil
+        end
+    if n == 49
+      midi_pitch_bend cc[k], channel: 2
+    elsif n
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 2
+    end
   end
 end
 
@@ -72,14 +99,19 @@ def zero_cc(cc)
   end
 end
 
-def dragon_cc(cc)
+def hpad(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n,vel, *(args << {channel: 3})
+  end
+end
+
+def spad_cc(cc)
   cc.keys.each do |k|
     n = case k
-        when :detune; 49
-        when :more; 50
-        when :pulse; 51
-        when :filter; 52
-        when :wet; 53
+        when :filter; 80
         else
           nil
         end
@@ -91,25 +123,18 @@ def dragon_cc(cc)
   end
 end
 
-def hpad(*args)
-  params, opts = split_params_and_merge_opts_array(args)
-  opts         = current_midi_defaults.merge(opts)
-  n, vel = *params
-  if n
-    midi n,vel, *(args << {channel: 3})
-  end
-end
-
-def bass(*args)
+def pluck(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
   if n
     midi n,vel, *(args << {channel: 5})
+    pluck_cc(opts)
   end
 end
 
-def bass_cc(cc)
+def pluck_cc(cc)
+  channel = 5
   cc.keys.each do |k|
     n = case k
         when :detune; 49
@@ -118,21 +143,65 @@ def bass_cc(cc)
           nil
         end
     if n == 49
-      midi_pitch_bend cc[k], channel: 2
+      midi_pitch_bend cc[k], channel: channel
     elsif n
-      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 5
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: channel
     end
   end
 end
+
+def bass(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n,vel, *(args << {channel: 9})
+    bass_cc opts
+  end
+end
+
+def bass_cc(cc)
+  cc.keys.each do |k|
+    n = case k
+        when :detune; 49
+        when :dirt; 50
+        when :delay; 51
+        when :noise; 52
+        when :more; 53
+        else
+          nil
+        end
+    if n == 49
+      midi_pitch_bend cc[k], channel: 9
+    elsif n
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 9
+    end
+  end
+end
+
 
 def piano(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
   if n
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4, " "), "[Piano]"]
     midi n,vel, *(args << {channel: 4})
   end
 end
+
+def piano_echos(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4, " "), "[PianoEchos]"]
+    midi n,vel, *(args << {channel: 16})
+  end
+end
+
 
 def wpiano(*args)
   params, opts = split_params_and_merge_opts_array(args)
