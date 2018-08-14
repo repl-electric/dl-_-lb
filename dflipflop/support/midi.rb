@@ -32,6 +32,9 @@ def alive(args)
       midi_cc 19, v, port: :iac_bus_1, channel: 3
     when :spad
       midi_cc 19, v, port: :iac_bus_1, channel: 2
+    when :derbass
+      bass(bass: 0)
+      midi_cc 19, v, port: :iac_bus_1, channel: 9
     end
   }
 end
@@ -141,6 +144,8 @@ def pluck(*args)
   n, vel = *params
   if n
     midi n,vel, *(args << {channel: 5})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4+2, " "), "[Pluck]"]
     pluck_cc(opts)
   end
 end
@@ -169,6 +174,8 @@ def bass(*args)
   n, vel = *params
   if n
     midi n,vel, *(args << {channel: 9})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4+4, " "), "[Bass]"]
     bass_cc opts
   end
 end
@@ -199,7 +206,7 @@ def piano(*args)
   n, vel = *params
   if n
     nname = SonicPi::Note.new(n).midi_string
-    puts "%s%s" %[nname.ljust(4, " "), "[Piano]"]
+    #puts "%s%s" %[nname.ljust(4, " "), "[Piano]"]
     midi n,vel, *(args << {channel: 4})
   end
 end
@@ -210,7 +217,7 @@ def piano_echos(*args)
   n, vel = *params
   if n
     nname = SonicPi::Note.new(n).midi_string
-    puts "%s%s" %[nname.ljust(4, " "), "[PianoEchos]"]
+    #puts "%s%s" %[nname.ljust(4, " "), "[PianoEchos]"]
     midi n,vel, *(args << {channel: 16})
   end
 end
@@ -230,7 +237,6 @@ def wpiano(*args)
 end
 
 def wpiano_cc(cc)
-  puts cc.keys
   cc.keys.each do |k|
     n = case k
         when :wash; 50
