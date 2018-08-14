@@ -108,10 +108,22 @@ def hpad(*args)
   end
 end
 
+def spad(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n,vel, *(args << {channel: 2})
+  end
+end
+
 def spad_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :filter; 80
+        when :atk; 81
+        when :wet; 82
+        when :reverb; 83
         else
           nil
         end
@@ -139,6 +151,7 @@ def pluck_cc(cc)
     n = case k
         when :detune; 49
         when :ryth; 50
+        when :pulse; 51
         else
           nil
         end
@@ -207,10 +220,29 @@ def wpiano(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
+  if !vel
+    vel = 100
+  end
   if n
     midi n,vel, *(args << {channel: 1})
+    wpiano_cc opts
   end
 end
+
+def wpiano_cc(cc)
+  puts cc.keys
+  cc.keys.each do |k|
+    n = case k
+        when :wash; 50
+        else
+          nil
+        end
+    if n
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 1
+    end
+  end
+end
+
 
 def glitch(*args)
   params, opts = split_params_and_merge_opts_array(args)
