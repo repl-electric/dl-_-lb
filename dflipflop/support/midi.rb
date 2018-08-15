@@ -157,6 +157,7 @@ def pluck_cc(cc)
         when :detune; 49
         when :ryth; 50
         when :pulse; 51
+        when :wash; 52
         else
           nil
         end
