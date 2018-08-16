@@ -159,7 +159,7 @@ def pluck(*args)
   if n
     midi n,vel, *(args << {channel: 5})
     nname = SonicPi::Note.new(n).midi_string
-    puts "%s%s" %[nname.ljust(4+2, " "), "[Pluck]"]
+    puts "%s%s" %[nname.ljust(4+2, " "), "[Pluck]"] if state[:pluck]
     pluck_cc(opts)
   end
 end
@@ -194,7 +194,7 @@ def bass(*args)
   if n
     midi n,vel, *(args << {channel: 9})
     nname = SonicPi::Note.new(n).midi_string
-    puts "%s%s" %[nname.ljust(4+4, " "), "[Bass]"]
+    puts "%s%s" %[nname.ljust(4+4, " "), "[Bass]"] if state[:bass]
     bass_cc opts
   end
 end
@@ -206,7 +206,7 @@ def bass_on(*args)
   if n
     midi_note_on n,vel, *(args << {channel: 9})
     nname = SonicPi::Note.new(n).midi_string
-    puts "%s%s" %[nname.ljust(4+4, " "), "[Bass]"]
+    puts "%s%s" %[nname.ljust(4+4, " "), "[Bass]"] if state[:bass]
     bass_cc opts
   end
 end
