@@ -159,6 +159,10 @@ def pluck(*args)
   end
 end
 
+def pluck_x(*args)
+  midi_all_notes_off channel: 5
+end
+
 def pluck_cc(cc)
   channel = 5
   cc.keys.each do |k|
