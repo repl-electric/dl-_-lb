@@ -122,6 +122,30 @@ def hpad(*args)
   n, vel = *params
   if n
     midi n,vel, *(args << {channel: 3})
+    hpad_cc(opts)
+  end
+end
+
+def hpad_cc(cc)
+  channel = 3
+  cc.keys.each do |k|
+    n = case k
+        when :detune; 49
+        when :tone; 80
+        when :pitch; 81
+        when :motion; 82
+        when :fx; 83
+        when :glow; 84
+        when :piano; 85
+        else
+          nil
+        end
+    if n == 49
+      midi_pitch_bend cc[k], channel: channel
+    elsif n
+      puts "#{k} => #{(cc[k]*127.0).round}"
+      midi_cc n, (cc[k]*127.0).round, channel: channel
+    end
   end
 end
 
@@ -137,6 +161,7 @@ end
 def spad_cc(cc)
   cc.keys.each do |k|
     n = case k
+        when :detune; 49
         when :filter; 80
         when :atk; 81
         when :wet; 82
