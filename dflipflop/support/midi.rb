@@ -1,3 +1,7 @@
+def state()
+  $daw_state ||= {}
+end
+
 def solo(thing)
   case thing
   when :piano
@@ -17,6 +21,7 @@ end
 def alive(args)
   _, opts = split_params_and_merge_opts_array(args)
   opts.each{|s|
+    state[s[0]] = ((s[1] == 0) || (s[1] == 0.0)) ? false : true
     v = (s[1] == 0.0) ? 127 : 0
     case s[0]
     when :wpiano
