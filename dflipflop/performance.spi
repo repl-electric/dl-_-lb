@@ -3,16 +3,16 @@ load_support('dflipflop'); use_bpm 127.0
 #hpad_cc glow: 1.0, piano: 1.0
 
 spad_cc filter: 0.15*1
-#pluck_cc pulse: 1.0
+pluck_cc pulse: 1.0
 pluck_cc wash: 0.0
 wpiano_cc wash: 0.1
 #dragon_cc detune: 0.5
 #pluck detune: 0.5
 
-alive dragon: 1, hpad: 0, spad: 0,
+alive dragon: 0, hpad: 0, spad: 0,
 glitch: 0,
 piano: 0, wpiano: 1, piano_echos: 0,
-pluck: 0, bass: 0, derbass: 0, twinebass: 0,  marimba: 0
+pluck: 0, bass: 0, derbass: 0, twinebass: 1
 
 live_loop :start, sync: :unsyncable do
   tick
@@ -22,17 +22,21 @@ live_loop :start, sync: :unsyncable do
   if spread(15,16).look
     #glitch :c3, (ing 78 62 68 61).look
   end
+  #pluck_cc pulse: (ing 0.0 0.0 0.0 1.0  1.0 1.0 1.0 1.0).look
+  #pluck_cc wash: (ing 0.0 1.0 0.0 0.0).look #nice riser
   mscore = (ing
     #Intro
 
     [[:c3 :Eb4  :G3 :as4] 4]
     [[:c3 :Eb4  :G4 :bb4] 4]
+    #[[:eb4] 8]
 
     # Dev intro
 
-     # [[:c3  :Eb4 :G3 :as4] 4]
-     # [[:bb2 :d4 :f3 :Ab3 ] 4]
-     # [[:bb2 :d3 :f3 :Ab3 ] 4]
+    # [[:c3  :Eb4 :G3 :as4] 4]
+    # [[:c3  :Eb4 :G4 :bb4] 4]
+    # [[:bb2 :d4 :f3 :Ab3 ] 4]
+    # [[:bb2 :d3 :f3 :Ab3 ] 4]
 
     #[[:f3 :ab4 :c4] 4]
     # [[:F3 :D4 :Ab4] 4]
@@ -68,13 +72,14 @@ live_loop :start, sync: :unsyncable do
     # [[:Ab3 :D5 :eb4] 4]
     # [[:ab3 :c5 :eb4] 4]
 
+
     # [[:c4 :eb4 :G4 :Bb4] 4]
     # [[:f3 :ab4 :c4] 4]
     # [[:bb3 :c5 :f4 :ab4] 4]
     # [[[:bb3 :d5 :f4 :ab4] 8] [[:Ab3 :C5 :eb4 :g4] 8]].choose
 
 #Chorus
-#--------------
+#----------
 
     # [[:Eb3 :G4 [:bb3 :bb3].choose :d4] 4]
     # [[:F3 :Ab4 :C3 :Eb4] 2]
@@ -273,13 +278,12 @@ live_loop :start, sync: :unsyncable do
     piano mscore.look(offset: 1)[0][-1], 75, sus: 2
   }
 
-  twinebass octave(score[0],5), 55 if spread(2,3).rot(-1).look
+  twinebass octave(score[0],5), 60 if spread(2,3).rot(-1).look
   sleep (zzz / 4.0 / 2.0)
 
   if spread(2,3).look
     with_swing ((line 0, -0.1, 8*2).look){
-      #puts (line 0, -0.1, 8*2).look
-      twinebass octave(score[0],5), 85
+      twinebass octave(score[0],5), 68
     }
   end
 
@@ -339,7 +343,6 @@ sync :start
 #hpad_on :f6, 100
 #hpad_on :d6, 100
 #hpad_on :bb5, 52, off: :ab6
-
 
 #hpad_on :ab6, 50, off: :bb5
 #hpad_on :bb5, 52, off: :ab6
