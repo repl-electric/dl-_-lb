@@ -11,10 +11,11 @@ end
 
 def warm
   [:c3, :cs3, :d3, :ds3, :e3, :f3, :fs3, :g3, :gs3, :a3, :as3, :b3,
-   :c4, :cs4, :d4, :ds4, :e4, :f4, :fs4, :g4, :gs4, :a4, :as4, :b4,
+    :c4, :cs4, :d4, :ds4, :e4, :f4, :fs4, :g4, :gs4, :a4, :as4, :b4,
+    :c5, :cs5, :d5, :ds5, :e5, :f5, :fs5, :g5, :gs5, :a5, :as5, :b5,
   ].each{|n|
     midi n,1, sus: 0.125, port: '*', channel: '*'
-    sleep 0.125
+    sleep 0.25
     }
 end
 
@@ -49,6 +50,8 @@ def alive(args)
     when :derbass
       bass(bass: 0)
       midi_cc 19, v, port: :iac_bus_1, channel: 9
+    when :twinebass
+      midi_cc 20, v, port: :iac_bus_1, channel: 10
     end
   }
 end
@@ -122,8 +125,48 @@ def hpad(*args)
   n, vel = *params
   if n
     midi n,vel, *(args << {channel: 3})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4, " "), "[Hpad]"] if state[:hpad]
     hpad_cc(opts)
   end
+end
+
+def hpad_on(*args)
+  @hpad_on_notes ||= Set.new
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    if !@hpad_on_notes.member?(note(n))
+      midi_note_on n,vel, *(args << {channel: 3})
+      @hpad_on_notes.add(note(n))
+    else
+      puts "Skipping #{n} [Hpad]"
+    end
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4, " "), "[Hpad]"] if state[:hpad]
+    if opts[:off]
+      @hpad_on_notes.delete(note(opts[:off]))
+      hpad_off opts[:off]
+    end
+    hpad_cc(opts)
+  end
+end
+
+def hpad_off(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi_note_off n, channel: 3
+    @hpad_on_notes ||= Set.new
+    @hpad_on_notes.delete(note(n))
+  end
+end
+
+def hpad_x(*args)
+  @hpad_on_notes.clear()
+  midi_all_notes_off channel: 3
 end
 
 def hpad_cc(cc)
@@ -143,7 +186,6 @@ def hpad_cc(cc)
     if n == 49
       midi_pitch_bend cc[k], channel: channel
     elsif n
-      puts "#{k} => #{(cc[k]*127.0).round}"
       midi_cc n, (cc[k]*127.0).round, channel: channel
     end
   end
@@ -155,6 +197,9 @@ def spad(*args)
   n, vel = *params
   if n
     midi n,vel, *(args << {channel: 2})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4+2, " "), "[Spad]"] if state[:spad]
+    spad_cc(opts)
   end
 end
 
@@ -276,7 +321,7 @@ def piano_echos(*args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
   if n
-    nname = SonicPi::Note.new(n).midi_string
+    #nname = SonicPi::Note.new(n).midi_string
     #puts "%s%s" %[nname.ljust(4, " "), "[PianoEchos]"]
     midi n,vel, *(args << {channel: 16})
   end
@@ -292,6 +337,8 @@ def wpiano(*args)
   end
   if n
     midi n,vel, *(args << {channel: 1})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4, " "), "[WidePiano]"] if state[:wpiano]
     wpiano_cc opts
   end
 end
@@ -316,5 +363,29 @@ def glitch(*args)
   n, vel = *params
   if n
     midi n,vel, *(args << {channel: 6})
+  end
+end
+
+def bass(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n,vel, *(args << {channel: 9})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4+4, " "), "[Bass]"] if state[:bass]
+    bass_cc opts
+  end
+end
+
+def twinebass(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n,vel, *(args << {channel: 10})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4+4, " "), "[TwineBass]"] if state[:bass]
+    bass_cc opts
   end
 end
