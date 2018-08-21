@@ -3,16 +3,20 @@ load_support('dflipflop'); use_bpm 127.0
 #hpad_cc glow: 1.0, piano: 1.0
 
 spad_cc filter: 0.15*1
-pluck_cc pulse: 1.0
-pluck_cc wash: 0.0
-wpiano_cc wash: 0.1
+#pluck_cc pulse: 1.0
+
+#wpiano_cc wash: 0.5
 #dragon_cc detune: 0.5
 #pluck detune: 0.5
 
-alive dragon: 0, hpad: 0, spad: 0,
+alive dragon: 0 , hpad: 0, spad: 0,
 glitch: 0,
-piano: 0, wpiano: 1, piano_echos: 0,
-pluck: 0, bass: 0, derbass: 0, twinebass: 1
+#piano: 1, wpiano: 1, piano_echos: 1, pluck: 0,
+bass: 0, derbass: 0, twinebass: 0
+
+pluck_cc wash: 0.0
+#alive wpiano: 0, piano: 0, piano_echos: 0, pluck: 1
+alive wpiano: 1, piano: 1, piano_echos: 1
 
 live_loop :start, sync: :unsyncable do
   tick
@@ -24,17 +28,19 @@ live_loop :start, sync: :unsyncable do
   end
   #pluck_cc pulse: (ing 0.0 0.0 0.0 1.0  1.0 1.0 1.0 1.0).look
   #pluck_cc wash: (ing 0.0 1.0 0.0 0.0).look #nice riser
+  #pluck_cc wash: (ing 1.0 0.3).look #nice riser
+
   mscore = (ing
     #Intro
-
-    [[:c3 :Eb4  :G3 :as4] 4]
-    [[:c3 :Eb4  :G4 :bb4] 4]
-    #[[:eb4] 8]
+     # [[:c3 :Eb4  :G3 :as4] 4]
+     # [[:c3 :Eb4  :G4 :bb4] 4]
+   # [[:eb5] 8]
 
     # Dev intro
 
     # [[:c3  :Eb4 :G3 :as4] 4]
     # [[:c3  :Eb4 :G4 :bb4] 4]
+    # [[:ab2 :eb4 :c3] 4]
     # [[:bb2 :d4 :f3 :Ab3 ] 4]
     # [[:bb2 :d3 :f3 :Ab3 ] 4]
 
@@ -146,8 +152,8 @@ live_loop :start, sync: :unsyncable do
     #hpad piano: 1.0
     hpad octave(score[1],3), sus: 4*zzz
     #hpad :, 127, sus: 32, motion: 1, fx: 0, tone: 0, pitch: 0
-    #spad :c4, 110, sus: 4*zzz
-    #spad :eb4, 110, sus: 4*zzz
+    spad :d4, 110, sus: 4*zzz
+    spad :eb4, 110, sus: 4*zzz
     #midi (ing :eb4).tick(:in), 127, sus: 12, channel: 3
     #midi (ing :d4).tick(:in), 127, sus: 12, channel: 3
 
