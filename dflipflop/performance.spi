@@ -1,17 +1,23 @@
 load_support('dflipflop'); use_bpm 127.0
 #pluck_cc pulse: 1.0
 #wpiano_cc wash: 0.5
-#spad_cc filter: 0.15*1
 
-#pluck_cc pulse: 0.0
-#pluck_cc wash: 0.0
-wpiano_cc wash: 0.5
+#hpad note(:bb3) +12+7 ,127, sus: 16, pitch: 0.0, motion: 0.0, fx: 0.0, tone: 0.0  #ab => eb  bb* => f    #c=>g   (#d => a) out   #eb => Bb  #g=>d  f=>c
 
+#hpad_cc glow: 1.0, piano: 1.0
 
-alive dragon: 0, hpad: 1, spad: 0,
-glitch: 0, zero: 0,
-piano: 1, wpiano: 1, piano_echos: 1,
-pluck: 1, bass: 1, derbass: 0,  marimba: 0
+#stop
+spad_cc filter: 0.15*1
+#pluck_cc pulse: 1.0
+pluck_cc wash: 0.0
+wpiano_cc wash: 0.1
+
+alive dragon: 0, hpad: 0, spad: 0,
+glitch: 0,
+piano: 1, wpiano: 1, piano_echos: 0,
+pluck: 0, bass: 0, derbass: 0, twinebass: 0,  marimba: 0
+
+#puts state.pretty_inspect
 
 # c minor
 # C, D, E♭, F, G, A♭, and B♭.
@@ -22,22 +28,23 @@ pluck: 1, bass: 1, derbass: 0,  marimba: 0
 #dragon_cc detune: 0.5
 #pluck detune: 0.5
 #stop
-puts chord(:Bb3, 'M').map{|n| note_inspect(n)}
+#puts chord(:Bb3, 'M').map{|n| note_inspect(n)}
 #stop
 
 
 live_loop :start, sync: :unsyncable do
   tick
   if spread(1,32).rot(-6).look
-#    midi :cs3, 65, channel: 6
+    #glitch :cs3, 65
   end
   if spread(15,16).look
- #   midi :c3, (ing 78 62 68 61).look, channel: 6
+    #glitch :c3, (ing 78 62 68 61).look
   end
   mscore = (ing
     #Intro
 
-  #   [[:c3 :Eb4  :G3 :as4] 4]
+    [[:c3 :Eb4  :G3 :as4] 4]
+   # [[:c3 :Eb4  :G4 :bb4] 4]
 
     # Dev intro
 
@@ -52,15 +59,39 @@ live_loop :start, sync: :unsyncable do
 
     #P1----
 
-    [[:c4 :eb4 :G3 :Bb4] 4]
-    [[:f3 :ab4 :c4] 4]
-    [[:Ab3 :C5 :eb4] 4]
-    [[:ab3 :Bb5 :eb4] 4]
+    # [[:c3 :eb4 :G3 :Bb4] 4]
+    # [[:f3 :ab4 :c4] 4]
+    # [[:Ab3 :C5 :eb4] 4]
+    # [[:ab3 :Bb5 :eb4] 4]
 
-    [[:c3 :eb4 :G3 :Bb4] 4]
-    [[:f3 :ab4 :c4] 4]
-    [[:Ab3 :D5 :eb4] 4]
-    [[:ab3 :c5 :eb4] 4]
+    # [[:c3 :eb4 :G3 :Bb4] 4]
+    # [[:f3 :ab4 :c4 ] 4]
+    # [[:Ab3 :D5 :eb4] 4]
+    # [[:ab3 :c5 :eb4] 4]
+
+    # [[:c4 :d4 :G4 :bb4] 4]
+    # [[:f3 :ab4 :c4] 4]
+    # [[:g3 :eb4 :bb4] 4]
+    # [[:ab3 :c4 :eb4] 4]
+
+    # #[[:ab3 :c4 :eb4] 4]
+
+    # [[:c4 :eb4 :G3 :Bb4] 4]
+    # [[:f3 :ab4 :c4] 4]
+    # [[:Ab3 :C5 :eb4] 4]
+    # [[:ab3 :Bb5 :eb4] 4]
+
+    # [[:c3 :eb4 :G3 :Bb4] 4]
+    # [[:f3 :ab4 :c4 ] 4]
+    # [[:Ab3 :D5 :eb4] 4]
+    # [[:ab3 :c5 :eb4] 4]
+
+
+    # [[:c4 :eb4 :G4 :Bb4] 4]
+    # [[:f3 :ab4 :c4] 4]
+    # [[:bb3 :c5 :f4 :ab4] 4]
+    # [[[:bb3 :d5 :f4 :ab4] 8] [[:Ab3 :C5 :eb4 :g4] 8]].choose
+
 
     ## Main thingey? Chorus? <anybe
 
@@ -89,16 +120,19 @@ live_loop :start, sync: :unsyncable do
     ##
 
 #Majorish feel ----------------------
+#---------- version
 
-    # [[:Eb3 :G4 a=[:bb4 :bb3].choose] 4]
-    # [[[:Bb3 :Bb2].choose :D4 :F3] 4]
-    # [[:c3 :eb4 :g3] 4]
-    # [[:ab3 :c4 :eb3] 4]
-    # [[:bb3 :D4 :F3] 4]
-    # [[:f3 :ab4 :c4 :eb4] 4]
-    # [[:D5] 4]
+    # [[:Eb3 :G4 [:bb3 :bb3].choose :d4] 4]
+    # [[:F3 :Ab4 :C3 :Eb4] 2]
+    # [[:Eb3 :G4 [:bb3 :bb3].choose :d4] 2]
+    # [[:Eb3 :G4 [:bb4 :bb4].choose] 4]
+    # [[:F3 :Ab4 :C4 :Eb4] 2]
+    # [[:Eb3 :ab4 [:bb4 :bb4].choose] 2]
+    # [[:Eb3 :ab4 [:bb4 :bb4].choose] 4]
 
-    #-----------
+
+
+    # -----------
 
     # [[:Eb3 :G4 [:bb3 :bb3].choose] 4]
     # [[:F3 :Ab4 :C3] 4]
@@ -138,29 +172,29 @@ live_loop :start, sync: :unsyncable do
 #---------------------------------------
 
     #Bb Ds F Ab
-    #[[:c3 :eb4 :G3 :Bb4] 4]
-    #[[:f3 :ab4 :c4] 4]
-    #[[:bb2 :ds4 :f4 :ab4] 4]
-    #[[:Ab3 :D4 :eb4] 4]
-    #[[:f3  :ab5 :c5 :eb5] 4]
-    #[[_] 2]
+    # [[:c3 :eb4 :G3 :Bb4] 4]
+    # [[:f3 :ab4 :c4] 4]
+    # [[:bb2 :ds4 :f4 :ab4] 4]
+    # [[:Ab3 :D4 :eb4] 4]
+    # [[:f3  :ab5 :c5 :eb5] 4]
+    # [[_] 2]
 
 
     # LIKE IT
-     # [[:Ab3 :D4 :eb4] 4]                   # 6 -> 4
-     # #[[:c3 :D4   :G3  :as4] 4]
-     # [[:f3  [:ab5 :ab6 :g5].choose :c5 :eb5] 4]
-     # [[:f3 :d4 :ab3] 4]
+    #[[:Ab3 :D4 :eb4] 4]                   # 6 -> 4
+    # #[[:c3 :D4   :G3  :as4] 4]
+    #[[:f3  [:ab5 :ab6 :g5].choose :c5 :eb5] 4]
+    #[[:f3 :d4 :ab3] 4]
 
 
     #---------------------------------------
 
 
-    #NICE SLOW DOWN
-    # [[:c3 :Eb4  :G3 :ab4] 4]
+    #NICE SLOW DOWN -
+    # [[:c4 :Eb4  :G3 :ab4] 4]
     # [[:f3] 8]
     # [[:ab3] 4]
-    # [[_] 2]
+#    [[_] 2]
 
 
 #--------------------------------------
@@ -193,8 +227,15 @@ live_loop :start, sync: :unsyncable do
   score = score[0]
 
   if spread(1,8).look
+    #  #ab => eb  bb* => f    #c=>g   (#d => a) out   #eb => Bb  #g=>d  f=>c
+    #hpad piano: 1.0
     hpad octave(score[1],3), sus: 4*zzz
-    spad octave(score[1],3), sus: 4*zzz
+    #hpad :, 127, sus: 32, motion: 1, fx: 0, tone: 0, pitch: 0
+    #spad :c4, 110, sus: 4*zzz
+    #spad :eb4, 110, sus: 4*zzz
+    #midi (ing :eb4).tick(:in), 127, sus: 12, channel: 3
+    #midi (ing :d4).tick(:in), 127, sus: 12, channel: 3
+
     puts "----------------------->8bars"
     piano_echos [:ab4, :G4].choose, [120,95].choose, sus: 4.0
     no{
@@ -210,6 +251,17 @@ live_loop :start, sync: :unsyncable do
   end
 
   d = (ring spread(7,11),spread(7,11),spread(7,11), spread(3,8)).look
+
+  yes{
+    at{
+      sleep 2
+      piano_echos :Eb5, 126, sus: 4 if score[0] == :Eb3 if d
+      sleep 1/2.0
+      piano_echos [:C6, :G6].choose, 120, sus: 4 if score[0] == :F3
+      sleep (1/2.0/2.0) if d
+      piano_echos :Eb6, 110, sus: 4 if score[0] == :Eb3
+    }
+  }
 
   bass_cc delay: 0.2, dirt: 0.2, noise: 0.3, more: (ing 1.0 1.0 1.0 0.0).look
 
@@ -228,12 +280,12 @@ live_loop :start, sync: :unsyncable do
   puts "SCORE: #{score}"
 
   # at{
-  #   pluck_cc pulse: 0
+  #   pluck_cc pulse: 0.01
   #   4.times{
   #     sleep 1.0
-  #     puts (line 0, -0.125,8).look(:in)
+  #     #puts (line 0, -0.125,8).look(:in)
   #     with_swing ((line 0, -0.125,8).tick(:in)){
-  #       pluck score[0],110, sus: 1.0
+  #       pluck score[0]+12,110, sus: 1.0
   #     }
   #     bass score[0]
   #   }
@@ -246,9 +298,11 @@ live_loop :start, sync: :unsyncable do
       pluck_cc ryth: 1.0
       pluck score[-2], sus: 2
     }
-    sleep 2.5
+    sleep 2
+    sleep 0.5
     pluck score[-3], sus: 1
   }
+
 
   at{
     sleep 2
@@ -267,23 +321,23 @@ live_loop :start, sync: :unsyncable do
   sleep zzz / 4.0
 
   score2 = (ing
-    [:c2 :C3].choose  #146
+    [:c2 :C3].choose
     [:f4 :c4].choose
     [:Ab3 :G4].choose
     _
 
     #EXTRA
-    # [:c2 :C3].choose  #146
+    # [:c2 :C3].choose
     # [:f4 :ab4].choose
     # [:Ab3 :G4].choose
     # _
 
-    # [:c2 :C3].choose  #146
+    # [:c2 :C3].choose
     # [:f4 :c4].choose
     # [:Ab3 :G4].choose
     # _
 
-    # [:c2 :C3].choose  #146
+    # [:c2 :C3].choose
     # [:f4 :d4].choose
     # [:eb3 :G4].choose
     # _
@@ -299,33 +353,42 @@ live_loop :start, sync: :unsyncable do
   end
 
   with_transpose 12*1{
-    dragon_cc more: 0.3
+    dragon_cc more: 0.1
     #dragon_cc more: (line 0.9, 1.0, 128).look
-    dragon score2, (ing 100 80 70).look, sus: 2.5+2
+    #dragon score2, (ing 100 80 70).look*0.75, sus: (2.5+2)
+    dragon :f2, (ing 100 80 70).look*0.8, sus: (2.5+2)
   }
 
   with_transpose 12{
     piano mscore.look(offset: 1)[0][-1], 75, sus: 2
   }
 
+  twinebass octave(score[0],5), 55 if spread(2,3).rot(-1).look
   sleep (zzz / 4.0 / 2.0)
+
+  if spread(2,3).look
+    with_swing ((line 0, -0.1, 8*2).look){
+      #puts (line 0, -0.1, 8*2).look
+      twinebass octave(score[0],5), 85
+    }
+  end
 
   with_transpose 12{
     piano mscore.look(offset: 1)[0][1], 85, sus: 2
   }
 
   if spread(1,2).look
-     #glitch :c3, 60, channel: 6
+     glitch :c3, 60
   end
 
   sleep (zzz / 4.0 / 2.0)
 
   if spread(7,11).look
-    glitch :d3, 75+rand*2.0, channel: 6
+    glitch :d3, 75+rand*2.0
   else
     at{
       sleep 1/2.0
-      glitch :e3, 75, channel: 6
+      glitch :e3, 75
     }
   end
 
@@ -348,6 +411,7 @@ live_loop :start, sync: :unsyncable do
   end
 
   sleep (zzz / 4.0)
+
 end
 
 live_loop :control, sync: :start do
@@ -358,3 +422,15 @@ live_loop :control, sync: :start do
 end
 
 live_loop(:unsyncable) do;  sleep 1.0;end
+
+sync :start
+#hpad_x
+
+#hpad_on :f6, 100
+#hpad_on :d6, 100
+#hpad_on :bb5, 52, off: :ab6
+
+
+#hpad_on :ab6, 50, off: :bb5
+#hpad_on :bb5, 52, off: :ab6
+#hpad_on :eb6, 52, off: :bb5
