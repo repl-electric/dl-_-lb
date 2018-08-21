@@ -10,6 +10,7 @@ def solo(thing)
 end
 
 def warm
+  alive dragon: 1 , hpad: 1, spad: 1, glitch: 1, piano: 1, wpiano: 1, piano_echos: 1, pluck: 1,bass: 1, derbass: 1, twinebass: 1
   [:c3, :cs3, :d3, :ds3, :e3, :f3, :fs3, :g3, :gs3, :a3, :as3, :b3,
     :c4, :cs4, :d4, :ds4, :e4, :f4, :fs4, :g4, :gs4, :a4, :as4, :b4,
     :c5, :cs5, :d5, :ds5, :e5, :f5, :fs5, :g5, :gs5, :a5, :as5, :b5,
@@ -46,7 +47,7 @@ def alive(args)
     when :marimba
       midi_cc 19, v, port: :iac_bus_1, channel: 3
     when :spad
-      midi_cc 19, v, port: :iac_bus_1, channel: 2
+      midi_cc 20, v, port: :iac_bus_1, channel: 11
     when :derbass
       #bass(bass: 0)
       midi_cc 19, v, port: :iac_bus_1, channel: 9
@@ -196,7 +197,7 @@ def spad(*args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
   if n
-    midi n,vel, *(args << {channel: 2})
+    midi n,vel, *(args << {channel: 11})
     nname = SonicPi::Note.new(n).midi_string
     puts "%s%s" %[nname.ljust(4+2, " "), "[Spad]"] if state[:spad]
     spad_cc(opts)
@@ -215,9 +216,9 @@ def spad_cc(cc)
           nil
         end
     if n == 49
-      midi_pitch_bend cc[k], channel: 2
+      midi_pitch_bend cc[k], channel: 11
     elsif n
-      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 2
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 11
     end
   end
 end
