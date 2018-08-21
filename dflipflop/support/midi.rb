@@ -48,7 +48,7 @@ def alive(args)
     when :spad
       midi_cc 19, v, port: :iac_bus_1, channel: 2
     when :derbass
-      bass(bass: 0)
+      #bass(bass: 0)
       midi_cc 19, v, port: :iac_bus_1, channel: 9
     when :twinebass
       midi_cc 20, v, port: :iac_bus_1, channel: 10
