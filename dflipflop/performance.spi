@@ -1,22 +1,19 @@
 load_support('dflipflop'); use_bpm 127.0
-#hpad note(:bb3) +12+7 ,127, sus: 16, pitch: 0.0, motion: 0.0, fx: 0.0, tone: 0.0  #ab => eb  bb* => f    #c=>g   (#d => a) out   #eb => Bb  #g=>d  f=>c
-#hpad_cc glow: 1.0, piano: 1.0
+#dragon_cc detune: 0.5
+#pluck detune: 0.5
 
 spad_cc filter: 0.15*1
 #pluck_cc pulse: 1.0
-
-#wpiano_cc wash: 0.5
-#dragon_cc detune: 0.5
-#pluck detune: 0.5
 
 alive dragon: 0 , hpad: 0, spad: 0,
 glitch: 0,
 #piano: 1, wpiano: 1, piano_echos: 1, pluck: 0,
 bass: 0, derbass: 0, twinebass: 0
 
-pluck_cc wash: 0.0
-#alive wpiano: 0, piano: 0, piano_echos: 0, pluck: 1
-alive wpiano: 1, piano: 1, piano_echos: 1
+pluck_cc wash: 0.2
+#alive wpiano: 0, piano: 0, piano_echos: 0, pluck: 0
+alive wpiano: 1, piano: 0, piano_echos: 0
+wpiano_cc wash: 0.1
 
 live_loop :start, sync: :unsyncable do
   tick
@@ -31,12 +28,10 @@ live_loop :start, sync: :unsyncable do
   #pluck_cc wash: (ing 1.0 0.3).look #nice riser
 
   mscore = (ing
-    #Intro
-     # [[:c3 :Eb4  :G3 :as4] 4]
-     # [[:c3 :Eb4  :G4 :bb4] 4]
-   # [[:eb5] 8]
-
-    # Dev intro
+#-----------
+    [[:c3 :Eb4  :G3 :as4] 4]
+    [[:c3 :Eb4  :G4 :bb4] 4]
+    # [[:eb5] 8]
 
     # [[:c3  :Eb4 :G3 :as4] 4]
     # [[:c3  :Eb4 :G4 :bb4] 4]
@@ -49,7 +44,7 @@ live_loop :start, sync: :unsyncable do
     # [[[:Bb3 :D4 :F4] 4] [[:G3 :Bb4 :D4] 4]].choose
     # [[:ab2 :Eb4 :G4 :Bb4] 4]
 
-    #P1----
+#--------
 
     # [[:c3 :eb4 :G3 :Bb4] 4]
     # [[:f3 :ab4 :c4] 4]
@@ -86,7 +81,6 @@ live_loop :start, sync: :unsyncable do
 
 #Chorus
 #----------
-
     # [[:Eb3 :G4 [:bb3 :bb3].choose :d4] 4]
     # [[:F3 :Ab4 :C3 :Eb4] 2]
     # [[:Eb3 :G4 [:bb3 :bb3].choose :d4] 2]
@@ -96,7 +90,6 @@ live_loop :start, sync: :unsyncable do
     # [[:Eb3 :ab4 [:bb4 :bb4].choose] 4]
 
 # -----------
-
     # [[:Eb3 :G4 [:bb3 :bb3].choose] 4]
     # [[:F3 :Ab4 :C3] 4]
     # [[:Eb3 :G4 [:bb4 :bb4].choose] 4]
@@ -106,6 +99,7 @@ live_loop :start, sync: :unsyncable do
     # [[:ab3 :c4 :eb3] 4]
     # [[:ab3 :c4 :Eb4 :f4] 4]
     # [[:bb3 :D4 :F4] 8]
+
 
     # [[:G3 :Eb4 [:bb3 :bb3].choose] 4]
     # [[:Ab3 :F4 :C4] 4]
@@ -118,7 +112,6 @@ live_loop :start, sync: :unsyncable do
     # [[:c3 :d4 :g3] 8]
 
 #---------------------------
-
     #Bb Ds F Ab
     # [[:c3 :eb4 :G3 :Bb4] 4]
     # [[:f3 :ab4 :c4] 4]
