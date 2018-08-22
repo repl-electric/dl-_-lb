@@ -243,29 +243,34 @@ live_loop :start, sync: :unsyncable do
   sleep zzz / 4.0
 
   score2 = (ing
-    [:c2 :C3].choose
-    [:f4 :c4].choose
-    [:Ab3 :G4].choose
-    _
-
-    #EXTRA
-    # [:c2 :C3].choose
-    # [:f4 :ab4].choose
-    # [:Ab3 :G4].choose
-    # _
-
     # [:c2 :C3].choose
     # [:f4 :c4].choose
     # [:Ab3 :G4].choose
     # _
 
-    # [:c2 :C3].choose
-    # [:f4 :d4].choose
-    # [:eb3 :G4].choose
-    # _
+    #EXTRA
+    [:bb2 :bb3].choose
+    _
+    [:Ab3 :ab3].choose
+    _
+
+    [:g2 :g3].choose
+    [:g3 :g3].choose
+    [:f3 :f4].choose
+    [:ab3].choose
+
+    [:f3 :f3].choose
+    [:f3 :f3].choose
+    [:eb3 :eb3].choose
+    _
+
+    [:c3 :C3].choose
+    [:f4 :d4].choose
+    _
+    [:ab3 :G3].choose
+
 
     ).look
-
   if score2 == _
     puts "#{zzz} HIT"
     dragon_cc filter: 0.01
@@ -277,8 +282,8 @@ live_loop :start, sync: :unsyncable do
   with_transpose 12*1{
     dragon_cc more: 0.1
     #dragon_cc more: (line 0.9, 1.0, 128).look
-    #dragon score2, (ing 100 80 70).look*0.75, sus: (2.5+2)
-    dragon :f2, (ing 100 80 70).look*0.8, sus: (2.5+2)
+    #dragon score2, (ing 10 8 7 5).look, sus:  (2.5+2)*(ing 1 1 1 2).look
+    #dragon :f2, (ing 100 80 70).look*0.8, sus: (2.5+2)
   }
 
   with_transpose 12{
