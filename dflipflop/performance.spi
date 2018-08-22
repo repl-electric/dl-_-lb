@@ -138,6 +138,13 @@ live_loop :start, sync: :unsyncable do
   zzz   = score[-1]
   score = score[0]
 
+  no{
+    if spread(1,4).look
+      spad   :g4, 2, sus: 4*4
+      dragon :ab4, 1, sus: 4*4
+    end
+  }
+
   if spread(1,8).look
     #  #ab => eb  bb* => f    #c=>g   (#d => a) out   #eb => Bb  #g=>d  f=>c
     #hpad piano: 1.0
