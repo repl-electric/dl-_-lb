@@ -108,12 +108,12 @@ live_loop :start, sync: :unsyncable do
   score = mscore.look
   zzz   = score[-1]
   score = score[0]
-
+  puts "  #{score} <---"
   no{
     if spread(1,4).look
       spad   :g4,  20, sus: 4*4
-      dragon :ab4, 20, sus: 4*4
-      dragon_cc detune: 0.3
+      dragon :ab4,  20, sus: 4*4
+      dragon_cc detune: 0.5, be_still: 1.0
       #dragon_cc more: 1.0, pulse: 1.0, filter: 1.0
     end
   }
@@ -131,7 +131,7 @@ live_loop :start, sync: :unsyncable do
     #hpad (ing :eb4).tick(:in), 127, sus: 12
     #hpad (ing :d4).tick(:in), 127, sus: 12
 
-    puts "-----------------------> 8bars"
+    puts "* 8 bars *"
     piano_echos [:ab4, :G4].choose, [120,95].choose, sus: 4.0
     no{
       at{
@@ -236,9 +236,8 @@ live_loop :start, sync: :unsyncable do
     # [:ab3 :G3].choose
 
     ).look
-  puts "---------------------->  #{score2}"
+  puts "-> #{score2 || "_"}"
   if score2 == _
-    puts "#{zzz} HIT"
     dragon_cc filter: 0.01
     wpiano [:c5, :eb5, :g5].choose,100, sus: zzz+2
   else
@@ -249,7 +248,9 @@ live_loop :start, sync: :unsyncable do
     dragon_cc more: 0.1
     #dragon_cc more: (line 0.9, 1.0, 128).look
     #dragon score2, (ing 10 8 7 5).look, sus:  (2.5+2)*(ing 1 1 1 2).look
-    dragon :f2, (ing 100 80 70).look*0.8, sus: (2.5+2)
+    if state[:dragon]
+      dragon :f3, (ing 100 80 70).look*0.8, sus: (2.5+2)#, pulse: 1.0
+    end
   }
 
   with_transpose 12{
@@ -307,7 +308,9 @@ end
 
 live_loop :control, sync: :start do
   tick
-  dragon_cc pulse: ((line 0, 1.0, 128).look+(line 1.0, 0.0, 128).look)
+  dragon_cc pulse: 1
+  #dragon_cc pulse: ((line 0, 1.0, 32)+(line 1.0, 0.0, 32)).look
+  #dragon_cc pulse: (ramp 1.0, 0.0, 64).tick(:ping)
   dragon_cc filter: 0.1
   sleep 1/2.0
 end
