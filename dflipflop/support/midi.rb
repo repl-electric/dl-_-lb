@@ -2,6 +2,11 @@ def state()
   $daw_state ||= {}
 end
 
+def fstop
+  midi_cc 21, 127, channel: 1
+  stop
+end
+
 def solo(thing)
   case thing
   when :piano
