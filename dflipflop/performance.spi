@@ -1,6 +1,4 @@
 load_support('dflipflop'); use_bpm 127.0
-#dragon_cc detune: 0.5
-#pluck detune: 0.5
 spad_cc filter: 0.15*1
 #pluck_cc pulse: 1.0
 
@@ -113,7 +111,7 @@ live_loop :start, sync: :unsyncable do
     if spread(1,4).look
       spad   :g4,  20, sus: 4*4
       dragon :ab4,  20, sus: 4*4
-      dragon_cc detune: 0.5, be_still: 1.0
+      dragon_cc detune: 0.5, movement: 1.0
       #dragon_cc more: 1.0, pulse: 1.0, filter: 1.0
     end
   }
@@ -249,7 +247,7 @@ live_loop :start, sync: :unsyncable do
     #dragon_cc more: (line 0.9, 1.0, 128).look
     #dragon score2, (ing 10 8 7 5).look, sus:  (2.5+2)*(ing 1 1 1 2).look
     if state[:dragon]
-      dragon :f3, (ing 100 80 70).look*0.8, sus: (2.5+2)#, pulse: 1.0
+      dragon :f2, (ing 100 80 70).look*0.8, sus: (2.5+2)#, pulse: 1.0
     end
   }
 

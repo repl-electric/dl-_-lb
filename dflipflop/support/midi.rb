@@ -89,7 +89,7 @@ def dragon_cc(cc)
         when :pulse; 51
         when :filter; 52
         when :wet; 53
-        when :be_still; 54
+        when :movement; 54
         else
           nil
         end
