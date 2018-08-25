@@ -120,11 +120,11 @@ live_loop :start, sync: :unsyncable do
   no{
     at{
       sleep 2
-      piano_echos :Eb5, 126, sus: 4 if score[0] == :Eb3 if d
+      piano_echos :Eb5, 119, sus: 4 if score[0] == :Eb3 if d
       sleep 1/2.0
-      piano_echos [:C6, :G6].choose, 120, sus: 4 if score[0] == :F3
+      piano_echos [:C6, :G6].choose, 113, sus: 4 if score[0] == :F3
       sleep (1/2.0/2.0) if d
-      piano_echos :Eb6, 110, sus: 4 if score[0] == :Eb3
+      piano_echos :Eb6, 100, sus: 4 if score[0] == :Eb3
     }
   }
 
