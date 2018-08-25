@@ -115,6 +115,18 @@ live_loop :start, sync: :unsyncable do
       #dragon_cc more: 1.0, pulse: 1.0, filter: 1.0
     end
   }
+  d = (ring spread(7,11),spread(7,11),spread(7,11), spread(3,8)).look
+
+  no{
+    at{
+      sleep 2
+      piano_echos :Eb5, 126, sus: 4 if score[0] == :Eb3 if d
+      sleep 1/2.0
+      piano_echos [:C6, :G6].choose, 120, sus: 4 if score[0] == :F3
+      sleep (1/2.0/2.0) if d
+      piano_echos :Eb6, 110, sus: 4 if score[0] == :Eb3
+    }
+  }
 
   if spread(1,8).look
     #  #ab => eb  bb* => f    #c=>g   (#d => a) out   #eb => Bb  #g=>d  f=>c
@@ -142,19 +154,6 @@ live_loop :start, sync: :unsyncable do
   else
     #spad octave(score[1],3), sus: 4*zzz
   end
-
-  d = (ring spread(7,11),spread(7,11),spread(7,11), spread(3,8)).look
-
-  no{
-    at{
-      sleep 2
-      piano_echos :Eb5, 126, sus: 4 if score[0] == :Eb3 if d
-      sleep 1/2.0
-      piano_echos [:C6, :G6].choose, 120, sus: 4 if score[0] == :F3
-      sleep (1/2.0/2.0) if d
-      piano_echos :Eb6, 110, sus: 4 if score[0] == :Eb3
-    }
-  }
 
   bass_cc delay: 0.2, dirt: 0.2, noise: 0.3, more: (ing 1.0 1.0 1.0 0.0).look
 
