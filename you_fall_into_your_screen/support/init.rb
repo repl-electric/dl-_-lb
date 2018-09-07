@@ -166,6 +166,7 @@ end
 def camend(r=nil)
   alivecol -2.0
   unity "/alive/light", 0.6
+  unity "/logo/re", 0.0
   unity "/logo/re", 1.0
   #unity "/camera/4",1.0
   unity "/glitch/block",0.03
