@@ -317,7 +317,7 @@ def cam4(f=false)
     at{
       unity "/glitch/block",1.0
       unity "/shard", 1.0
-      sleep 0.125
+      sleep 0.5
       unity "/glitch/block",0.0
       sleep 0.5
       viz breath: 0.0
