@@ -1,3 +1,13 @@
+def warm
+  [:c3, :cs3, :d3, :ds3, :e3, :f3, :fs3, :g3, :gs3, :a3, :as3, :b3,
+    :c4, :cs4, :d4, :ds4, :e4, :f4, :fs4, :g4, :gs4, :a4, :as4, :b4,
+    :c5, :cs5, :d5, :ds5, :e5, :f5, :fs5, :g5, :gs5, :a5, :as5, :b5,
+  ].each{|n|
+    midi n,1, sus: 0.125, port: '*', channel: '*'
+    sleep 0.25
+    }
+end
+
 def init!
   $mode = -1
   unity "/camera/0",1.0
@@ -304,7 +314,7 @@ def cam4(f=false)
     unity "/glitch/slice",0.0
     viz camera: 4
     unity "/alive/thick",0.0144
-    unity "/alive/length",0.38
+    unity "/alive/length",0.4
     viz :sea, on: 0.0
     viz :glitch, color: 0.0
     viz :glitch, invert: 0.0
