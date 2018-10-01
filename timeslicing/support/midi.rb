@@ -21,14 +21,18 @@ def alive(args)
     case s[0]
     when :pad
       midi_cc 20, v, port: :iac_bus_1, channel: 1
-    when :apeg
+    when :harp
       midi_cc 20, v, port: :iac_bus_1, channel: 2
     when :perc
       midi_cc 20, v, port: :iac_bus_1, channel: 3
+    when :crystal
+      midi_cc 21, v, port: :iac_bus_1, channel: 3
     when :bass
       midi_cc 20, v, port: :iac_bus_1, channel: 4
     when :piano
       midi_cc 20, v, port: :iac_bus_1, channel: 5
+    when :kalim
+      midi_cc 21, v, port: :iac_bus_1, channel: 5
     when :vocal
       midi_cc 20, v, port: :iac_bus_1, channel: 6
     when :kick
@@ -73,4 +77,76 @@ end
 #scale C, D, E♭, F, G, A♭, and B♭.
 def kick(v=100)
   midi :C3 ,v, channel:7
+end
+
+def vastness(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n, vel, *(args << {channel: 4, port: :iac_bus_1})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4, " "), "[Vastness]"] if state[:bass]
+    vastness_cc opts
+  end
+end
+
+def vastness_cc(cc)
+  cc.keys.each do |k|
+    n = case k
+        when :detune; 49
+        when :more; 50
+        else
+          nil
+        end
+    if n == 49
+      midi_pitch_bend cc[k], channel: 4
+    elsif n
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 4
+    end
+  end
+end
+
+def perc(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n, vel, *(args << {channel: 6, port: :iac_bus_1})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4, " "), "[Perc]"] #if state[:vastness]
+  end
+end
+
+def crystal(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n, vel, *(args << {channel: 3, port: :iac_bus_1})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4, " "), "[Crystal]"] if state[:perc]
+  end
+end
+
+def bright(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n, vel, *(args << {channel: 5, port: :iac_bus_1})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4, " "), "[Bright]"] if state[:piano]
+  end
+end
+
+def harp(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n, vel, *(args << {channel: 2, port: :iac_bus_1})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4, " "), "[Harp]"] if state[:harp]
+  end
 end

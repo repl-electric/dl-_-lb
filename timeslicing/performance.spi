@@ -1,16 +1,7 @@
 load_support('timeslicing'); use_bpm 127.0
 
-
-# live_loop :test do
-#   tick
-#   midi (ing :c3  _ :eb3 :g3  _ _).look, channel: 5
-# #  sleep 1
-#   sleep 1/2.0
-# end
-# stop
-
-alive kick: 0, piano: 1, bass: 0, apeg: 1, pad: 1, vocal: 0
-
+alive kick: 0, piano: 0, bass: 0, harp: 0, pad: 1, vocal: 0, perc: 0, kalim: 1
+#stop
 #scale C, D, E♭, F, G, A♭, and B♭.  Cminor
 #C D (E) (F) G (A) B C
 #1
@@ -41,9 +32,21 @@ live_loop :test do
     # [[:bb2   :d4  :f3]    8]   # 7
     # [[:Ab3  :C4   :Eb4]  8]    # 6
 
-    [[:C3   :Eb3  :G3]   8]
-    [[:C3   :E3  :G3]    4]
-    # [[:F3   :Ab3  :C4]   4]
+    [[:C3    :Eb3  :G3]   8]
+    #[[:bb2   :d3   :G3]   8]
+    # [[:g3    :bb3  :d3]   4]
+    # [[:bb2   :d3   :G3]   4]
+    # [[:g3    :bb3  :d3]   8]
+
+
+    # [[:g3    :bb3  :d4]   8]
+    # [[:bb3   :d3   :f3]   4]
+    # [[:g3    :bb3  :d3]   4]
+    # [[:bb2  :d3   :f3]    4]
+    # [[:g3   :bb3  :d4]    8]
+
+
+    #  [[:F3   :Ab3  :C4]   4]
     # [[:Eb3  :G3   :Bb3]  4]
     # [[:Ab3  :C4   :Eb4]  8]
 
@@ -63,11 +66,11 @@ live_loop :test do
     )
   #tick_reset_all
   s = score.look
-  puts s
+  #puts s
   #midi :c3,120, channel: 3
   x = spread(1,4).look
   at{
-sleep s[-1] - (s[-1]/2.0)
+    sleep s[-1] - (s[-1]/2.0)
     #kick 127
     sleep (s[-1]/2.0)
     #kick 127 if x
@@ -80,64 +83,65 @@ sleep s[-1] - (s[-1]/2.0)
     }
   }
 
-#  smp Mountain[/kick/,1], amp: 5
+  #smp Mountain[/kick/,1], amp: 3
   at{
-    #sleep (s[-1]/4.0)*2
-    midi octave(root(s[0]),3),110, sus: s[-1]*2, channel: 4
+    sleep (s[-1]/4.0)*2
+    vastness octave(root(s[0]),3),110, sus: s[-1]*2
     if s[-1] == 4
       sleep s[-1] - (s[-1]/4.0)
     else
       sleep s[-1] - (s[-1]/4.0)*2
-      #midi octave(root(s[0]),3), 110, sus: 1.5, channel: 4
+      vastness octave(root(s[0]),3), 110, sus: 1.5
       sleep (s[-1]/4.0)
    end
-    #midi octave(root(s[0]),2), 120, sus: 0.5, channel: 4
+    vastness octave(root(s[0]),2), 120, sus: 0.5
   }
   if s[0][0] == nil
     #more tension....
-    midi :F2, 127, sus: s[-1], channel: 4
+    vastness :F2, 127, sus: s[-1]
     vocal_note =  (ing :G4 :G4 :Eb4 :Bb4).look
     early = spread(1,3).look
     at{
       sleep 1/8.0
-      midi :G2, 127, sus: s[-1] - 1/8.0, channel: 4
+      vastness :G2, 127, sus: s[-1] - 1/8.0
 
-      midi vocal_note, 100-(rand*10.0), channel: 6, sus: 6 if early
+      perc vocal_note, 100-(rand*10.0), sus: 6 if early
       sleep 3/8.0
       #vocals
-      midi vocal_note, 127-(rand*10.0), channel: 6, sus: 7
+      perc vocal_note, 127-(rand*10.0), sus: 7
     }
   end
 
   with_swing ((line -0.08, 0.00,32).look){
-    puts (line -0.08, 0.00,32).look
-    midi s[0][0], 100,  sus: s[-1], channel: 5
+    bright s[0][0], 100,  sus: s[-1]
   }
 
-  #pad s[0][0],100, sus: s[-1]+0.2, channel: 1, port: :iac_bus_1
-  #pad s[0][1],120, sus: s[-1]+0.0, channel: 1, port: :iac_bus_1
-  #pad_cc tone: ((line 0.0, 0.5, 128) + (line 0.5, 0.0, 128)).look
-  #pad_cc motion: ((line 0.0, 1.0, 128) + (line 1.0, 0.0, 128)).look
+  yes{
+    pad s[0][0],100, sus: s[-1]+0.2, channel: 1, port: :iac_bus_1
+    pad s[0][1],120, sus: s[-1]+0.0, channel: 1, port: :iac_bus_1
+    pad_cc tone: ((line 0.0, 0.5, 128) + (line 0.5, 0.0, 128)).look
+    pad_cc motion: ((line 0.0, 1.0, 128) + (line 1.0, 0.0, 128)).look
+  }
 
-  #midi :ab4, (ing 82 82 95).look,  sus: s[-1], channel: 5
+  #bright :ab4, (ing 82 82 95).look,  sus: s[-1]
 
   with_transpose 12{
-   midi s[0][-1], 75, channel: 2, sus: s[-1]
+   harp s[0][-1], 75,  sus: s[-1]
   }
   s[-1].times{
     sleep 1/2.0
     tick(:in)
-    midi :fs3, 75, channel: 3 if spread(3,5).look(:in)
+    crystal :fs3, 75 if spread(3,5).look(:in)
 
     with_swing((line 0, -0.05, 128).look(:in)){
-      midi s[0][-1], (ing 82 82 95).look,  sus: s[-1], channel: 5 if spread(7,11).look(:in)
+      bright s[0][-1], (ing 82 82 95).look,  sus: s[-1] if spread(7,11).look(:in)
     }
 
     sleep 1/2.0
-    midi :fs3, 75, channel: 3 if spread(3,5).rot(-1).look(:in)
+    crystal :fs3, 75 if spread(3,5).rot(-1).look(:in)
 
     with_transpose 12{
-      midi s[0][1], (ing 80 100 110).look,  sus: s[-1], channel: 5 if spread(2,3).look(:in)
+      bright s[0][1], (ing 80 100 110).look,  sus: s[-1] if spread(2,3).look(:in)
     }
   }
 end
