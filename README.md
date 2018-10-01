@@ -14,7 +14,7 @@ A narrative driven auditory adventure into code and algorithms.
 
 ## Album
 
-https://repl-electric.bandcamp.com/album/adventures-in-algorhythm
+https://repl-electric.bandcamp.com/album/d-b
 
 #### History 
 
