@@ -27,8 +27,12 @@ def alive(args)
       midi_cc 20, v, port: :iac_bus_1, channel: 3
     when :crystal
       midi_cc 21, v, port: :iac_bus_1, channel: 3
-    when :bass
+    when :vastness
       midi_cc 20, v, port: :iac_bus_1, channel: 4
+    when :pedal
+      midi_cc 22, v, port: :iac_bus_1, channel: 4
+    when :waves
+      midi_cc 21, v, port: :iac_bus_1, channel: 4
     when :piano
       midi_cc 20, v, port: :iac_bus_1, channel: 5
     when :kalim
@@ -86,7 +90,12 @@ def vastness(*args)
   if n
     midi n, vel, *(args << {channel: 4, port: :iac_bus_1})
     nname = SonicPi::Note.new(n).midi_string
-    puts "%s%s" %[nname.ljust(4, " "), "[Vastness]"] if state[:bass]
+    if state[:vastness]
+      synth = "Vastness"
+    elsif state[:waves]
+      synth = "waves"
+    end
+    puts "%s%s" %[nname.ljust(4, " "), "[#{synth}]"] if synth
     vastness_cc opts
   end
 end

@@ -1,10 +1,16 @@
-load_support('timeslicing'); use_bpm 127.0
+load_support('rescue'); use_bpm 127.0
 
-alive kick: 0, piano: 0, bass: 0, harp: 0, pad: 1, vocal: 0, perc: 0, kalim: 1
+alive kick: 0, piano: 1, bass: 0, harp: 0, pad: 0, vocal: 0, perc: 0, kalim: 1, pedal: 0, vastness: 0, waves: 1, crystal: 0
 #stop
 #scale C, D, E♭, F, G, A♭, and B♭.  Cminor
 #C D (E) (F) G (A) B C
 #1
+
+#Nice progression 7M & 7m
+#    [[:C3    :Eb3  :G3 ]   8]      #1 7 5i
+#    [[:bb2   :ds3  :f3 ]   4]
+#    [[:eb3   :g2   :bb3]   8]
+
 
 live_loop :test do
   tick
@@ -32,8 +38,14 @@ live_loop :test do
     # [[:bb2   :d4  :f3]    8]   # 7
     # [[:Ab3  :C4   :Eb4]  8]    # 6
 
-    [[:C3    :Eb3  :G3]   8]
-    #[[:bb2   :d3   :G3]   8]
+    [[:C3    :Eb3  :G3 ]   8]      #1 7 5i
+    [[:bb2   :ds3  :f3 ]   4]
+    [[:eb3   :g2   :bb3]   8]
+    #[[:g3    :bb3  :d4]    1]
+    #[[_], 1]
+    #[[:g4    :bb3  :d4]    1]
+
+
     # [[:g3    :bb3  :d3]   4]
     # [[:bb2   :d3   :G3]   4]
     # [[:g3    :bb3  :d3]   8]
@@ -84,17 +96,20 @@ live_loop :test do
   }
 
   #smp Mountain[/kick/,1], amp: 3
+  with_swing ((line -0.1, 0.0,128).look){
+    vastness octave(root(s[0]),2),127, sus: s[-1]*2
+  }
   at{
-    sleep (s[-1]/4.0)*2
-    vastness octave(root(s[0]),3),110, sus: s[-1]*2
+    #sleep (s[-1]/4.0)*2
+    #vastness octave(root(s[0]),3),110, sus: s[-1]*2
     if s[-1] == 4
       sleep s[-1] - (s[-1]/4.0)
     else
       sleep s[-1] - (s[-1]/4.0)*2
-      vastness octave(root(s[0]),3), 110, sus: 1.5
+      #vastness octave(root(s[0]),3), 110, sus: 1.5
       sleep (s[-1]/4.0)
    end
-    vastness octave(root(s[0]),2), 120, sus: 0.5
+   #vastness octave(root(s[0]),2), 120, sus: 0.5
   }
   if s[0][0] == nil
     #more tension....

@@ -1,4 +1,4 @@
-load_support('analog_in_the_digital'); use_bpm 127/2.0
+load_support('look_inside_your_memory_and_segfault'); use_bpm 127/2.0
 #init!
 #vox_cc sync: 0
 glitch_cc mode: 2
