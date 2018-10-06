@@ -104,7 +104,10 @@ def vastness_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :detune; 49
-        when :more; 50
+        when :pulse; 50
+        when :filter; 51
+        when :tone; 52
+        when :shape; 53
         else
           nil
         end
@@ -144,8 +147,37 @@ def bright(*args)
   n, vel = *params
   if n
     midi n, vel, *(args << {channel: 5, port: :iac_bus_1})
+    midi n, vel, *(args << {channel: 6, port: :iac_bus_1})
     nname = SonicPi::Note.new(n).midi_string
     puts "%s%s" %[nname.ljust(4, " "), "[Bright]"] if state[:piano]
+    bright_cc opts
+  end
+end
+
+def bright_cc(cc)
+  cc.keys.each do |k|
+    n = case k
+        when :detune; 49
+        when :cutoff; 50
+        else
+          nil
+        end
+    if n == 49
+      #midi_pitch_bend cc[k], channel: 4
+    elsif n
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 5
+    end
+  end
+end
+
+def operator(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n, vel, *(args << {channel: 6, port: :iac_bus_1})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4, " "), "[Operator]"] if state[:piano]
   end
 end
 
