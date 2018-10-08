@@ -100,6 +100,27 @@ def vastness(*args)
   end
 end
 
+def vastness_on(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi_note_on n, vel, *(args << {channel: 4, port: :iac_bus_1})
+    nname = SonicPi::Note.new(n).midi_string
+    if state[:vastness]
+      synth = "Vastness"
+    elsif state[:waves]
+      synth = "waves"
+    end
+    puts "%s%s" %[nname.ljust(4, " "), "[#{synth}]"] if synth
+    vastness_cc opts
+  end
+end
+
+def vastness_x(*args)
+  midi_all_notes_off port: :iac_bus_1, channel: 4
+end
+
 def vastness_cc(cc)
   cc.keys.each do |k|
     n = case k
