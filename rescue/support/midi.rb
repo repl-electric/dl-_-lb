@@ -37,6 +37,9 @@ def alive(args)
       midi_cc 20, v, port: :iac_bus_1, channel: 5
     when :kalim
       midi_cc 21, v, port: :iac_bus_1, channel: 5
+    when :kalim2
+      midi_cc 22, v, port: :iac_bus_1, channel: 9
+
     when :vocal
       midi_cc 20, v, port: :iac_bus_1, channel: 6
     when :kick
