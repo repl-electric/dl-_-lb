@@ -1,10 +1,13 @@
 load_support('rescue'); use_bpm 127.0
 #scale C D E♭  F G A♭  B♭
 
-alive kick: 0, crystal: 1, perc: 1, piano: 1, bass: 0, harp: 0, pad: 0, vocal: 1, kalim: 1, pedal: 0, vastness: 1, waves: 0
-#vastness_cc filter: 0.2, tone: 0.0, shape: 0.2, pulse: 0
+alive kick: 0, crystal: 0, perc: 0, piano: 0,
+harp: 0, pad: 0,  vastness: 0, waves: 0,
+vocal: 1, kalim: 1,
+
+vastness_cc filter: 0.0, tone: 1.0, shape: 0.3, pulse: 0
 bright_cc cutoff: 0.0
-#vastness_on :c4
+#vastness_x :c3
 
 #Nice progression 7M & 7m
 #    [[:C3    :Eb3  :G3 ]   8]      #1 7 5i
@@ -17,26 +20,49 @@ bright_cc cutoff: 0.0
 #     [[:eb2  :bb2     :d3]   2]
 
 live_loop :test do
+#  vastness_x :f5
   tick
+#  tick_reset_all
   score = (ing
-    # [[:C3   :Eb3  :G3]   8]
-    # [[:F3   :Ab3  :C4]   4]
-    # [[:Eb3  :G3   :Bb3]  4]
-    # [[:Ab3  :C4   :Eb4]  8]
-#   [[_] 4]
+  #   [[:C3   :Eb3  :G3]   8]
+  #   [[:F3   :Ab3  :C4]   4]
+  #   [[:Eb3  :G3   :Bb3]  4]
+  #   [[:Ab3  :C4   :Eb4]  8]
+  # [[_] 4]
 
 
-#    [[:C3   :Eb3  :G3]   8]
-    # [[:F3   :bb3  :C4]   4]
-    # [[:Eb3   :g3  :C4]   4]
-#    [[:Eb3   :ab3  :C4]   4]
+  #  [[:C3   :Eb3  :G3]   8]
+  #   [[:F3   :bb3  :C4]   4]
+  #   [[:Eb3   :g3  :C4]   4]
+  #  [[:Eb3   :ab3  :C4]   4]
 
-#    [[:Eb3  :G3   :Bb3]  4]
-#    [[:Ab3  :C4   :Eb4]  8]
-#    [[_] 4]
+  #  [[:Eb3  :G3   :Bb3]  4]
+  #  [[:Ab3  :C4   :Eb4]  8]
+  #  [[_] 4]
 
-    [[:c3   :Eb3   :g3]   8]    # 1
-#    [[:c3   :E3   :g3]    2]    # 1
+    # [[:c3   :eb3   :g3]   8]    # 1
+    # [[:c3   :E3    :g3]   4]    # 1
+
+    # [[:c3   :e3   :g3]   8]    # 1
+    # [[:c3   :Eb3    :g3]   4]    # 1
+
+    # [[:c3   :eb3   :g3]   8]    # 1
+    # [[:c3   :E3    :g3]   4]    # 1
+
+    # [[:c3   :eb3   :g3]   8]    # 1
+    # [[:bb2  :d3    :f3]   16]    # 1
+
+
+    # [[:c3   :E3   :g3]   8]    # 1
+    # [[:c3   :Eb3  :g3]   4]    # 1
+
+    # [[:c3   :Eb3   :g3]   4]    # 1
+    # [[:c3   :E3    :g3]   4]    # 1
+
+    # [[:c3    :Eb3   :g3  :eb4]   8]    # 1
+    # [[:bb2   :d3    :f3 ]   4]    # 1
+    # [[:eb3   :g2   :bb3  :g4]   4]
+
 
 #    [[:c3   :Eb3   :g3]   8]    # 1
 
@@ -67,36 +93,17 @@ live_loop :test do
 
 
 
-    # [[:c3    :Eb3     :g3 ]   4]      #1 7 5i
+    [[:c3    :Eb3     :g3 ]   8]      #1 7 5i
     # [[:bb3    :ds3     :g3 ]  8]      #1 7 5i
     # [[:eb2    :g2     :bb3 ]  8]      #1 7 5i
 
 
 
-    #[[:bb3   :ds3     :f3 ]  2]
-    #[[:eb3  :bb2      :d3]   2]
-
-
-    #[[:g3    :bb3  :d4]    1]
-    #[[_], 1]
-    #[[:g4    :bb3  :d4]    1]
-
-
-    # [[:g3    :bb3  :d3]   4]
-    # [[:bb2   :d3   :G3]   4]
-    # [[:g3    :bb3  :d3]   8]
-
-
-    # [[:g3    :bb3  :d4]   8]
-    # [[:bb3   :d3   :f3]   4]
-    # [[:g3    :bb3  :d3]   4]
-    # [[:bb2  :d3   :f3]    4]
-    # [[:g3   :bb3  :d4]    8]
-
-
-    #  [[:F3   :Ab3  :C4]   4]
+    # [[:bb3   :d3  :f4]   4]
+    # [[:F3   :Ab3  :C4]   4]
     # [[:Eb3  :G3   :Bb3]  4]
-    # [[:Ab3  :C4   :Eb4]  8]
+    # [[:Ab3  :C3   :Eb4]  8]
+
 
     # [[:C3   :Eb3  :G3]   8]
     # [[:F3   :bb3  :C4]   4]
@@ -106,22 +113,19 @@ live_loop :test do
     # [[:Eb3  :G3   :Bb3]  4]
     # [[:Ab3  :C4   :Eb4]  8]
 
-
     #[[_] 4]
-
-    #[[:Eb3   :ab3  :C4]   4]
-
     )
   #tick_reset_all
   s = score.look
+
   #puts s
-  midi :c3, 127, channel: 3
+  crystal :c3, 127
   x = spread(1,4).look
   at{
     sleep s[-1] - (s[-1]/2.0)
     kick 127
     sleep (s[-1]/2.0)
-    #kick 100 if x
+    kick 100 if x
   }
 
   at{
@@ -133,23 +137,24 @@ live_loop :test do
 
   #smp Mountain[/kick/,1], amp: 3
   # with_swing ((line -0.1, 0.0,128).look){
-  vastness octave(root(s[0]),2),127, sus: s[-1]*2
+  #vastness octave(root(s[0]),2),127, sus: s[-1]*2
   # }
   at{
     sleep (s[-1]/4.0)*2
-    #vastness octave(root(s[0]),2),110, sus: s[-1]*1
+    vastness octave(root(s[0]),2),110, sus: s[-1]*1
     if s[-1] == 4
       sleep s[-1] - (s[-1]/4.0)
+      vastness octave(root(s[0]),3), 127, sus: 1.0
     else
       sleep s[-1] - (s[-1]/4.0)*2
-      #vastness octave(root(s[0]),3), 110, sus: 1.5
+      vastness octave(root(s[0]),4), 127, sus: 1.5*2
       sleep (s[-1]/4.0)
    end
-   #vastness octave(root(s[0]),2), 120, sus: 0.5
+   vastness octave(root(s[0]),2), 120, sus: 0.5
   }
   if s[0][0] == nil
     #more tension....
-    vastness :g2, 127, sus: s[-1]
+    vastness :g4, 127, sus: s[-1]*2
     vocal_note =  (ing :G4 :G4 :Eb4 :Bb4).look
     early = spread(1,3).look
     at{
@@ -168,6 +173,8 @@ live_loop :test do
   }
 
   yes{
+    crystal s[0][1],120, sus: s[-1]+0.0
+    crystal s[0][0],120, sus: s[-1]+0.0
     pad s[0][0],100, sus: s[-1]+0.2, channel: 1, port: :iac_bus_1
     pad s[0][1],120, sus: s[-1]+0.0, channel: 1, port: :iac_bus_1
     pad_cc tone: ((line 0.0, 0.5, 128) + (line 0.5, 0.0, 128)).look
@@ -175,24 +182,43 @@ live_loop :test do
   }
 
   #bright :ab4, (ing 82 82 95).look,  sus: s[-1]
-#  bright :C5, 80, sus: 1/2.0
+  #bright :C5, 80, sus: 1/2.0
 
   #midi_note_on :ab3,120, channel: 5
 
   with_transpose 12{
    harp s[0][-1], 75,  sus: s[-1]
   }
+
+  x=(ing :bb5 [:f5 :ab5].choose :d5).look(offset: 1)
+  no{
+  at{
+    sleep 1.0
+    1.times{
+      sleep 1.0
+      operator x, v=(ine 110 90 3).tick(:inner), sus: 12
+      with_transpose -12{ operator x, v, sus: 12}
+      sleep 1/2.0
+      with_transpose 12{ operator x, v, sus: 12}
+      #voices x, 127, sus: 12
+      #crystal :fs3
+      #bright :c4,70, sus: 12
+    }
+    }
+  }
+
   s[-1].times{
+    #midi s[0][1]+12, (ing 80 100 110).look, sus: s[-1], channel: 9
     sleep 1/2.0
     tick(:in)
-    #crystal :fs3, 75 if spread(3,5).look(:in)
+    #crystal :fs3, 55-rand_i(5) if spread(3,5).look(:in)
 
     with_swing((line 0, -0.05, 128).look(:in)){
       bright s[0][-1], (ing 82 82 95).look,  sus: s[-1] if spread(7,11).look(:in)
     }
 
     sleep 1/2.0
-    crystal :fs3, 75 if spread(3,5).rot(-1).look(:in)
+    #crystal :fs3, 20+rand_i(10) if spread(3,5).rot(-1).look(:in)
 
     no{
     if spread(1,3).rot(-1).look
@@ -208,4 +234,5 @@ live_loop :test do
       bright s[0][1], (ing 80 100 110).look,  sus: s[-1] if spread(2,3).look(:in)
     }
   }
+  #stop
 end
