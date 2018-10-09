@@ -156,9 +156,11 @@ def crystal(*args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
   if n
-    midi n, vel, *(args << {channel: 3, port: :iac_bus_1})
+    if true#note(n) != note(:ds3)
+    midi n, vel, *(args << {channel: 9, port: :iac_bus_1})
     nname = SonicPi::Note.new(n).midi_string
-    puts "%s%s" %[nname.ljust(4, " "), "[Crystal]"] if state[:perc]
+      puts "%s%s" %[nname.ljust(4, " "), "  <Crystal>"] if state[:crystal]
+    end
   end
 end
 
@@ -169,8 +171,10 @@ def bright(*args)
   if n
     midi n, vel, *(args << {channel: 5, port: :iac_bus_1})
     midi n, vel, *(args << {channel: 6, port: :iac_bus_1})
+    midi n, vel, *(args << {channel: 8, port: :iac_bus_1})
+
     nname = SonicPi::Note.new(n).midi_string
-    puts "%s%s" %[nname.ljust(4, " "), "[Bright]"] if state[:piano]
+    puts "%s%s" %[nname.ljust(4, " "), "[*Bright*]"] if state[:piano]
     bright_cc opts
   end
 end
@@ -210,5 +214,16 @@ def harp(*args)
     midi n, vel, *(args << {channel: 2, port: :iac_bus_1})
     nname = SonicPi::Note.new(n).midi_string
     puts "%s%s" %[nname.ljust(4, " "), "[Harp]"] if state[:harp]
+  end
+end
+
+def voices(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n, vel, *(args << {channel: 8, port: :iac_bus_1})
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4, " "), "[Harp]"] if state[:voice]
   end
 end
