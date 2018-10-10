@@ -160,7 +160,7 @@ def crystal(*args)
   n, vel = *params
   if n
     if true#note(n) != note(:ds3)
-    midi n, vel, *(args << {channel: 9, port: :iac_bus_1})
+    midi n, vel, *(args << {channel: 10, port: :iac_bus_1})
     nname = SonicPi::Note.new(n).midi_string
       puts "%s%s" %[nname.ljust(4, " "), "  <Crystal>"] if state[:crystal]
     end
