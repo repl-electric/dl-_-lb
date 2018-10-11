@@ -160,7 +160,7 @@ def crystal(*args)
   n, vel = *params
   if n
     if true#note(n) != note(:ds3)
-    midi n, vel, *(args << {channel: 10, port: :iac_bus_1})
+    midi n, vel, *(args << {channel: 11, port: :iac_bus_1})
     nname = SonicPi::Note.new(n).midi_string
       puts "%s%s" %[nname.ljust(4, " "), "  <Crystal>"] if state[:crystal]
     end
@@ -179,6 +179,18 @@ def bright(*args)
     nname = SonicPi::Note.new(n).midi_string
     puts "%s%s" %[nname.ljust(4, " "), "[*Bright*]"] if state[:piano]
     bright_cc opts
+  end
+end
+
+def kalim2(*args)
+  params, opts = split_params_and_merge_opts_array(args)
+  opts         = current_midi_defaults.merge(opts)
+  n, vel = *params
+  if n
+    midi n, vel, *(args << {channel: 11, port: :iac_bus_1})
+
+    nname = SonicPi::Note.new(n).midi_string
+    puts "%s%s" %[nname.ljust(4, " "), "[*Kalim*]"] if state[:piano]
   end
 end
 
