@@ -194,6 +194,21 @@ def kalim2(*args)
   end
 end
 
+def zero_cc(cc)
+  cc.keys.each do |k|
+    n = case k
+        when :wash; 60
+        else
+          nil
+        end
+    if n == 49
+      #midi_pitch_bend cc[k], channel: 4
+    elsif n
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 5
+    end
+  end
+end
+
 def bright_cc(cc)
   cc.keys.each do |k|
     n = case k
