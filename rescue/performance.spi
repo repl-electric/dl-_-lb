@@ -10,11 +10,11 @@ zero_cc wash: 0.5
 
 alive kick: 0, crystal: 0, perc: 0,
 piano: 0, vocal: 0, kalim: 0, kalim2: 0,
-harp: 0, pad: 0,
+harp: 0,  pad: 0,
 vastness: 0, waves: 0
 
-vastness_cc filter: 0.0, tone: 1.0, shape: 0.0, pulse: 0
-bright_cc cutoff: 0.0
+vastness_cc filter: 0.0, tone: 1.0, shape: 0.01, pulse: 0
+bright_cc cutoff: 0.01
 #vastness_on :c4
 
 #Nice progression 7M & 7m
@@ -37,10 +37,10 @@ bright_cc cutoff: 0.0
 #    [[:f3     :d3    _ ]  1]
 
 live_loop :test do
-  #vastness :f5
+  #vastness :e6, 10, sus: 1
   tick
   score = (ing
-    [[:C2   :Eb2    :G2]   4]
+    [[:C3 :Eb3 :G3]   8]
 
     # #END----------------------------
     # [[:C3   :Eb3    :G3]   8]
@@ -51,19 +51,19 @@ live_loop :test do
 
 
     # [[:C3   :Eb3    :G3]   8]
-    # [[:eb3    :g3   :bb3]  1]
+    # [[:eb3    :g3   :c4]  1]
     # [[_       :d3    _ ]  1]
-    # [[_       :g3   :g3 ]  1]
+    # [[_       :f3   :g3 ]  1]
     # [[:f3     :d3    _ ]  1]
 
     # [[:C3   :Eb3    :G3]   8]
     # [[:eb3    :g3   :c4]  1]
     # [[_       :d3    _ ]  1]
-    # [[_       :g3   :g3 ]  1]
+    # [[_       :eb3   :g3 ]  1]
     # [[:f3     :d3    _ ]  1]
 
 
-    # [[:C3   :E3    :G3]   4]
+#     [[:C3   :E3    :G3]   2]
     # [[:C3   :E3    :G3]   8]
     # [[:C3   :Eb3    :G3]   4]
     # [[:C3   :Eb3    :G3]   8]
@@ -157,6 +157,7 @@ live_loop :test do
   end
 
   with_swing ((line -0.08, 0.00,32).look){
+    #TURN ON FOR DROP
    #bright s[0][0], 100,  sus: s[-1]
   }
 
@@ -181,9 +182,9 @@ live_loop :test do
   no{
     #A C E
 
-    x=(ing :bb5 [:c6 :c6].choose [:e5 :eb5].choose).look(offset: 1)
+    x=(ing :bb5 [:c6 :c6].choose [:e5 :eb5 :eb5].choose).look(offset: 1)
     #x=(ing :bb5 [:d5 :d5].choose [:g5 :ab5].choose).look(offset: 1)
-    v=(ine 105 90 55).tick(:inner)*0.9
+    v=(ine 100 90 55).tick(:inner)*0.9
   at{
     sleep 1.0
     1.times{
@@ -226,7 +227,7 @@ live_loop :test do
           operator :eb5,95
           sleep 1/2.0
           operator :g6, 90
-          #operator :a6, 85
+         # operator :a6, 85
         }
     end
     }
