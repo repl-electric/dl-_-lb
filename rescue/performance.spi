@@ -8,7 +8,7 @@ zero_cc wash: 0.5
 #vastness: 0, waves: 0
 
 alive kick: 0, crystal: 0, perc: 0,
-piano: 0, vocal: 0, kalim: 1, kalim2: 0,
+piano: 0, vocal: 0, kalim: 0, kalim2: 0,
 harp: 0,  pad: 0,
 vastness: 0, waves: 0
 
@@ -131,9 +131,6 @@ live_loop :test do
     # [[:F3   :bb3  :C4]   4]
     # [[:Eb3   :g3  :C4]    4]
     # [[:Eb3   :ab3  :C4]   4]
-
-    #------------------------
-    #[[_] 4]
     )
   #tick_reset_all
   s = score.look
@@ -216,7 +213,7 @@ live_loop :test do
   }
   yes{
     #A C E
-    x=nil
+    x=_
     #x=(ing :bb5 [:c6 :c6].choose [:e5 :eb5 :eb5].choose).look(offset: 1)
     #x=(ing :bb5 [:d5 :d5].choose [:g5 :ab5].choose).look(offset: 1)
     v=(ine 100 90 55).tick(:inner)*0.95
@@ -249,9 +246,9 @@ live_loop :test do
     #  crystal (ing :fs3 :fs3 :gs3).look(:in), 45-rand_i(5) if spread(3,5).look(:in)
     #}
 
-    with_swing((line 0, -0.05, 128).look(:in)){
+    #with_swing((line 0, -0.05, 128).look(:in)){
       bright s[0][-1], (ing 82 82 95).look,  sus: s[-1] if spread(7,11).look(:in)
-    }
+    #}
 
     sleep 1/2.0
     #crystal :bb3, 35+rand_i(10) if spread(3,5).rot(-1).look(:in)
