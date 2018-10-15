@@ -173,7 +173,9 @@ def bright(*args)
   n, vel = *params
   if n
     midi n, vel, *(args << {channel: 5, port: :iac_bus_1})
-    midi n, vel, *(args << {channel: 6, port: :iac_bus_1})
+    if !opts[:piano] || opts[:piano] != 0
+      midi n, vel, *(args << {channel: 6, port: :iac_bus_1})
+    end
     midi n, vel, *(args << {channel: 8, port: :iac_bus_1})
 
     nname = SonicPi::Note.new(n).midi_string
