@@ -207,16 +207,33 @@ def kalim2(*args)
 end
 
 def zero_cc(cc)
+  channel = 5
   cc.keys.each do |k|
     n = case k
         when :wash; 60
+        when :cdelay
+          m={1=> 0, 2 => 0.2, 3=>0.25, 4=> 0.4, 5=> 0.5, 6 => 0.65, 8 => 0.8, 16=> 1.0}
+          v = m[cc[k]]
+          if v
+            midi_cc 61, 127*v, port: :iac_bus_1, channel: channel
+          end
+        when :ldelay
+          m={1=> 0, 2 => 0.2, 3=>0.25, 4=> 0.4, 5=> 0.5, 6 => 0.65, 8 => 0.8, 16=> 1.0}
+          if v
+            v = m[cc[k]]
+          end
+          midi_cc 62, 127*v, port: :iac_bus_1, channel: channel
+        when :rdelay
+          m={1=> 0, 2 => 0.2, 3=>0.25, 4=> 0.4, 5=> 0.5, 6 => 0.65, 8 => 0.8, 16=> 1.0}
+          v = m[cc[k]]
+          midi_cc 63, 127*v, port: :iac_bus_1, channel: channel
         else
           nil
         end
     if n == 49
       #midi_pitch_bend cc[k], channel: 4
-    elsif n
-      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 5
+    elsif n && k != :cdelay || k!= :ldelay || k != :rdelay
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: channel
     end
   end
 end
