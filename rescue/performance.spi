@@ -1,27 +1,22 @@
-load_support('rescue'); use_bpm 127.0
+load_support('rescue'); use_bpm 130.0
 #scale C D E♭  F G A♭  B♭
 zero_cc wash: 0.5
-
-#alive kick: 0, crystal: 1, perc: 0,
-#piano: 1, vocal: 0, kalim: 1, kalim2: 1,
-#harp: 0, pad: 0,
-#vastness: 0, waves: 0
-
 alive kick: 0, crystal: 0, perc: 0,
-piano: 0, vocal: 0, kalim: 1, kalim2: 0,
+piano: 1, vocal: 0, kalim: 1, kalim2: 0,
 harp: 0,  pad: 0,
 vastness: 0, waves: 0
 
-vastness_cc filter: 0.0, tone: 1.0, shape: 0.0, pulse: 0
+vastness_cc filter: 0.5, tone: 1.0, shape: 0.0, pulse: 0
 bright_cc cutoff: 1.0
 #vastness_on :c4
 
 live_loop :test do
-  #vastness [:e6, :eb6], 10, sus: 1
+  vastness [:e6, :eb6].choose, 10, sus: 1 if state[:vastness]
+  zero_cc cdelay: look % 3 == 0 ? 4 : 1
   tick
   score = (ing
-    [[:C3 :Eb2 :G2]   8]
-    # [[:C2 :Eb2 :bb2]   1]
+    # [[:C3 :Eb2 :G2]   8]
+    # [[:C2 :Eb2 :bb2]  1]
     # [[:C2 :Eb2  _ ]   1]
     # [[:C2 :Eb2 :G2]   1]
     # [[:C2 :Eb2  _ ]   1]
@@ -31,95 +26,74 @@ live_loop :test do
     # [[:C2 :Eb2  _ ]   1]
     # [[:C2 :Eb2 :F2]   2]
 
-    # #END----------------------------
+    # # #END----------------------------
     # [[:C3   :Eb3    :G3]   8]
-    # [[:eb3    :g3   :bb3]  1]
-    # [[_       :d3    _ ]   1]
-    # [[_       :d3   :g3 ]  1]
-    # [[:f3     :d3    _ ]   1]
+    # # [[:eb3    :g3   :bb3]  1]
+    # # [[_       :d3    _ ]   1]
+    # # [[_       :d3   :g3 ]  1]
+    # # [[:f3     :d3    _ ]   1]
 
-    # [[:C3   :Eb3    :G3]   8]
-    # [[:eb3    :g3   :bb3]  1]
-    # [[_]                   4]
-    # [[_       :d3    _ ]   1]
-    # [[_       :d3   :g3 ]  1]
-    # [[_]                   8]
-    # [[:f3     :d3    _ ]   4]
+    # # [[:C3   :Eb3    :G3]   8]
+    # # [[:eb3    :g3   :bb3]  1]
+    # # #[[_]                   4]
+    # # [[_       :d3    _ ]   1]
+    # # [[_       :d3   :g3 ]  1]
+    # # #[[_]                   8]
+    # # [[:f3     :d3    _ ]   4]
 
-    # [[:g2  :d3   :g3]     8]
-    # [[_    :bb2     _]    2]
-    # [[_    :d3      _]    2]
-    # [[_    :c3      _]    2]
-    # [[_    :ab2     _]    2]
+    # #[[:g2  :d3   :g3]     8]
+    # # [[_    :bb2     _]     2]
+    # # [[_    :d3      _]     2]
+    # # [[_    :c3      _]     2]
+    # [[:c3    :e3     :g3]  4]
+    # [[:bb2    :d3     :g3]  16]
+
 
     #p2---------------------------------------
 
     # [[:C3   :Eb3    :G3]   8]
     # [[:eb3    :g3   :bb3]  1]
-    # [[_       :d3    _ ]  1]
+    # [[_       :d3    _ ]   1]
     # [[_       :f3   :g3 ]  1]
-    # [[:f3     :d3    _ ]  1]
+    # [[:f3     :d3    _ ]   1]
 
-    # [[:C3   :Eb3    :G3]   8]
+    # [[:ab3   :eb3    :G3]   8]
     # [[:f3    :ab3   :c4]   1]
     # [[_      :d3    _ ]    1]
     # [[_      :eb3   :g3 ]  1]
-    # [[:f3    :d3    _ ]    1]
+    # [[:g3    :d3    _ ]    1]
 
-    # [[:C3   :Eb3    :ab3]   8]
-    # [[:g3   :bb3    :c4]   1]
-    # [[_     :eb3     _]    1]
-    # [[_     :eb3   :g3 ]  1]
-    # [[:f3    :d3    _]    1]
+    # [[:ab3   :Eb3    :ab3]  8]
+    # [[:g3   :bb3    :c4]    1]
+    # [[_     :eb3     _]     1]
+    # [[_     :eb3   :g3 ]    1]
+    # [[:f3    :d3    _]      1]
 
-    # [[:C3   :Eb3    :G3]   8]
+    # [[:bb3   :Eb3    :G3]   8]
     # [[:eb3    :g3   :bb3]  1]
     # [[_       :d3    _ ]   1]
     # [[_       :d3   :g3 ]  1]
     # [[:f3     :d3    _ ]   4]
 
-    # [[:g2  :d3     :g3]     8]
+    # [[:g3  :d3     :g3]   8]
     # [[_    :bb2     _]    2]
     # [[_    :d3      _]    2]
     # [[_    :c3      _]    2]
-    # [[:d3  :g2     :f3]     4]
+    # [[:g3  :d3     :f3]   4]
 
     #gbdf-------------------------------------------------
 
-#    [[:f3     :d3    _ ]  1]
-
-    # [[:C3   :Eb3    :G3]   8]
-    # [[:eb3    :g3   :c4]  1]
-    # [[_       :d3    _ ]  1]
-    # [[_       :f3   :g3 ]  1]
-    # [[:f3     :d3    _ ]  1]
+    [[:C3   :Eb3    :G3]   8]
+    [[:eb3    :g3   :c4]  1]
+    [[_       :d3    _ ]  1]
+    [[_       :f3   :g3 ]  1]
+    [[:f3     :d3    _ ]  1]
 
     # [[:C3   :Eb3    :G3]   8]
     # [[:eb3    :g3   :c4]  1]
     # [[_       :d3    _ ]  1]
     # [[_       :eb3   :g3 ]  1]
     # [[:f3     :d3    _ ]  1]
-
-
-#     [[:C3   :E3    :G3]   2]
-    # [[:C3   :E3    :G3]   8]
-    # [[:C3   :Eb3    :G3]   4]
-    # [[:C3   :Eb3    :G3]   8]
-    # [[:bb3  :d3    :G3]   16]
-
-
-    #extra
-#    [[:c3     :eb3    :g3 ]  4]
-#    [[:bb3     :d3    :c3 ]  4]
-
-    #--------------------------------
-
-
-    # [[:bb3   :d3  :f4]   4]
-    # [[:F3   :Ab3  :C4]   4]
-    # [[:G3   :Eb3  :C3]  8]
-    # [[:bb3  :d3  :f4]  4]
-    # [[:D3  :Eb3  :Ab3]  8]
 
     #Main Chorus ----------------
     # [[:C3   :Eb3    :G3]   8]
@@ -137,31 +111,67 @@ live_loop :test do
 
     #------------------------
     #[[_] 4]
-
     )
   #tick_reset_all
   s = score.look
-
+  #puts "SCORE: #{s}"
   #crystal :eb3, 127
   x = spread(1,4).look
   at{
     sleep s[-1] - (s[-1]/2.0)
-    kick 60
+    kick 80
     sleep (s[-1]/2.0)
-    #kick 100 if x
+    kick 100 if x
   }
 
+  bass_score = (ing
+    [[:C3   :Eb3    :G3]   8]
+    [[:eb3    :g3   :bb3]  1]
+    [[_       :d3    _ ]  1]
+    [[_       :f3   :g3 ]  1]
+    [[:f3     :d3    _ ]  1]
+
+    [[:ab3   :eb3    :G3]   8]
+    [[:f3    :ab3   :c4]   1]
+    [[_      :d3    _ ]    1]
+    [[_      :eb3   :g3 ]  1]
+    [[:g3    :d3    _ ]    1]
+
+    [[:ab3   :Eb3    :ab3]   8]
+    [[:g3   :bb3    :c4]   1]
+    [[_     :eb3     _]    1]
+    [[_     :eb3   :g3 ]  1]
+    [[:f3    :d3    _]    1]
+
+    [[:C3   :Eb3    :G3]   8]
+    [[:eb3    :g3   :bb3]  1]
+    [[_       :d3    _ ]   1]
+    [[_       :d3   :g3 ]  1]
+    [[:f3     :d3    _ ]   4]
+
+    [[:g2  :d3     :g3]     8]
+    [[_    :bb2     _]    2]
+    [[_    :d3      _]    2]
+    [[_    :c3      _]    2]
+    [[:g3  :g2     :f3]     4]
+).look
+
+
+  no{
   at{
     16.times{
       sleep 1/4.0
-      midi (ing :gs3 :as3).look(:in2), (ramp 75, 100, 128).look(:in2), channel: 3 if spread(3,7).tick(:in2)
+      perc (ing :gs3 :as3).look(:in2), (ramp 75, 100, 128).look(:in2) if spread(3,7).tick(:in2)
+    }
     }
   }
 
-  vastness octave(root(s[0]),2), 127, sus: s[-1]*2 if s[0]
+  #vastness s[0][0], 127, sus: (s[-1]*1)*2 if s[0][0]
+  #vastness octave(root(s[0]),2), 127, sus: s[-1]*2 if s[0]
   # }
-  no{
-  at{
+  yes{
+    at{
+      vastness octave(root(s[0]),3),110, sus: s[-1]*1
     sleep (s[-1]/4.0)*2
     vastness octave(root(s[0]),2),110, sus: s[-1]*1
     if s[-1] == 4
@@ -184,21 +194,19 @@ live_loop :test do
       sleep 1/8.0
       vastness :G2, 127, sus: s[-1] - 1/8.0
 
-      perc vocal_note, 100-(rand*10.0), sus: 6 if early
+      #perc vocal_note, 100-(rand*10.0), sus: 6 if early
       sleep 3/8.0
-      #vocals
-      perc vocal_note, 127-(rand*10.0), sus: 7
+      #perc vocal_note, 127-(rand*10.0), sus: 7
     }
   end
 
   with_swing ((line -0.08, 0.00,32).look){
-    #bright s[0][0],    100,  sus: s[-1], piano: 0
-    bright s[0][0]-12, 100,  sus: s[-1], piano: 0
+    bright s[0][0], 100,  sus: s[-1], piano: 0
   }
 
   yes{
-    crystal s[0][1],120, sus: s[-1]+0.0
-    crystal s[0][0],120, sus: s[-1]+0.0
+    #crystal s[0][1],120, sus: s[-1]+0.0
+    #crystal s[0][0],120, sus: s[-1]+0.0
 
     pad s[0][0]-12,100, sus: s[-1]+0.2, channel: 1, port: :iac_bus_1
     pad s[0][1]-12,120, sus: s[-1]+0.0, channel: 1, port: :iac_bus_1
@@ -215,9 +223,9 @@ live_loop :test do
   }
   yes{
     x=nil
-    #x=(ing :bb5 [:c6 :c6].choose [:e5 :eb5 :eb5].choose).look(offset: 1)
-    #x=(ing :bb5 [:d5 :d5].choose [:g5 :ab5].choose).look(offset: 1)
-    v=(ine 100 90 55).tick(:inner)*0.95
+#    x=(ing :bb5 [:c6 :c6].choose [:e5 :eb5 :eb5].choose).look(offset: 1)
+    x=(ing :bb5 [:d5 :d5].choose [:g5 :ab5].choose).look(offset: 1)
+    v=(ine 100 90 55).tick(:inner)*1.0
   at{
     sleep 1.0
     1.times{
@@ -247,29 +255,27 @@ live_loop :test do
     #  crystal (ing :fs3 :fs3 :gs3).look(:in), 45-rand_i(5) if spread(3,5).look(:in)
     #}
 
-    #with_swing((line 0, -0.05, 128).look(:in)){
+    with_swing((line 0, -0.05, 128).look(:in)){
       bright s[0][-1], (ing 82 82 95).look,  sus: s[-1] if spread(7,11).look(:in)
-    #}
+    }
 
     sleep 1/2.0
     #crystal :bb3, 35+rand_i(10) if spread(3,5).rot(-1).look(:in)
 
     yes{
       if spread(1,3).rot(-1 - rand_i(s[-1]*0.5)).look
-
       at{
-          operator :eb5,97
+          operator :eb5,97+2
           sleep 1/2.0
-          operator :g6, 92
-         # operator :a6, 85
+          operator :g6, 92+2
+#          operator :a6, 85
         }
     end
     }
-
     #midi_note_on :eb3, channel: 10
     #stop
-    with_transpose 12*0{
-      #bright s[0][1], (ing 80 100 110).look,  sus: s[-1] if spread(2,3).look(:in)
+    with_transpose 12*1{
+      bright s[0][1], (ing 80 100 110).look,  sus: s[-1] if spread(2,3).look(:in)
     }
   }
   #stop
