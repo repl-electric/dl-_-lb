@@ -1,7 +1,7 @@
 load_support('rescue'); use_bpm 130.0
 #scale C D E♭  F G A♭  B♭
 zero_cc wash: 0.5
-alive kick: 0, crystal: 0, perc: 0,
+alive kick: 1, crystal: 0, perc: 0,
 piano: 1, vocal: 0, kalim: 1, kalim2: 0,
 harp: 0,  pad: 0,
 vastness: 0, waves: 0
@@ -12,10 +12,12 @@ bright_cc cutoff: 1.0
 
 live_loop :test do
   vastness [:e6, :eb6].choose, 10, sus: 1 if state[:vastness]
-  zero_cc cdelay: look % 3 == 0 ? 4 : 1
+  #zero_cc cdelay: look % 3 == 0 ? 4 : 1
+  delays = [3,1,5].shuffle; zero_cc rdelay: delays[0], ldelay: delays[1], cdelay: delays[2]
+  kick 127
   tick
   score = (ing
-    # [[:C3 :Eb2 :G2]   8]
+     [[:C3 :Eb2 :G2]   4]
     # [[:C2 :Eb2 :bb2]  1]
     # [[:C2 :Eb2  _ ]   1]
     # [[:C2 :Eb2 :G2]   1]
@@ -119,9 +121,9 @@ live_loop :test do
   x = spread(1,4).look
   at{
     sleep s[-1] - (s[-1]/2.0)
-    kick 80
+    #kick 60
     sleep (s[-1]/2.0)
-    kick 100 if x
+    #kick 90 if x
   }
 
   bass_score = (ing
@@ -205,8 +207,8 @@ live_loop :test do
   }
 
   yes{
-    #crystal s[0][1],120, sus: s[-1]+0.0
-    #crystal s[0][0],120, sus: s[-1]+0.0
+    crystal note(s[0][1])-12,120, sus: s[-1]+0.0
+    crystal note(s[0][0])-12,120, sus: s[-1]+0.0
 
     pad s[0][0]-12,100, sus: s[-1]+0.2, channel: 1, port: :iac_bus_1
     pad s[0][1]-12,120, sus: s[-1]+0.0, channel: 1, port: :iac_bus_1
@@ -274,8 +276,8 @@ live_loop :test do
     }
     #midi_note_on :eb3, channel: 10
     #stop
-    with_transpose 12*1{
-      bright s[0][1], (ing 80 100 110).look,  sus: s[-1] if spread(2,3).look(:in)
+    with_transpose 12*0{
+      #bright s[0][1], (ing 80 100 110).look,  sus: s[-1] if spread(2,3).look(:in)
     }
   }
   #stop

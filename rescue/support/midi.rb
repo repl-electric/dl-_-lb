@@ -209,6 +209,7 @@ end
 def zero_cc(cc)
   channel = 5
   cc.keys.each do |k|
+    puts k
     n = case k
         when :wash; 60
         when :cdelay
@@ -217,22 +218,28 @@ def zero_cc(cc)
           if v
             midi_cc 61, 127*v, port: :iac_bus_1, channel: channel
           end
+          nil
         when :ldelay
           m={1=> 0, 2 => 0.2, 3=>0.25, 4=> 0.4, 5=> 0.5, 6 => 0.65, 8 => 0.8, 16=> 1.0}
+          v = m[cc[k]]
           if v
-            v = m[cc[k]]
+            midi_cc 62, 127*v, port: :iac_bus_1, channel: channel
           end
-          midi_cc 62, 127*v, port: :iac_bus_1, channel: channel
+
+          nil
         when :rdelay
           m={1=> 0, 2 => 0.2, 3=>0.25, 4=> 0.4, 5=> 0.5, 6 => 0.65, 8 => 0.8, 16=> 1.0}
           v = m[cc[k]]
-          midi_cc 63, 127*v, port: :iac_bus_1, channel: channel
+          if v
+            midi_cc 63, 127*v, port: :iac_bus_1, channel: channel
+          end
+          nil
         else
           nil
         end
     if n == 49
       #midi_pitch_bend cc[k], channel: 4
-    elsif n && k != :cdelay || k!= :ldelay || k != :rdelay
+    elsif n
       midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: channel
     end
   end
