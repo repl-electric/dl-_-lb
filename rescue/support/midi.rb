@@ -206,10 +206,14 @@ def kalim2(*args)
   end
 end
 
+def zero_delay(phases)
+  delays = phases
+  zero_cc rdelay: delays[0], ldelay: delays[1], cdelay: delays[2]
+end
+
 def zero_cc(cc)
   channel = 5
   cc.keys.each do |k|
-    puts k
     n = case k
         when :wash; 60
         when :cdelay
