@@ -106,9 +106,6 @@ live_loop :test do
     # [[:F3   :bb3  :C4]   4]
     # [[:Eb3   :g3  :C4]    4]
     # [[:Eb3   :ab3  :C4]   4]
-
-    #------------------------
-    #[[_] 4]
     )
   #tick_reset_all
   s = score.look
@@ -136,22 +133,21 @@ live_loop :test do
   #}
   no{
     at{
-      vastness octave(root(s[0]),3),110, sus: s[-1]*1
-    sleep (s[-1]/4.0)*2
-    vastness octave(root(s[0]),2),110, sus: s[-1]*1
-    if s[-1] == 4
-      sleep s[-1] - (s[-1]/4.0)
-      #vastness octave(root(s[0]),3), 127, sus: 1.0
-    else
-      sleep s[-1] - (s[-1]/4.0)*2
-      vastness octave(root(s[0]),4), 127, sus: 1.5*2
-      sleep (s[-1]/4.0)
-   end
-   vastness octave(root(s[0]),3), 120, sus: 0.5
+      #vastness octave(root(s[0]),3),110, sus: s[-1]*1
+      sleep (s[-1]/4.0)*2
+      vastness octave(root(s[0]),2),110, sus: s[-1]*1
+      if s[-1] == 4
+        sleep s[-1] - (s[-1]/4.0)
+        #vastness octave(root(s[0]),3), 127, sus: 1.0
+      else
+        sleep s[-1] - (s[-1]/4.0)*2
+        vastness octave(root(s[0]),4), 127, sus: 1.5*2
+        sleep (s[-1]/4.0)
+      end
+      vastness octave(root(s[0]),3), 120, sus: 0.5
     }
   }
   if s[0][0] == nil #fill the void
-    puts @tide
     vastness :g2, 127, sus: s[-1]*2 if @rescue
     vocal_note =  (ing :G4 :G4 :Eb4 :Bb4).look
     early = spread(1,3).look
@@ -215,7 +211,7 @@ live_loop :test do
     # }
 
     with_swing((line 0, -0.05, 128).look(:in)){
-      bright s[0][-1], (ing 82 82 95).look,  sus: s[-1] if spread(7,11).look(:in)
+      #bright s[0][-1], (ing 82 82 95).look,  sus: s[-1] if spread(7,11).look(:in)
     }
 
     sleep 1/2.0
@@ -234,7 +230,7 @@ live_loop :test do
     #midi_note_on :eb3, channel: 10
     #stop
     with_transpose 12*0{
-      #bright s[0][1], (ing 80 100 110).look,  sus: s[-1] if spread(2,3).look(:in)
+     #bright s[0][1], (ing 80 100 110).look,  sus: s[-1] if spread(2,3).look(:in)
     }
   }
   #stop
