@@ -112,11 +112,14 @@ live_loop :test do
   #puts "SCORE: #{s}"
   #crystal :eb3, 127
   x = spread(1,4).look
+  y = spread(1,4).rot(-1).look
   at{
-    sleep s[-1] - (s[-1]/2.0)
-    kick 60
+    sleep s[-1] - (s[-1]/2.0) - s[-1] / 8.0
+    kick 10 if y
+    sleep s[-1] / 8.0
+    kick 65
     sleep (s[-1]/2.0)
-    #kick 90 if x
+    #kick 80 if x
   }
 
   no{
