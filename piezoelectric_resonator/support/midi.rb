@@ -1,5 +1,37 @@
  MODE_NOTE = 13
 
+def state()
+  $daw_state ||= {}
+end
+
+def alive(args)
+  _, opts = split_params_and_merge_opts_array(args)
+  opts.each{|s|
+    state[s[0]] = ((s[1] == 0) || (s[1] == 0.0)) ? false : true
+    v = (s[1] == 0.0) ? 127 : 0
+    case s[0]
+    when :perc
+      midi_cc 20, v, port: :iac_bus_1, channel: 16
+    when :kick
+      midi_cc 21, v, port: :iac_bus_1, channel: 16
+    when :sop
+      midi_cc 22, v, port: :iac_bus_1, channel: 16
+
+    end
+  }
+end
+
+def warm
+  alive pad: 1 , apeg: 1, bass: 1, piano: 1, vocal: 1, kick: 1
+  [:c3, :cs3, :d3, :ds3, :e3, :f3, :fs3, :g3, :gs3, :a3, :as3, :b3,
+    :c4, :cs4, :d4, :ds4, :e4, :f4, :fs4, :g4, :gs4, :a4, :as4, :b4,
+    :c5, :cs5, :d5, :ds5, :e5, :f5, :fs5, :g5, :gs5, :a5, :as5, :b5,
+  ].each{|n|
+    midi n,1, sus: 0.125, port: '*', channel: '*'
+    sleep 0.25
+    }
+end
+
 def linear_map(x0, x1, y0, y1, x)
   dydx = (y1 - y0) / (x1- x0)
   dx = (x- x0)
@@ -249,6 +281,46 @@ def heat(n,*args)
   end
 end
 
+def heat_on(n,*args)
+  if n
+    if args && args[0].is_a?(Numeric)
+      velocity = args[0]
+      args = args[1..-1]
+    else
+      velocity = 1
+    end
+    if n.is_a?(Array)
+      args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
+      n = n[0]
+    end
+    args_h = resolve_synth_opts_hash_or_array(args)
+    if(args_h[:mode])
+    end
+
+    if n && ((n != "_") && n != :_)
+      args_h[:pads] ||= 0
+      pads = args_h[:pads]
+      if pads && !pads.is_a?(Array)
+        pads = [pads]
+      end
+      pads.map{|pad|
+        if pad == 0
+          midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
+        end
+        if pad == 1
+          midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 11})
+        end
+        if pad == 2
+          midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 12})
+        end
+      }
+      nname = SonicPi::Note.new(n).midi_string
+      puts "Heat -> [#{nname}]"
+      heat_cc args_h
+    end
+  end
+end
+
 def bitsea(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
@@ -406,6 +478,7 @@ def glitch(*args)
     n_val = note(n)
 
     if n_val == note(:c3) && $p_glitch != n_val #a double tap
+      if state[:perc]
       f = (ing 500, 0, 100, 0).look
       at{
         sleep 0.5
@@ -413,28 +486,34 @@ def glitch(*args)
         linecolor cube: rand*1.5
         sleep 0.5
         linecolor cube: rand*0.4
-      }
+        }
+      end
     end
 
     if $pmode != 2
       if n_val == note(:cs4) || n_val == note(:d4)
+        if state[:perc]
         at{
           sleep 0.5
           cube rot: 20
           sleep 1
           cube rot: 1
-        }
+          }
+        end
       end
       if n_val == note(:d4)
+        if state[:perc]
         at{
           sleep 0.5
           vortex turb: 10.0
           vortex force: 0
           sleep 0.5
           rocks turb: 0.0
-        }
+          }
+        end
       end
       if n_val == note(:c3)
+        if state[:perc]
         at{
           sleep 0.5
           rocks speed: 0.1*vel
@@ -444,18 +523,22 @@ def glitch(*args)
           sleep 0.25
           rocks speed: 0
           #cube circle: 0
-        }
+          }
+        end
       end
       if n_val == note(:fs3)
+        if state[:perc]
         at{
           sleep 0.5
           slice_cube y: (rand*0.2)+0.35
           #          slice_cube z: rand*-1.8
           sleep 1
           slice_cube y: 0
-        }
+          }
+        end
       end
       if n_val == note(:ds3)
+        if state[:perc]
         at{
           sleep 0.5
           cube circle: 0.25
@@ -463,9 +546,11 @@ def glitch(*args)
             sleep 0.5
             cube circle: 0.25*(1/(n+1))
           }
-        }
+          }
+        end
       end
       if n_val == note(:gs3)
+        if state[:perc]
         at{
           sleep 0.5
           #create_cube 1
@@ -474,7 +559,8 @@ def glitch(*args)
           sleep 1
           #create_cube 0
           roots_chase amp: 0.01
-        }
+          }
+        end
       end
     end
     $p_glitch = n_val
@@ -515,6 +601,13 @@ def flip(n,*args)
     end
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 1})
+
+      at{
+        sleep 0.5
+        thick_weight=linear_map(40,70, 0.02,0.1, note(n))
+        roots_chase thick: thick_weight
+      }
+
 
       if $pmode==4
         if($triggered_flip)
@@ -840,4 +933,47 @@ def operator(n,*args)
         puts $!.message
         puts $!.backtrace
       end
+end
+
+def zero_delay(phases)
+  delays = phases
+  zero_cc rdelay: delays[0], ldelay: delays[1], cdelay: delays[2]
+end
+
+def zero_cc(cc)
+  channel = 5
+  cc.keys.each do |k|
+    n = case k
+        when :wash; 60
+        when :cdelay
+          m={1=> 0, 2 => 0.2, 3=>0.25, 4=> 0.4, 5=> 0.5, 6 => 0.65, 8 => 0.8, 16=> 1.0}
+          v = m[cc[k]]
+          if v
+            midi_cc 61, 127*v, port: :iac_bus_1, channel: channel
+          end
+          nil
+        when :ldelay
+          m={1=> 0, 2 => 0.2, 3=>0.25, 4=> 0.4, 5=> 0.5, 6 => 0.65, 8 => 0.8, 16=> 1.0}
+          v = m[cc[k]]
+          if v
+            midi_cc 62, 127*v, port: :iac_bus_1, channel: channel
+          end
+
+          nil
+        when :rdelay
+          m={1=> 0, 2 => 0.2, 3=>0.25, 4=> 0.4, 5=> 0.5, 6 => 0.65, 8 => 0.8, 16=> 1.0}
+          v = m[cc[k]]
+          if v
+            midi_cc 63, 127*v, port: :iac_bus_1, channel: channel
+          end
+          nil
+        else
+          nil
+        end
+    if n == 49
+      #midi_pitch_bend cc[k], channel: 4
+    elsif n
+      midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: channel
+    end
+  end
 end

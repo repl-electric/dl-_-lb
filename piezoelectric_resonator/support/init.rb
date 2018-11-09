@@ -1,6 +1,11 @@
 Zz = [nil]
 S = 18
 T = 21
+REST4=[Zz, 4]
+REST8=[Zz, 8]
+def dotted(n)
+  n+(n/2.0)
+end
 
 def mbox_inits
   #mbox_cc motion: 0.30, drive: 1.00, sat: 1.00
@@ -192,8 +197,27 @@ def roots_chase(*args)
   if (o=opts[:freq])
     unity "/knitroots/freq", o
   end
-
-
+  if (o=opts[:thick])
+    unity "/knitroots/thick", o
+  end
+  if (o=opts[:target])
+    if o == :spiral
+      unity "/knitroots/target/spiral", 1.0
+    elsif o == :cube
+      unity "/knitroots/target/cube", 1.0
+    elsif o == :none
+      unity "/knitroots/target/none", 1.0
+    end
+  end
+  if (o=opts[:drag])
+    unity "/knitroots/drag", o
+  end
+  if (o=opts[:force])
+    unity "/knitroots/force", o
+  end
+  if (o=opts[:radius])
+    unity "/knitroots/radius", o
+  end
 end
 
 def roots(*args)
