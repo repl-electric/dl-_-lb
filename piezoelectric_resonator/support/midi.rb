@@ -448,8 +448,13 @@ def dark(*args)
   params, opts = split_params_and_merge_opts_array(args)
   opts         = current_midi_defaults.merge(opts)
   n, vel = *params
+  if !vel
+    vel = 50
+  end
 
   if n
+    t=linear_map(0,124,0.25,0.8,vel)
+    cube_hit(0.2, 0.2, t)
     midi n, vel, port: :iac_bus_1, channel: 2
   end
 end
