@@ -41,7 +41,8 @@ end
 def eject_cpu_core(k=:pad)
   case k
     when :pad
-      midi_cc 11,127, port: :iac_bus_1, channel: 1
+    midi_cc 11,127, port: :iac_bus_1, channel: 1
+    end2
   end
 end
 
