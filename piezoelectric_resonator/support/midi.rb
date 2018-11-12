@@ -50,6 +50,9 @@ def fx(cc)
     n = case k
         when :reverb; 12
         when :tube; 13
+          if cc[k] > 0.6
+            star size: (linear_map 0.6, 1.0, 10,12,cc[k] )
+          end
         else
           nil
         end
