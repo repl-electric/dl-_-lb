@@ -6,7 +6,19 @@ REST8=[Zz, 8]
 def dotted(n)
   n+(n/2.0)
 end
-
+def cube_hit(inital=0.2, vel=0.2, m=0.8)
+  at{
+    unity "/cube/hit/speed", vel
+    sleep 0.5
+    unity "/cube/hit", inital
+    sleep 0.25
+    4.times{|n|
+      unity "/cube/hit", m * 1.0/(n)
+      sleep 0.25
+    }
+    unity "/cube/hit", 0.01
+  }
+end
 def mbox_inits
   #mbox_cc motion: 0.30, drive: 1.00, sat: 1.00
   #mbox2_cc sat: 1.00, motion: 0.50, drive: 0.00
