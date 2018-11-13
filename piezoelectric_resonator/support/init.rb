@@ -8,17 +8,18 @@ def dotted(n)
 end
 def cube_hit(inital=0.2, vel=0.2, m=0.8)
   at{
-    unity "/cube/hit/speed", vel
+    unity "/cube/hit/speed", vel+rand*0.1
     sleep 0.5
     unity "/cube/hit", inital
     sleep 0.25
     4.times{|n|
-      unity "/cube/hit", m * 1.0/(n)
+      unity "/cube/hit", linear_map(0,3,m,0.03, n)
       sleep 0.25
     }
     unity "/cube/hit", 0.01
   }
 end
+
 def mbox_inits
   #mbox_cc motion: 0.30, drive: 1.00, sat: 1.00
   #mbox2_cc sat: 1.00, motion: 0.50, drive: 0.00
@@ -200,6 +201,9 @@ def sea(*args)
 end
 def roots_chase(*args)
   opts = resolve_synth_opts_hash_or_array(args)
+  if(o=opts[:throttle])
+    unity "/knitroots/throttle", o
+  end
   if (o=opts[:radius])
     unity "/knitroots/radius", o
   end
@@ -419,7 +423,9 @@ def cam(type=:main, f=false)
     roots chase: 0.1, force: 1, target: :spiral, drag: 3
   elsif type == :top
     $pmode=2
+    roots alive: 1
     unity "/cam1"
+
   elsif type == :bird
     $pmode=3
     rocks orbit: 20.0
@@ -433,6 +439,12 @@ def cam(type=:main, f=false)
     create_light 0
     create_aura -5
     unity "/cam4"
+  elsif type == :chase
+    roots throttle: 0.0
+    roots chase: 1.0, throttle: 0.2, drag: 6, amp: 0.01
+    roots_chase thick: 0.1
+    roots_chase amp: 0.09
+    create_aura
   end
 end
 def defaultcolor
@@ -520,6 +532,20 @@ def roots_init()
   roots chase: 0.0, force: 18.87, radius: 0.01
 end
 
+def sea_ball_init
+  sea circle: 1, sphere: 1 #ball
+  create_sea 0.1 #small
+end
+
+def say(thing)
+  case thing
+  when :beauty
+    unity "/say/beauty"
+  when :practicality
+    unity "/say/practicality"
+  end
+end
+
 def init!(force=false)
   if force || $pmode !=0 #only init once
     $pmode=0
@@ -556,5 +582,7 @@ def init!(force=false)
     flip_cc motion: 0.50, drive: 0.00
     glitch_cc tubes: 0.50, corode: 0.30
     roots swirl: 0.0, drag: 6.0, freq: 0.0, amp: 0.1
+    unity "/cube/hit", 0.0
+
   end
 end

@@ -117,7 +117,7 @@ def kal(n,*args)
         }
       end
 
-      nname = SonicPi::Note.new(n).midi_string
+      #nname = SonicPi::Note.new(n).midi_string
     end
   end
  end
@@ -139,10 +139,10 @@ def kal(n,*args)
     end
        if n && ((n != "_") && n != :_)
          at{
-         sleep 0.5
-         roots_chase radius: 2.01
-         sleep 1
-         roots_chase radius: 0.01
+           sleep 0.5
+           roots_chase radius: 2.01
+           sleep 1
+           roots_chase radius: 0.01
          }
       midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 16})
       nname = SonicPi::Note.new(n).midi_string
@@ -246,6 +246,9 @@ def ze_cc(cc)
 end
 
 def heat(n,*args)
+  #Subtle visual effects, undertones of chord progression subtly
+  #effect the world around them, they don't dominate.
+  #Note => Hue?
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -417,7 +420,7 @@ def deep(n,*args)
       midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 7})
       nname = SonicPi::Note.new(n).midi_string
       puts "#{nname} [Deep]"
-      sea wave: linear_map(45,72, 0.3,8.0, note(n)), delay: true
+      sea wave: linear_map(45,72, 0.3,11.0, note(n)), delay: true
       deep_cc(args_h)
     end
   else
@@ -454,7 +457,8 @@ def dark(*args)
   end
 
   if n
-    t=linear_map(0,124,0.25,0.8,vel)
+    puts vel
+    t=linear_map(30,124,0.2,0.8,vel)
     cube_hit(0.2, 0.2, t)
     midi n, vel, port: :iac_bus_1, channel: 2
   end
@@ -567,7 +571,7 @@ def glitch(*args)
           #roots_chase amp: rand
           sleep 1
           #create_cube 0
-          roots_chase amp: 0.01
+          #roots_chase amp: 0.01
           }
         end
       end
