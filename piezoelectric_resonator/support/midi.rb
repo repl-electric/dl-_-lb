@@ -990,3 +990,78 @@ def zero_cc(cc)
     end
   end
 end
+
+def perc_machine(pat)
+  if spread(4,8).look
+      glitch_cc mode: (ring 0, 2, 3, 5).look
+    end
+    if spread(8,8).look
+      #dark :e3, 122
+      if spread(3,8).look
+        at{
+          sleep 0.5
+          #dark :e3, 110
+        }
+      end
+    end
+    glitch_cc corode: 1.0
+    #glitch :c3, (ing 65 60 60 60).look
+    at{
+      sleep 0.25
+      #glitch :c3, 2.1*(ing 120 90 100 100    100 90 90 90).look
+    }
+    glitch_cc corode: 0.2
+
+    if spread(7,11).look
+      if spread(1,4).look
+        #glitch :ds3,2# if spread(1,4).look
+        sleep 1/4.0
+      else
+        sleep 1/4.0
+
+        #glitch :as3,1# if spread(1,4).look
+        sleep 1/4.0
+        #glitch :as3,5# if spread(1,4).look
+      end
+      sleep 1/2.0
+    else
+      #glitch :gs3,3# if spread(1,4).look
+
+      sleep 1/2.0
+      glitch :ds3, 127# if spread(1,4).look
+      sleep 1/2.0
+
+      #glitch :fs3,20# if spread(1,4).look
+
+      at{
+        sleep 1/2.0
+        #glitch :g3, 50# if spread(1,4).look
+        }
+    end
+
+    glitch_cc corode: (line 0.8, 0.9, 128).look
+    #glitch (ing :c3 :a3).look, 30 if spread(7,11).look
+
+    sleep 1/4.0
+    #glitch :fs3, 40
+    sleep 1/4.0
+
+    sleep 1/4.0
+    #glitch :ds3, 127
+    sleep 1/4.0
+
+    with_swing 0.1 {#((knit -0.1/2.0, 4, 0.1,4).look) {
+      #glitch :gs3, 40
+    }
+
+    sleep 1/2.0
+    #glitch :gs3, 80 if spread(1,8).look
+    sleep 1/2.0
+    #glitch :gs3, 90 if spread(1,8).look
+
+    #dark :cs3, 20
+
+    sleep 1/2.0
+    #glitch (ing :cs4 :cs4 :cs4 :d4).look,127
+    sleep 1/2.0
+end
