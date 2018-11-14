@@ -424,8 +424,9 @@ def cam(type=:main, f=false)
   elsif type == :top
     $pmode=2
     roots alive: 1
+    roots_chase throttle: 0.0
     unity "/cam1"
-
+    end1
   elsif type == :bird
     $pmode=3
     rocks orbit: 20.0
@@ -441,11 +442,10 @@ def cam(type=:main, f=false)
     unity "/cam4"
   elsif type == :chase
     roots throttle: 0.0
-    roots chase: 1.0, throttle: 0.2, drag: 6, amp: 0.01
+    roots_chase throttle: 0.2, drag: 5, amp: 0.01
     roots_chase thick: 0.1
     roots_chase amp: 0.09
     vortex y: 1.25, throttle: 0.2, turb: 0, force: 0
-
     at{
       sleep 1
       8.times{|n| world time: (0.1/8) * n+1 }
@@ -453,7 +453,6 @@ def cam(type=:main, f=false)
       roots_chase target: :cube
     }
     burst 0.0
-
     create_aura
   end
 end
@@ -568,6 +567,7 @@ def init!(force=false)
     $yslices=0.0
     $zslices=0.0
     $cslices=0.0
+    $triggered = false
     scene 1
     sleep 2
     world :time, 1.0

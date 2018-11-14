@@ -457,7 +457,6 @@ def dark(*args)
   end
 
   if n
-    puts vel
     t=linear_map(30,124,0.2,0.8,vel)
     cube_hit(0.2, 0.2, t)
     midi n, vel, port: :iac_bus_1, channel: 2
