@@ -444,6 +444,16 @@ def cam(type=:main, f=false)
     roots chase: 1.0, throttle: 0.2, drag: 6, amp: 0.01
     roots_chase thick: 0.1
     roots_chase amp: 0.09
+    vortex y: 1.25, throttle: 0.2, turb: 0, force: 0
+
+    at{
+      sleep 1
+      8.times{|n| world time: (0.1/8) * n+1 }
+      puts :go
+      roots_chase target: :cube
+    }
+    burst 0.0
+
     create_aura
   end
 end
@@ -541,7 +551,11 @@ def say(thing)
   case thing
   when :beauty
     unity "/say/beauty"
+  when :b
+    unity "/say/beauty"
   when :practicality
+    unity "/say/practicality"
+  when :p
     unity "/say/practicality"
   end
 end
@@ -583,6 +597,5 @@ def init!(force=false)
     glitch_cc tubes: 0.50, corode: 0.30
     roots swirl: 0.0, drag: 6.0, freq: 0.0, amp: 0.1
     unity "/cube/hit", 0.0
-
   end
 end
