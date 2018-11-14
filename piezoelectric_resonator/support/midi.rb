@@ -1028,7 +1028,7 @@ def perc_machine(pat)
       #glitch :gs3,3# if spread(1,4).look
 
       sleep 1/2.0
-      glitch :ds3, 127# if spread(1,4).look
+      glitch :ds3, 127 if state[:perc] #if spread(1,4).look
       sleep 1/2.0
 
       #glitch :fs3,20# if spread(1,4).look
@@ -1043,11 +1043,11 @@ def perc_machine(pat)
     #glitch (ing :c3 :a3).look, 30 if spread(7,11).look
 
     sleep 1/4.0
-    #glitch :fs3, 40
+    glitch :fs3, 40 if pat[1]
     sleep 1/4.0
 
     sleep 1/4.0
-    #glitch :ds3, 127
+    glitch :ds3, 127 if pat[0]
     sleep 1/4.0
 
     with_swing 0.1 {#((knit -0.1/2.0, 4, 0.1,4).look) {
@@ -1062,6 +1062,6 @@ def perc_machine(pat)
     #dark :cs3, 20
 
     sleep 1/2.0
-    #glitch (ing :cs4 :cs4 :cs4 :d4).look,127
+    glitch (ring :cs4, :cs4, :cs4, :d4).look,127 if pat[2]
     sleep 1/2.0
 end
