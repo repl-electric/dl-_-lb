@@ -623,13 +623,15 @@ def flip(n,*args)
       at{
         sleep 0.5
         thick_weight=linear_map(40,70, 0.02,0.13, note(n))
-        roots_chase radius: linear_map(40,70, 0.0,3.0, note(n))
+        roots_chase radius: linear_map(40,70, 0.0,4.0, note(n))
         roots_chase thick: thick_weight
         sleep 1
         8.times{|n|
           roots_chase radius: 3/8.0 * (8-n)
-          sleep 0.25
+          sleep 0.125
         }
+        roots_chase radius: 0.0
+
       }
 
       if $pmode==4
