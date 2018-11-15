@@ -1005,7 +1005,7 @@ end
 
 def perc_machine(pat)
   if spread(4,8).look
-      glitch_cc mode: (ring 0, 2, 3, 5).look
+    glitch_cc mode: (ring 0, 2, 3, 5).look
   end
     if spread(8,8).look
       dark :e3, 122 if pat[-1]!=0
@@ -1025,17 +1025,7 @@ def perc_machine(pat)
     glitch_cc corode: 0.8
 
     if spread(7,11).look
-      if spread(1,4).look
-        #glitch :ds3,2# if spread(1,4).look
-        sleep 1/4.0
-      else
-        sleep 1/4.0
-
-        #glitch :as3,1# if spread(1,4).look
-        sleep 1/4.0
-        #glitch :as3,5# if spread(1,4).look
-      end
-      sleep 1/2.0
+      sleep 1
     else
       #glitch :gs3,3# if spread(1,4).look
 
