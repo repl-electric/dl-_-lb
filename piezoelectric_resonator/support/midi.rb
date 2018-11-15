@@ -283,12 +283,12 @@ def heat(n,*args)
       }
       nname = SonicPi::Note.new(n).midi_string
       puts "Heat -> [#{nname}]"
-      if $chase
-      at{
-          sleep 0.5
-          roots_chase freq: 0.1, thick: 0.15, noise: 1,amp: 0.2, drag: [4,2].choose
-          }
-      end
+      # if $chase
+      # at{
+      #     sleep 0.5
+      #     roots_chase freq: 0.1, thick: 0.15, noise: 1,amp: 0.2, drag: [4,2].choose
+      #     }
+      # end
       heat_cc args_h
     end
   end
@@ -1004,23 +1004,23 @@ end
 def perc_machine(pat)
   if spread(4,8).look
       glitch_cc mode: (ring 0, 2, 3, 5).look
-    end
+  end
     if spread(8,8).look
-      #dark :e3, 122
+      dark :e3, 122 if pat[-1]!=0
       if spread(3,8).look
         at{
           sleep 0.5
-          #dark :e3, 110
+          dark :e3, 110 if pat[-1]!=0
         }
       end
     end
     glitch_cc corode: 1.0
-    #glitch :c3, (ing 65 60 60 60).look
+    glitch :c3, (ring 65, 60, 60, 60).look if pat[0]!=0
     at{
       sleep 0.25
-      #glitch :c3, 2.1*(ing 120 90 100 100    100 90 90 90).look
+      glitch :c3, 2.1*(ring 120, 90, 100, 100,    100, 90, 90, 90).look if pat[1]!=0
     }
-    glitch_cc corode: 0.2
+    glitch_cc corode: 0.8
 
     if spread(7,11).look
       if spread(1,4).look
@@ -1038,40 +1038,41 @@ def perc_machine(pat)
       #glitch :gs3,3# if spread(1,4).look
 
       sleep 1/2.0
-      glitch :ds3, 127 if state[:perc] #if spread(1,4).look
+      glitch :ds3, 127 if state[:perc] && pat[2]!=0 #if spread(1,4).look
       sleep 1/2.0
 
-      #glitch :fs3,20# if spread(1,4).look
+      glitch :fs3,20 if state[:perc] && pat[3]!=0# if spread(1,4).look
 
       at{
         sleep 1/2.0
-        #glitch :g3, 50# if spread(1,4).look
+        glitch :g3, 50 if pat[4]!=0# if spread(1,4).look
         }
     end
 
     glitch_cc corode: (line 0.8, 0.9, 128).look
-    #glitch (ing :c3 :a3).look, 30 if spread(7,11).look
+    #glitch (ring :c3, :a3).look, 30 if spread(7,11).look
 
     sleep 1/4.0
-    glitch :fs3, 40 if pat[1]
+    #glitch :fs3, 40 if pat[1]!=0
     sleep 1/4.0
 
     sleep 1/4.0
-    glitch :ds3, 127 if pat[0]
+    #glitch :ds3, 127 if pat[0]!=0
     sleep 1/4.0
+
 
     with_swing 0.1 {#((knit -0.1/2.0, 4, 0.1,4).look) {
-      #glitch :gs3, 40
+      glitch :gs3, 40 if pat[5]!=0
     }
 
     sleep 1/2.0
-    #glitch :gs3, 80 if spread(1,8).look
+    glitch :gs3, 80 if spread(1,8).look
     sleep 1/2.0
-    #glitch :gs3, 90 if spread(1,8).look
+    glitch :gs3, 90 if spread(1,8).look
 
     #dark :cs3, 20
 
     sleep 1/2.0
-    glitch (ring :cs4, :cs4, :cs4, :d4).look,127 if pat[2]
+    glitch (ring :cs4, :cs4, :cs4, :d4).look,127 if pat[6] !=0
     sleep 1/2.0
 end
