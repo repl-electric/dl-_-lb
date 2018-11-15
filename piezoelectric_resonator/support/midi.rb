@@ -1012,7 +1012,7 @@ def perc_machine(pat)
       if spread(3,8).look
         at{
           sleep 0.5
-          dark :e3, 110 if pat[-1]!=0
+          dark :e3, 50 if pat[-1]!=0
         }
       end
     end
