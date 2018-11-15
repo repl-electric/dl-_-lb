@@ -223,6 +223,7 @@ def roots_chase(*args)
     if o == :spiral
       $chase=true
       rocks orbit: 20
+      roots_chase radius: 0.001, force: 20
       unity "/knitroots/target/spiral", 1.0
     elsif o == :cube
       unity "/knitroots/target/cube", 1.0
@@ -445,7 +446,6 @@ def cam(type=:main, f=false)
     create_aura -5
     unity "/cam4"
   elsif type == :chase
-
     roots throttle: 0.0
     roots_chase throttle: 1.0, drag: 5, amp: 0.026, force: 5, thick: 0.1
     vortex y: 1.25, throttle: 0.2, turb: 0, force: 0
