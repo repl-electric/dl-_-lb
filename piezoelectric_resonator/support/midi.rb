@@ -1045,11 +1045,15 @@ def perc_machine(pat)
     #glitch (ring :c3, :a3).look, 30 if spread(7,11).look
 
     sleep 1/4.0
-    #glitch :fs3, 40 if pat[1]!=0
+    if dice(32) > 29
+      glitch :fs3, 40 if pat[1]!=0
+    end
     sleep 1/4.0
 
     sleep 1/4.0
-    #glitch :ds3, 127 if pat[0]!=0
+    if dice(32) > 28
+      glitch :ds3, 127 if pat[0]!=0
+    end
     sleep 1/4.0
 
 
