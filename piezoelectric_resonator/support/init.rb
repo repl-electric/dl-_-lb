@@ -199,6 +199,9 @@ def sea(*args)
 
   }
 end
+def roots_cube
+  roots_chase target: :cube, radius: 0, force: 30, amp: 0.02, drag: 3
+end
 def roots_chase(*args)
   opts = resolve_synth_opts_hash_or_array(args)
   if(o=opts[:throttle])
@@ -218,6 +221,8 @@ def roots_chase(*args)
   end
   if (o=opts[:target])
     if o == :spiral
+      $chase=true
+      rocks orbit: 20
       unity "/knitroots/target/spiral", 1.0
     elsif o == :cube
       unity "/knitroots/target/cube", 1.0
@@ -426,7 +431,6 @@ def cam(type=:main, f=false)
     roots alive: 1
     roots_chase throttle: 0.0
     unity "/cam1"
-    end1
   elsif type == :bird
     $pmode=3
     rocks orbit: 20.0
@@ -441,18 +445,21 @@ def cam(type=:main, f=false)
     create_aura -5
     unity "/cam4"
   elsif type == :chase
+
     roots throttle: 0.0
-    roots_chase throttle: 0.2, drag: 5, amp: 0.01
-    roots_chase thick: 0.1
-    roots_chase amp: 0.09
+    roots_chase throttle: 1.0, drag: 5, amp: 0.026, force: 5, thick: 0.1
     vortex y: 1.25, throttle: 0.2, turb: 0, force: 0
+    burst 0
+    unity "/cube/hit",1
     at{
       sleep 1
-      8.times{|n| world time: (0.1/8) * n+1 }
-      puts :go
+      8.times{|n|
+        world time: (0.1/8) * n+1
+        unity "/cube/hit", (1/8.0)*(8-n)
+        sleep 0.125
+      }
       roots_chase target: :cube
     }
-    burst 0.0
     create_aura
   end
 end
@@ -548,6 +555,36 @@ end
 
 def say(thing)
   case thing
+  when :begin
+    at{
+      unity "/say/begin",1.0
+      sleep 4
+      unity "/say/none",1.0
+    }
+  when :end
+    unity "/say/end",1.0
+  when :rescue
+    at{
+      unity "/say/rescue",1.0
+      sleep 4
+      unity "/say/none",1.0
+
+      }
+  when :raise
+    at{
+      unity "/say/raise",1.0
+      sleep 4
+      unity "/say/none",1.0
+
+      }
+  when :sleep
+    at{
+      unity "/say/sleep",1.0
+      sleep 4
+      unity "/say/none",1.0
+
+      }
+
   when :beauty
     unity "/say/beauty"
   when :b
@@ -556,12 +593,15 @@ def say(thing)
     unity "/say/practicality"
   when :p
     unity "/say/practicality"
+  when :n
+    unity "/say/none"
   end
 end
 
 def init!(force=false)
   if force || $pmode !=0 #only init once
     $pmode=0
+    $chase=false
     start_init
     $xslices=0.0
     $yslices=0.0

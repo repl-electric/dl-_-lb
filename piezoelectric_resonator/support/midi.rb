@@ -283,6 +283,12 @@ def heat(n,*args)
       }
       nname = SonicPi::Note.new(n).midi_string
       puts "Heat -> [#{nname}]"
+      if $chase
+      at{
+          sleep 0.5
+          roots_chase freq: 0.1, thick: 0.15, noise: 1,amp: 0.2, drag: [4,2].choose
+          }
+      end
       heat_cc args_h
     end
   end
@@ -616,10 +622,15 @@ def flip(n,*args)
 
       at{
         sleep 0.5
-        thick_weight=linear_map(40,70, 0.02,0.1, note(n))
+        thick_weight=linear_map(40,70, 0.02,0.13, note(n))
+        roots_chase radius: linear_map(40,70, 0.0,3.0, note(n))
         roots_chase thick: thick_weight
+        sleep 1
+        8.times{|n|
+          roots_chase radius: 3/8.0 * (8-n)
+          sleep 0.25
+        }
       }
-
 
       if $pmode==4
         if($triggered_flip)
