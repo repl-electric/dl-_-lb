@@ -107,7 +107,7 @@ end
 def create_tree(n=0.0)
  unity "/tree", n
 end
-def create_sea(n=1.0)
+def create_sea(n=0.0)
  unity "/sea", n
 end
 def create_light(n=1.0)
