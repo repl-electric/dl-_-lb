@@ -392,6 +392,16 @@ end
 def zoomout
   unity "/cubecam/zoomout", 0.0
   unity "/cubecam/zoomout", 1.0
+  at{
+    burst 1.0
+    unity "/cube/hit", 1.0
+    sleep 4.0
+    8.times{|n|
+      sleep 0.5
+      unity "/cube/hit", (8-n)*0.1
+      burst (8-n)*0.1
+      }
+  }
   $pmode=4
 end
 def cam(type=:main, f=false)
