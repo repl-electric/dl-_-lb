@@ -471,11 +471,19 @@ def dark(*args)
     cube_hit(0.2, 0.2, t)
     at{
       sleep 0.5
-      slice_cube y: 0.8
+      if vel > 121
+        create_aura 4
+      end
+      if vel > 121
+        slice_cube y: 0.5
+      end
       sleep 3
       8.times{|n|
         sleep 0.125
-        slice_cube y: (8.0-n)* (4.0/8.0)
+        slice_cube y: (8.0-n)* (2.0/8.0)
+        if vel > 121
+          create_aura 4/8.0 * (8.0-n)
+        end
       }
     }
 
