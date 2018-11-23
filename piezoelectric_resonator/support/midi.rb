@@ -469,6 +469,16 @@ def dark(*args)
   if n
     t=linear_map(30,124,0.2,0.8,vel)
     cube_hit(0.2, 0.2, t)
+    at{
+      sleep 0.5
+      slice_cube y: 0.8
+      sleep 3
+      8.times{|n|
+        sleep 0.125
+        slice_cube y: (8.0-n)* (4.0/8.0)
+      }
+    }
+
     midi n, vel, port: :iac_bus_1, channel: 2
   end
 end
