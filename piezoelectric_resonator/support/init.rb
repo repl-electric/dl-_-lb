@@ -229,6 +229,10 @@ def roots_chase(*args)
       unity "/knitroots/target/cube", 1.0
     elsif o == :none
       unity "/knitroots/target/none", 1.0
+    elsif o == :start
+      unity "/knitroots/target/start", 1.0
+    elsif o == :slow
+      unity "/knitroots/target/slow", 1.0
     end
   end
   if (o=opts[:drag])
