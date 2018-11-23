@@ -561,8 +561,12 @@ def glitch(*args)
       if n_val == note(:fs3)
         if state[:perc]
         at{
-          sleep 0.5
-          slice_cube y: (rand*0.2)+0.35
+            sleep 0.5
+            if $pmode == 4
+              slice_cube y: (rand*0.3)+0.65
+            else
+              slice_cube y: (rand*0.2)+0.35
+            end
           #          slice_cube z: rand*-1.8
           sleep 1
           slice_cube y: 0
@@ -585,10 +589,18 @@ def glitch(*args)
         if state[:perc]
         at{
           sleep 0.5
-          #create_cube 1
-          slice_cube cubes: rand*0.2
+            #create_cube 1
+            if $pmode == 4
+              slice_cube cubes: (rand*0.3)+0.25
+            else
+              slice_cube cubes: rand*0.2
+            end
           #roots_chase amp: rand
-          sleep 1
+            sleep 1
+            if $pmode == 4
+              slice_cube cubes: 0.1
+            end
+
           #create_cube 0
           #roots_chase amp: 0.01
           }
