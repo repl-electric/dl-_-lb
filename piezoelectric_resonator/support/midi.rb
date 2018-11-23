@@ -426,7 +426,11 @@ def deep(n,*args)
       midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 7})
       nname = SonicPi::Note.new(n).midi_string
       puts "#{nname} [Deep]"
-      sea wave: linear_map(45,72, 0.3,11.0, note(n)), delay: true
+      at{
+        sleep 0.5
+        sea ripple: linear_map(45,72, 0.0,0.6, note(n))
+        }
+      sea wave: linear_map(45,72, 0.3,6.0, note(n)), delay: true
       deep_cc(args_h)
     end
   else
