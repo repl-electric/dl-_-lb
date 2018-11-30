@@ -29,7 +29,7 @@ end
 live_loop :glitch, sync: :unsyncable do; tick
   #sync :light
   perc=[0, 0, 0, 0,  0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0]
-  with_bpm 127*(ing 1).look do
+  with_bpm 127*(vec 1).look do
     perc_machine perc
   end
 end
@@ -37,7 +37,7 @@ end
 #roots_chase force: 20, freq: 0.2, thick: 0.2, noise: 1,amp: 0.3, drag: 2
 live_loop :light, sync: :unsyncable do; tick
   with_bpm 127*1 do
-    score = (ing
+    score = (vec
       [[_] 8]
 
       )
