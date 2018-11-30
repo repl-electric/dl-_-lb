@@ -58,7 +58,6 @@ def end1
   star life: 5, size: 10.0 #4
   roots throttle: 1.0, freq: 1.0, target: :bird, drag: 0.0, swirl: 1.0
   #vortex y: 7.0, force: -400, throttle: 1.0, radius: 4.9, throttle: 1.0
-  cam :top
   vortex throttle: 0.0
   rocks throttle: 0.0
   burst 1.0
@@ -446,6 +445,7 @@ def cam(type=:main, f=false)
     roots alive: 1
     roots_chase throttle: 0.0
     unity "/cam1"
+    end1
   elsif type == :bird
     $pmode=3
     rocks orbit: 20.0
