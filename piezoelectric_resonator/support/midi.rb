@@ -471,20 +471,32 @@ def dark(*args)
     cube_hit(0.2, 0.2, t)
     at{
       sleep 0.5
-      if vel > 121
-        create_aura 4
+      if vel > 40
+        unity "/cube/aura/scalemul",  linear_map(0,127,0.5,0.7,vel)
+        #create_aura 4
       end
       if vel > 121
         slice_cube y: 0.5
       end
-      sleep 3
+      sleep 1/4.0
+      unity "/cube/aura/scalemul",  0.0
       8.times{|n|
         sleep 0.125
         slice_cube y: (8.0-n)* (2.0/8.0)
         if vel > 121
-          create_aura 4/8.0 * (8.0-n)
+          #create_aura 4/8.0 * (8.0-n)
         end
       }
+
+
+      # 8.times{|n|
+      #   sleep 0.125
+      #   slice_cube y: (8.0-n)* (2.0/8.0)
+      #   if vel > 121
+      #     #create_aura 4/8.0 * (8.0-n)
+      #     #unity "/cube/aura/scalemul",  1.0/8.0 * (8.0-n)
+      #   end
+      # }
     }
 
     midi n, vel, port: :iac_bus_1, channel: 2
@@ -519,7 +531,7 @@ def glitch(*args)
 
     if n_val == note(:c3) && $p_glitch != n_val #a double tap
       if state[:perc]
-      f = (ing 500, 0, 100, 0).look
+      f = (vec 500, 0, 100, 0).look
       at{
         sleep 0.5
         vortex force: f, throttle: 0.05
