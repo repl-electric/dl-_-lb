@@ -482,6 +482,10 @@ def defaultcolor
   unity "/linecolor/s",0.0
   unity "/linecolor/b",0.0
 
+  unity "/color1/b",118/255.0
+  unity "/color2/b",255/255.0
+  unity "/color3/b",49/255.0
+
   unity "/color2/h", (328.0 / 360)
   unity "/color1/h",0.0
   unity "/color3/h",0.0
@@ -489,6 +493,18 @@ def defaultcolor
   unity "/color1/s",0.0
   unity "/color3/s",0.0
   unity "/color3/b",0.0
+end
+def colorb(f=0.0)
+  puts f
+  if f==1.0
+    unity "/color1/b",118/255.0
+    unity "/color2/b",255/255.0
+    unity "/color3/b",49/255.0
+  else
+    unity "/color1/b",f
+    unity "/color2/b",f
+    unity "/color3/b",f
+  end
 end
 def linecolor(*args)
   opts = resolve_synth_opts_hash_or_array(args)
@@ -651,5 +667,12 @@ def init!(force=false)
     glitch_cc tubes: 0.50, corode: 0.30
     roots swirl: 0.0, drag: 6.0, freq: 0.0, amp: 0.1
     unity "/cube/hit", 0.0
+    star throttle: 0.0
+    star size: 0.0000001, life: -100.000001
+    colorb 0
+    at{
+      sleep 0.5
+      rocks speed: 0.01, orbit: 0.0
+    }
   end
 end

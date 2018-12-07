@@ -1,5 +1,15 @@
  MODE_NOTE = 13
 
+def octave(n, oct)
+  if n
+    note = SonicPi::Note.new(n)
+    "#{note.pitch_class}#{oct}"
+  else
+    n
+  end
+end
+
+
 def state()
   $daw_state ||= {}
 end
@@ -220,7 +230,9 @@ def ze(n,*args)
             unity "/linecolor/cube/b", linear_map(64,72, 0.0,4.0, note(n))
             linecolor cube: 1.0, s:  rand, h: rand, b: rand, delay: true
           end
-          #light(size: linear_map(64,72, -0.02,0.0, note(n)))
+          if args_h[:star]==true
+            #star(size: linear_map(43,50, -0.02,0.1, note(n)))
+          end
           sleep 0.5
           #light(size: 0.0)
         }
@@ -289,6 +301,18 @@ def heat(n,*args)
       #     roots_chase freq: 0.1, thick: 0.15, noise: 1,amp: 0.2, drag: [4,2].choose
       #     }
       # end
+
+      if $pmode == 0
+        at{
+          sleep 0.5
+          x = linear_map(note(:A2), note(:a4),10.0,100.0,note(n))
+          unity "/color3/b", 49/255.0
+          unity "/color2/b",255/255.0
+          unity "/color1/b",118/255.0
+          rocks speed: x, rot: -1
+        }
+      end
+
       heat_cc args_h
     end
   end
@@ -804,6 +828,10 @@ def flop_on(n,*args)
     end
     if n && ((n != "_") && n != :_)
       midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 9})
+      if $pmode == 0
+        #colorb 1.0
+        unity "/color1/b",255/255.0
+      end
     end
   end
 end
@@ -821,7 +849,19 @@ end
 def flop_cc(cc)
   cc.keys.each do |k|
     n = case k
-        when :motion; 1
+        when :motion
+          if $pmode ==0
+            at{
+          sleep 0.5
+          star(size: linear_map(0.2,0.6,-0.08,0.15, cc[:motion])
+               #,life: linear_map(0.2,0.6,-0.02,1.0, cc[:motion])
+               )
+          rocks noise: (cc[:motion]-0.27)*55,
+          freq: (linear_map 0.27, 0.6, 0,0.08, cc[:motion]), rot: 0.0,  orbit: (cc[:motion]-0.27)*20
+        }
+          end
+          1
+
         when :drive; 51
         when :sat; 52
         when :delay; 53
@@ -985,7 +1025,7 @@ end
 def operator(n,*args)
       begin
         if n
-          velocity = 40
+          velocity = 80
           if n.is_a?(Array)
             args =  args  << {sus: n[1]}
             n = n[0]
@@ -996,7 +1036,7 @@ def operator(n,*args)
           end
           if n && ((n != "_") && n != :_)
             args_h = resolve_synth_opts_hash_or_array(args)
-            midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 3})
+            midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 16})
             puts "#{SonicPi::Note.new(n).midi_string.ljust(4, " ")} [Operator]" unless note(n) < MODE_NOTE
           end
         end
