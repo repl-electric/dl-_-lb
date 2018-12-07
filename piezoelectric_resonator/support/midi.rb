@@ -171,7 +171,7 @@ def kal(n,*args)
    end
  end
 
-def ze(n,*args)
+def alu(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -239,12 +239,12 @@ def ze(n,*args)
       end
       midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 8})
       nname = SonicPi::Note.new(n).midi_string
-      ze_cc args_h
+      alu_cc args_h
     end
   end
 end
 
-def ze_cc(cc)
+def alu_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :solo; 100
