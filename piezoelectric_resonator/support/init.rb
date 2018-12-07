@@ -233,7 +233,10 @@ def roots_chase(*args)
       roots_chase drag: 2, freq: 0.2, amp: 0.1, force: 100
     elsif o == :slow
       unity "/knitroots/target/slow", 1.0
-      roots_chase drag: 4, freq: 0.2, amp: 0.1, force: 5
+      roots_chase drag: 2.5, freq: 0.05, amp: 0.09, force: 3, radius: 0.0001, noise: 0
+    elsif o == :ring
+      unity "/knitroots/target/slow", 1.0
+      roots_chase drag: 20.5, freq: 0.02, amp: 0.02, force: 80, radius: 0.0001, noise: 0
     end
   end
   if (o=opts[:drag])
