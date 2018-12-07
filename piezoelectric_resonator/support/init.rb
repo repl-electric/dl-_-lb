@@ -464,6 +464,7 @@ def cam(type=:main, f=false)
     roots_chase throttle: 1.0, drag: 5, amp: 0.026, force: 5, thick: 0.1
     vortex y: 1.25, throttle: 0.2, turb: 0, force: 0
     burst 0
+    rocks orbit: 0
     unity "/cube/hit",1
     at{
       sleep 1
