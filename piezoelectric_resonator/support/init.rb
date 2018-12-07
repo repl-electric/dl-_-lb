@@ -589,7 +589,7 @@ def sea_ball_init
   create_sea 0.1 #small
 end
 
-def say(thing)
+def code(thing)
   case thing
   when :begin
     at{
