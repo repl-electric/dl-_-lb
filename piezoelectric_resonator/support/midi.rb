@@ -805,10 +805,12 @@ def flop(n,*args)
         sleep 1
         rocks noise: 0.0
 
-        if note(n) == note(:c4)
-          @x||=0.5
-          @x+=0.01
-          star size: [@x,2].min, life: 2
+        if $pmode != 2
+          if note(n) == note(:c4)
+            @x||=0.5
+            @x+=0.01
+            star size: [@x,2.8].min, life: 2
+          end
         end
 
         }

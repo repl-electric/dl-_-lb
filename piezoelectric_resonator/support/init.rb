@@ -449,8 +449,10 @@ def cam(type=:main, f=false)
     $pmode=2
     roots alive: 1
     roots_chase throttle: 0.0
+    #only on with lower resolutions
     unity "/cam1"
     end1
+    roots swirl: 0.0
   elsif type == :bird
     $pmode=3
     rocks orbit: 20.0
