@@ -1,5 +1,12 @@
  MODE_NOTE = 13
 
+def silence!
+  @silence=true
+end
+def silence
+  @silence=false
+end
+
 def octave(n, oct)
   if n
     note = SonicPi::Note.new(n)
@@ -8,7 +15,6 @@ def octave(n, oct)
     n
   end
 end
-
 
 def state()
   $daw_state ||= {}
@@ -172,7 +178,7 @@ def kal(n,*args)
  end
 
 def alu(n,*args)
-  if n
+  if n && !@silence
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
       args = args[1..-1]
@@ -673,7 +679,7 @@ def glitch_cc(cc)
 end
 
 def flip(n,*args)
-  if n
+  if n && !@silence
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
       args = args[1..-1]
@@ -779,7 +785,7 @@ def flip_cc(cc)
 end
 
 def flop(n,*args)
-  if n
+  if n && !@silence
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
       args = args[1..-1]
@@ -885,7 +891,7 @@ def flop_cc(cc)
 end
 
 def overclock(n,*args)
-  if n
+  if n && !@silence
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
       args = args[1..-1]
