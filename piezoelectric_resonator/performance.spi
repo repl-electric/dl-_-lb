@@ -28,7 +28,7 @@ end
 
 live_loop :glitch, sync: :unsyncable do; tick
   #sync :light
-  perc=(cycle 0 0 0 0  0 0 0 0  0 0 0 0  0 0 0 0]
+  perc=(cycle 0 0 0 0  0 0 0 0  0 0 0 0  0 0 0 0)
   with_bpm 127*(cycle 1).look do
     perc_machine perc.to_a
   end
