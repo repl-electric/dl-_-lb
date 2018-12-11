@@ -504,9 +504,9 @@ def defaultcolor
   unity "/color3/s",0.0
   unity "/color3/b",0.0
 end
-def colorb(f=0.0)
+def colorb(f=0.0,force=false)
   puts f
-  if f==1.0
+  if f==1.0 && !force
     unity "/color1/b",118/255.0
     unity "/color2/b",255/255.0
     unity "/color3/b",49/255.0
