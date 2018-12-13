@@ -20,7 +20,7 @@ end
 def silence!
   @silence=true
 end
-def silence
+def silence?
   @silence=false
 end
 
