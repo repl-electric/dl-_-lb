@@ -80,7 +80,7 @@ def eject_cpu_core(k=:pad)
 end
 
 def vol(c)
-  midi_cc 14, c*127.0, port: :iac_bus_1, channel: 1
+  midi_cc 0, c*127.0, port: :iac_bus_1, channel: 1
 end
 
 def fx(cc)
