@@ -1,5 +1,22 @@
  MODE_NOTE = 13
 
+ class Score
+  def initialize(a)
+    @a ||= a
+  end
+  def voice(opts)
+    @a.map{|section|
+      chd = section[0]
+      open_chd = chd.to_a
+      open_chd[1] = chd[1] + opts[:open] * 12
+      [open_chd, section[-1]]
+    }
+  end
+end
+def compose(pat)
+  Score.new(pat.map{|root| [chord(root[0]), root[-1]]})
+end
+
 def silence!
   @silence=true
 end
