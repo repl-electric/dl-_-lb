@@ -79,6 +79,10 @@ def eject_cpu_core(k=:pad)
   end
 end
 
+def vol(c)
+  midi_cc 14, c*127.0, port: :iac_bus_1, channel: 1
+end
+
 def fx(cc)
   cc.keys.each do |k|
     n = case k
