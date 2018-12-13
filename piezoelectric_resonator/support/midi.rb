@@ -450,6 +450,18 @@ def voltage(n,*args)
     end
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 13})
+      if $pmode == 0
+        at{
+          sleep 0.5
+          unity "/color2/h",1.4+rand*0.1
+          rocks noise: 1
+          sleep 1.5
+          unity "/color2/h",1.7+rand*0.15
+          sleep 1
+          rocks orbit: -0.9
+          defaultcolor
+        }
+      end
       nname = SonicPi::Note.new(n).midi_string
     end
   end
