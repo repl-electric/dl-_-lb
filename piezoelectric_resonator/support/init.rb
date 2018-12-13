@@ -40,7 +40,7 @@ def start_init
     overclock_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0
     flop_cc motion: 0.5, sat: 0.00, drive: 0.00
     flip_cc  motion: 0.6
-    heat_cc amp: 0.85
+    resonate_cc amp: 0.85
     overclock_cc amp: 0.8
   end
 end
