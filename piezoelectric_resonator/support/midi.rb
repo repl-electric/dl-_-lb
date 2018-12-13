@@ -1163,7 +1163,7 @@ def perc_machine(pat)
     glitch_cc mode: (ring 0, 2, 3, 5).look
   end
     if spread(8,8).look
-      dark :e3, ring(122 100 110 90).look-(rand*5) if pat[-1]!=0
+      dark :e3, ring(122, 100, 110, 90).look-(rand*5) if pat[-1]!=0
       if spread(3,8).look
         at{
           sleep 0.5
