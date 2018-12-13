@@ -284,7 +284,7 @@ def alu_cc(cc)
   end
 end
 
-def heat(n,*args)
+def resonate(n,*args)
   #Subtle visual effects, undertones of chord progression subtly
   #effect the world around them, they don't dominate.
   #Note => Hue?
@@ -321,7 +321,7 @@ def heat(n,*args)
         end
       }
       nname = SonicPi::Note.new(n).midi_string
-      puts "Heat -> [#{nname}]"
+      puts "Resonate -> [#{nname}]"
       # if $chase
       # at{
       #     sleep 0.5
@@ -340,12 +340,12 @@ def heat(n,*args)
         }
       end
 
-      heat_cc args_h
+      resonate_cc args_h
     end
   end
 end
 
-def heat_on(n,*args)
+def resonate_on(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -379,8 +379,8 @@ def heat_on(n,*args)
         end
       }
       nname = SonicPi::Note.new(n).midi_string
-      puts "Heat -> [#{nname}]"
-      heat_cc args_h
+      puts "Resonate -> [#{nname}]"
+      resonate_cc args_h
     end
   end
 end
@@ -433,6 +433,27 @@ def qbitsea(n,*args)
   end
 end
 
+def voltage(n,*args)
+  if n
+    if args && args[0].is_a?(Numeric)
+      velocity = args[0]
+      args = args[1..-1]
+    else
+      velocity = 30
+    end
+    if n.is_a?(Array)
+      args[0] = {sus: n[1]+0.5}.merge(args[0]||{})
+      n = n[0]
+    end
+        args_h = resolve_synth_opts_hash_or_array(args)
+    if(args_h[:mode])
+    end
+    if n && ((n != "_") && n != :_)
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 13})
+      nname = SonicPi::Note.new(n).midi_string
+    end
+  end
+end
 
 def play_with(synths, *args)
   synths.each do |s|
@@ -444,7 +465,7 @@ def play_with(synths, *args)
   end
 end
 
-def heat_cc(cc)
+def resonate_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :drive; 51
@@ -458,7 +479,7 @@ def heat_cc(cc)
   end
 end
 
-def deep(n,*args)
+def control_unit(n,*args)
   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
@@ -476,20 +497,20 @@ def deep(n,*args)
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 7})
       nname = SonicPi::Note.new(n).midi_string
-      puts "#{nname} [Deep]"
+      puts "#{nname} [CU]"
       at{
         sleep 0.5
         sea ripple: linear_map(45,72, 0.0,0.6, note(n))
         }
       sea wave: linear_map(45,72, 0.3,6.0, note(n)), delay: true
-      deep_cc(args_h)
+      control_unit_cc(args_h)
     end
   else
     sea wave: 0.0, ripple: 0.0
   end
 end
 
-def deep_cc(cc)
+def control_unit_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :drive
