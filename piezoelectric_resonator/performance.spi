@@ -1,7 +1,6 @@
 load_support('piezoelectric_resonator'); use_bpm 127
 alive perc: 0, sop: 0
-init! true
-#start_init
+init! true &&  start_init
 
 live_loop :Attune, sync: :unsyncable do; tick
   zero_delay [2,5,6].shuffle
@@ -10,8 +9,6 @@ live_loop :Attune, sync: :unsyncable do; tick
     sleep 1/4.0
     sleep 1/4.0
     sleep 1/2.0
-
-
 
     sleep 1/4.0
     sleep 1/4.0
@@ -48,4 +45,4 @@ live_loop :MachineInstructions, sync: :unsyncable do; tick
   end
 end
 
-live_loop(:unsyncable) do;  sleep 1.0;end
+live_loop(:unsyncable)do;sleep 1.0;end
