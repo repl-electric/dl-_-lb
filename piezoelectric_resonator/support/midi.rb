@@ -998,9 +998,14 @@ def overclock_on(n,*args)
 
       if $pmode==0
         if(!$triggered)
+          unity "/cam0/glitch_a", 0.5
           roots throttle: 1, freq: args_h[:freq]||0.0
           star size: 1.0
           $triggered = true
+          at{
+            sleep 1
+            unity "/cam0/glitch_a", 0.0
+          }
         end
       end
       nname = SonicPi::Note.new(n).midi_string
