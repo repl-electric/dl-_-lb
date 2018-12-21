@@ -20,6 +20,31 @@ def cube_hit(inital=0.2, vel=0.2, m=0.8)
   }
 end
 
+def crash
+  unity "/world/time", 0.04
+  unity "/cam0/glitch_a", 0.5
+  star size: 1.4
+  sleep 0.5
+  #explode_rocks
+  burst 1.0
+  explode_cube
+  unity "/shard", 1.0
+  unity "/world/time", 0.03
+  sleep 1
+  unity "/cam0/glitch_a", 0.0
+end
+
+def recover
+  world time: 0.99
+  init! true
+  unity "/cube/recover", 1.0
+  create_cube
+  burst 0.0
+  #  cam :cube
+  colorb 1.0
+  sleep 1
+end
+
 def mbox_inits
   #mbox_cc motion: 0.30, drive: 1.00, sat: 1.00
   #mbox2_cc sat: 1.00, motion: 0.50, drive: 0.00
