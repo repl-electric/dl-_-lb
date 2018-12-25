@@ -36,7 +36,7 @@ end
 
 def recover
   world time: 0.99
-  init! true
+  init true
   unity "/cube/recover", 1.0
   create_cube
   burst 0.0
@@ -493,6 +493,8 @@ def cam(type=:main, f=false)
     unity "/cam4"
   elsif type == :chase
     roots throttle: 0.0
+    cube aura: 1.47
+    unity "/cube/aura/fresnel", 1.5
     roots_chase throttle: 1.0, drag: 5, amp: 0.026, force: 5, thick: 0.1
     vortex y: 1.25, throttle: 0.2, turb: 0, force: 0
     burst 0
@@ -509,6 +511,7 @@ def cam(type=:main, f=false)
       #roots_chase target: :ring
       roots_chase target: :cube
     }
+    aura fresnel: 1.5, wave: 1.5
     create_aura
   end
 end
@@ -605,6 +608,24 @@ def cube(*args)
   if (o=opts[:rot])
     unity "/cube/rotate/speed", o
   end
+end
+
+def aura(opts)
+  if (o=opts[:ripple])
+    unity "/cube/aura/ripple", o
+  end
+  if (o=opts[:scale])
+    unity "/cube/aura/scalemul", o
+  end
+  if (o=opts[:fresnel])
+    unity "/cube/aura/fresnel", o
+  end
+  if (o=opts[:scale])
+    unity "/cube/aura/globalscale", o
+  end
+  if (o=opts[:wave])
+    unity "/cube/aura/waveheight", o
+  end
 
 end
 
@@ -662,7 +683,7 @@ def livecode(thing)
   end
 end
 
-def init!(force=false)
+def init(force=false)
   if force || $pmode !=0 #only init once
     $pmode=0
     $chase=false
@@ -703,7 +724,13 @@ def init!(force=false)
     unity "/cube/hit", 0.0
     star throttle: 0.0
     star size: 0.0000001, life: -100.000001
+    cube aura: 1.47
     colorb 0
+
+    sleep 2
+    create_aura -2
+    aura fresnel: 1.5, scale: 0, wave: 0.01
+    unity "/cube/aura/scalemul", -0.99
     at{
       sleep 0.5
       rocks speed: 0.01, orbit: 0.0
