@@ -184,8 +184,11 @@ end
 def explode_rocks()
   unity "/explode1"
 end
-def create_aura(n=0.0)
+def create_aura(n=0)
+  n = n-0.9
   unity "/aura",n
+  unity "/cube/aura/globalscale", 0.0
+  unity "/cube/aura/scalemul", -0.6
 end
 def world(*args)
   opts = resolve_synth_opts_hash_or_array(args)
@@ -725,9 +728,14 @@ def init(force=false)
     star throttle: 0.0
     star size: 0.0000001, life: -100.000001
     cube aura: 1.47
+
+
     colorb 0
 
     sleep 2
+    #create_aura -0.9
+    unity "/cube/aura/globalscale", 0.0
+    unity "/cube/aura/scalemul", -0.6
     create_aura -2
     aura fresnel: 1.5, scale: 0, wave: 0.01
     unity "/cube/aura/scalemul", -0.99
