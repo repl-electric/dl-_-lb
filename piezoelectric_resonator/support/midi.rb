@@ -1006,11 +1006,18 @@ def overclock_on(n,*args)
 
       if $pmode==0
         if(!$triggered)
-          unity "/cam0/glitch_a", 0.4
+          unity "/cam0/glitch_a", 0.5
+          unity "/cam0/glitch_v", 0.2
+          unity "/cam0/glitch_s", 0.1
           roots throttle: 1, freq: args_h[:freq]||0.0
           star size: 1.0
           $triggered = true
           at{
+            sleep 2
+            unity "/cam0/glitch_s", 0.0
+            unity "/cam0/glitch_v", 0.0
+            sleep 2
+            unity "/cam0/glitch_a", 0.2
             sleep 1
             unity "/cam0/glitch_a", 0.0
           }
