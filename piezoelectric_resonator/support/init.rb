@@ -23,6 +23,7 @@ end
 def crash
   unity "/world/time", 0.04
   unity "/cam0/glitch_a", 0.5
+  unity "/cam0/glitch_v", 0.5
   star size: 1.4
   sleep 0.5
   #explode_rocks
@@ -32,6 +33,7 @@ def crash
   unity "/world/time", 0.03
   sleep 1
   unity "/cam0/glitch_a", 0.0
+  unity "/cam0/glitch_v", 0.0
 end
 
 def recover
