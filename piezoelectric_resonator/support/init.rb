@@ -513,6 +513,9 @@ def cam(type=:main, f=false)
         unity "/cube/hit", (1/8.0)*(8-n)
         sleep 0.125
       }
+      unity "/cube/aura/scalemul", 0.0
+      unity "/cube/aura/wave", 1.0
+      unity "/cube/aura/globalscale", 1
       #may ring?
       #roots_chase target: :ring
       roots_chase target: :cube
