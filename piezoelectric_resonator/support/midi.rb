@@ -922,9 +922,9 @@ def flop_cc(cc)
           if $pmode ==0
             at{
           sleep 0.5
-          star(size: linear_map(0.2,0.6,-0.08,0.15, cc[:motion])
+          #star(size: linear_map(0.2,0.6,-0.08,0.15, cc[:motion])
                #,life: linear_map(0.2,0.6,-0.02,1.0, cc[:motion])
-               )
+          #     )
           rocks noise: (cc[:motion]-0.27)*55,
           freq: (linear_map 0.27, 0.6, 0,0.08, cc[:motion]), rot: 0.0,  orbit: (cc[:motion]-0.27)*20
 
