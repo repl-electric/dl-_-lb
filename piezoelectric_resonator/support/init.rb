@@ -21,11 +21,12 @@ def cube_hit(inital=0.2, vel=0.2, m=0.8)
 end
 
 def crash
-  unity "/world/time", 0.04
+  unity "/world/time", 0.03
+  burst 1.0
   unity "/cam0/glitch_a", 0.5
   unity "/cam0/glitch_v", 0.5
-  star size: 1.4
-  sleep 0.5
+  star size: 1.5
+  sleep 2
   #explode_rocks
   burst 1.0
   explode_cube
@@ -37,14 +38,21 @@ def crash
 end
 
 def recover
+  at{
   world time: 0.99
+  unity "/cam0/glitch_a", 0.5
+
   init true
+  sleep 1
   unity "/cube/recover", 1.0
+  zoomout
   create_cube
+  cam :chase
   burst 0.0
-  #  cam :cube
   colorb 1.0
   sleep 1
+    unity "/cam0/glitch_a", 0.0
+    }
 end
 
 def mbox_inits
@@ -629,13 +637,15 @@ def aura(opts)
   if (o=opts[:fresnel])
     unity "/cube/aura/fresnel", o
   end
-  if (o=opts[:scale])
+  if (o=opts[:distort])
     unity "/cube/aura/globalscale", o
   end
   if (o=opts[:wave])
     unity "/cube/aura/waveheight", o
   end
-
+  if (o=opts[:ping])
+    unity "/cube/aura/globalscale", rand*o
+  end
 end
 
 def roots_init()
@@ -733,17 +743,13 @@ def init(force=false)
     unity "/cube/hit", 0.0
     star throttle: 0.0
     star size: 0.0000001, life: -100.000001
-    #cube aura: 1.47
+    cube aura: 1.47
 
     colorb 0
-    unity "/cube/aura/globalscale", 0.0
     unity "/cube/aura/scalemul", -0.6
-
-#    sleep 2
     create_aura -0.1
-    aura fresnel: 1.5, scale: 0.0, wave: 0.01
+    aura fresnel: 1.5, scale: 0.0, wave: 0.01, distort: 1.0
 
-    #unity "/cube/aura/scalemul", -0.99
     at{
       sleep 0.5
       rocks speed: 0.01, orbit: 0.0
