@@ -495,9 +495,13 @@ def cam(type=:main, f=false)
     end1
     rocks orbit: 0
     unity "/end/shards/throttle",1.0
-    unity "/eyelids",1.0
     create_sea -1
     roots swirl: 0.0, throttle: 0
+    at{
+      sleep 8
+      unity "/eyelids",1.0
+    }
+
   elsif type == :bird
     $pmode=3
     rocks orbit: 20.0
