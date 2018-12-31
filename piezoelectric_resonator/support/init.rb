@@ -493,6 +493,10 @@ def cam(type=:main, f=false)
     #only on with lower resolutions
     unity "/cam1"
     end1
+    rocks orbit: 0
+    unity "/end/shards/throttle",1.0
+    unity "/eyelids",1.0
+    create_sea -1
     roots swirl: 0.0, throttle: 0
   elsif type == :bird
     $pmode=3
@@ -751,6 +755,7 @@ def init(force=false)
     unity "/cube/aura/scalemul", -0.6
     create_aura -0.1
     aura fresnel: 1.5, scale: 0.0, wave: 0.01, distort: 1.0
+    unity "/fadeout",1.0
 
     at{
       sleep 0.5
