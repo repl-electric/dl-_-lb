@@ -21,12 +21,12 @@ def cube_hit(inital=0.2, vel=0.2, m=0.8)
 end
 
 def crash
-  unity "/world/time", 0.03
+  unity "/world/time", 0.025
   burst 1.0
   unity "/cam0/glitch_a", 0.5
   unity "/cam0/glitch_v", 0.5
   star size: 1.5
-  sleep 2
+  sleep 1
   #explode_rocks
   burst 1.0
   explode_cube
@@ -200,7 +200,7 @@ def create_aura(n=0)
   unity "/aura",n
   unity "/cube/aura/globalscale", 0.0
   unity "/cube/aura/scalemul", -0.6
-
+  aura distort: 1
 end
 def world(*args)
   opts = resolve_synth_opts_hash_or_array(args)
@@ -487,12 +487,13 @@ def cam(type=:main, f=false)
     roots chase: 0.1, force: 1, target: :spiral, drag: 3
   elsif type == :top
     $pmode=2
+    rocks orbit: 1
     roots alive: 1
     roots_chase throttle: 0.0
     #only on with lower resolutions
     unity "/cam1"
     end1
-    roots swirl: 0.0
+    roots swirl: 0.0, throttle: 0
   elsif type == :bird
     $pmode=3
     rocks orbit: 20.0
