@@ -867,9 +867,11 @@ def flop(n,*args)
 
         if $pmode != 2
           if note(n) == note(:c4)
-            @x||=0.5
-            @x+=0.01
-            star size: [@x,2.8].min, life: 2
+            if $star_size == nil
+              $star_size=0.5
+            end
+            $star_size+=0.013
+            star size: [$star_size, 2.8].min, life: 2
           end
         end
 

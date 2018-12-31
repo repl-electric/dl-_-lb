@@ -38,21 +38,22 @@ def crash
 end
 
 def recover
+  $star_size=2.0
   at{
-  world time: 0.99
-  unity "/cam0/glitch_a", 0.5
+    world time: 0.99
+    unity "/cam0/glitch_a", 0.5
 
-  init true
-  sleep 1
-  unity "/cube/recover", 1.0
-  zoomout
-  create_cube
-  cam :chase
-  burst 0.0
-  colorb 1.0
-  sleep 1
+    init true
+    sleep 1
+    unity "/cube/recover", 1.0
+    zoomout
+    create_cube
+    cam :chase
+    burst 0.0
+    colorb 1.0
+    sleep 1
     unity "/cam0/glitch_a", 0.0
-    }
+  }
 end
 
 def mbox_inits
