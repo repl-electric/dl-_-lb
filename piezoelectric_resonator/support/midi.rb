@@ -80,7 +80,13 @@ def eject_cpu_core(k=:pad)
 end
 
 def vol(c)
-  midi_cc 0, c*127.0, port: :iac_bus_1, channel: 1
+  chunks = 256
+  chunks.times{
+    volume=flow(1.0,c,chunks).look
+    midi_cc 0, volume*127.0, port: :iac_bus_1, channel: 1
+    tick
+    sleep 0.125/2.0
+  }
 end
 
 def fx(cc)
