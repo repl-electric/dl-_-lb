@@ -41,8 +41,8 @@ def recover
   at{
     world time: 0.99
     unity "/cam0/glitch_a", 0.5
-
     init true
+    overclock_cc attune: 0.27
     sleep 1
     unity "/cube/recover", 1.0
     zoomout
