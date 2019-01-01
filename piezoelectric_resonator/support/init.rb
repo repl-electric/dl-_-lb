@@ -21,18 +21,18 @@ def cube_hit(inital=0.2, vel=0.2, m=0.8)
 end
 
 def crash
-  unity "/world/time", 0.025
+  unity "/world/time", 0.02
   burst 1.0
   unity "/cam0/glitch_a", 0.5
   unity "/cam0/glitch_v", 0.5
   star size: 1.5
-  sleep 1
+  sleep 2
   #explode_rocks
   burst 1.0
   explode_cube
   unity "/shard", 1.0
-  unity "/world/time", 0.03
-  sleep 1
+  unity "/world/time", 0.025
+  sleep 2
   unity "/cam0/glitch_a", 0.0
   unity "/cam0/glitch_v", 0.0
 end
