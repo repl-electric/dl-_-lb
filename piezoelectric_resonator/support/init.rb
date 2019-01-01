@@ -21,14 +21,13 @@ def cube_hit(inital=0.2, vel=0.2, m=0.8)
 end
 
 def crash
-  unity "/world/time", 0.02
+  unity "/world/time", 0.015
   burst 1.0
   unity "/cam0/glitch_a", 0.5
   unity "/cam0/glitch_v", 0.5
   star size: 1.5
-  sleep 2
+  sleep 1
   #explode_rocks
-  burst 1.0
   explode_cube
   unity "/shard", 1.0
   unity "/world/time", 0.025
@@ -102,6 +101,7 @@ def end1
 end
 def end2
   star life: 5, size: 12.0 #4
+  vortex throttle: 0.0
   unity "/enditall",1.0
 end
 def deepbase_init
@@ -194,6 +194,9 @@ def slice_cube(*args)
 end
 def explode_rocks()
   unity "/explode1"
+end
+def live_code_a(*n)
+  create_aura
 end
 def create_aura(n=0)
   n = n-0.9
