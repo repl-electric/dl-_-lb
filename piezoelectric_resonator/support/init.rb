@@ -505,6 +505,11 @@ def cam(type=:main, f=false)
       unity "/eyelids",1.0
     }
 
+    #performance panics
+    unity "/eyelids",0
+    vortex throttle: 0.0
+    unity "/cube",0.0
+
   elsif type == :bird
     $pmode=3
     rocks orbit: 20.0
