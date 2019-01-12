@@ -24,6 +24,13 @@ def silence?
   @silence=false
 end
 
+def solo(a)
+  case a
+  when :cpu
+    midi_cc 14, 127.0, channel: 1, port: :iac_bus_1
+  end
+end
+
 def octave(n, oct)
   if n
     note = SonicPi::Note.new(n)
@@ -47,9 +54,8 @@ def alive(args)
       midi_cc 20, v, port: :iac_bus_1, channel: 16
     when :kick
       midi_cc 21, v, port: :iac_bus_1, channel: 16
-    when :sop
+    when :pitch
       midi_cc 22, v, port: :iac_bus_1, channel: 16
-
     end
   }
 end
