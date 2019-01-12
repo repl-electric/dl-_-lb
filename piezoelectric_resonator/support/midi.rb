@@ -82,6 +82,14 @@ def eject_cpu_core(k=:pad)
     when :pad
     midi_cc 11,127, port: :iac_bus_1, channel: 1
     end2
+    unity "/star/throttle", 1.0
+    unity "/camtop/jitter",0.0
+    unity "/camtop/phase",0.0
+    unity "/camtop/glitch_a", 0.0
+    unity "/camtop/glitch_v", 0.0
+    unity "/world/time", 0.3
+    star size: 0
+    unity "/lights/end", 6.0
   end
 end
 
