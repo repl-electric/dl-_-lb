@@ -910,6 +910,11 @@ def flop_on(n,*args)
     if(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
+      if(args_h[:to])
+        puts args_h[:to]
+        flop_off n
+        n = args_h[:to]
+      end
       midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 9})
       if $pmode == 0
         #colorb 1.0
