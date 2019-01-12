@@ -42,7 +42,6 @@ def recover
     world time: 0.99
     unity "/cam0/glitch_a", 0.5
     init true
-    overclock_cc attune: 0.27
     sleep 1
     unity "/cube/recover", 1.0
     zoomout
@@ -52,6 +51,7 @@ def recover
     colorb 1.0
     sleep 1
     unity "/cam0/glitch_a", 0.0
+    overclock_cc attune: 0.27
   }
 end
 
@@ -500,10 +500,10 @@ def cam(type=:main, f=false)
     unity "/end/shards/throttle",1.0
     create_sea -1
     roots swirl: 0.0, throttle: 0
-    at{
-      sleep 8
-      unity "/eyelids",1.0
-    }
+    #at{
+      #sleep 8
+      #unity "/eyelids",1.0
+    #}
 
     #performance panics
     unity "/eyelids",0
@@ -764,6 +764,10 @@ def init(force=false)
     star throttle: 0.0
     star size: 0.0000001, life: -100.000001
     cube aura: 1.47
+
+    unity "/lights/up",1.0
+    sleep 0.5
+    unity "/lights/up",0.0
 
     colorb 0
     unity "/cube/aura/scalemul", -0.6
