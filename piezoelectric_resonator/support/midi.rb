@@ -936,11 +936,15 @@ def flop_x(*args)
   midi_all_notes_off port: :iac_bus_1, channel: 9
 end
 
-def flop_of(n)
-  if n
-    midi_note_off n, port: :iac_bus_1, channel: 9
+def flop_off(*n)
+  if n && n[0]
+    midi_note_off n[0], port: :iac_bus_1, channel: 9
   end
 end
+def flop_of(*n)
+  flop_off(n)
+end
+
 
 def flop_cc(cc)
   cc.keys.each do |k|
