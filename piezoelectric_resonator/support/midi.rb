@@ -1096,6 +1096,7 @@ def overclock_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :motion; 1
+        when :attune; 1
         when :fm; 50
         when :drive; 51
         when :amp; 52
