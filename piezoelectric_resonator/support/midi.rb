@@ -1216,12 +1216,96 @@ def perc_machine(pat)
     glitch_cc mode: (ring 0, 2, 3, 5).look
   end
     if spread(8,8).look
-      dark :e3, ring(122, 100, 110, 90).look-(rand*5) if pat[-1]!=0
       if spread(3,8).look
         at{
-          sleep 0.5
-          dark :e3, 50 if pat[-1]!=0
+          sleep 0.25
+          dark :e3, ring(122, 100, 110, 90).look-(rand*5) if pat[-1]!=0
         }
+        at{
+        sleep 0.47
+        puts :hit
+        dark :b3, 60 if pat[-1]!=0
+        sleep 0.53
+        dark :b3, 58 if pat[-1]!=0
+        }
+      else
+        dark :e3, ring(122, 100, 110, 90).look-(rand*5) if pat[-1]!=0
+      end
+    end
+    glitch_cc corode: 1.0
+    glitch :c3, (ring 65, 60, 60, 60).look if pat[0]!=0
+    at{
+      sleep 0.25
+      glitch :c3, 2.1*(ring 120, 90, 100, 100,    100, 90, 90, 90).look if pat[1]!=0
+    }
+    glitch_cc corode: 0.8
+
+    if spread(7,11).look
+      sleep 1
+    else
+      #glitch :gs3,3# if spread(1,4).look
+
+      sleep 1/2.0
+      glitch :ds3, 127 if state[:perc] && pat[2]!=0 #if spread(1,4).look
+      sleep 1/2.0
+
+      glitch :fs3,20 if state[:perc] && pat[3]!=0# if spread(1,4).look
+
+      at{
+        sleep 1/2.0
+        glitch :g3, 50 if pat[4]!=0# if spread(1,4).look
+        }
+    end
+
+    glitch_cc corode: (line 0.8, 0.9, 128).look
+    #glitch (ring :c3, :a3).look, 30 if spread(7,11).look
+
+    sleep 1/4.0
+    if dice(32) > 29
+      glitch :fs3, 40 if pat[1]!=0
+    end
+    sleep 1/4.0
+
+    sleep 1/4.0
+    if dice(32) > 28
+      glitch :ds3, 127 if pat[0]!=0
+    end
+    sleep 1/4.0
+
+
+    with_swing 0.1 {#((knit -0.1/2.0, 4, 0.1,4).look) {
+      glitch :gs3, 40 if pat[5]!=0
+    }
+
+    sleep 1/2.0
+    glitch :gs3, 80 if spread(1,8).look
+    sleep 1/2.0
+    glitch :gs3, 90 if spread(1,8).look
+
+    #dark :cs3, 20
+
+    sleep 1/2.0
+    glitch (ring :cs4, :cs4, :cs4, :d4).look,127 if pat[6] !=0
+    sleep 1/2.0
+end
+
+def perc_machine_old(pat)
+  if spread(4,8).look
+    glitch_cc mode: (ring 0, 2, 3, 5).look
+  end
+    if spread(8,8).look
+      if spread(3,8).look
+        at{
+          sleep 0.25
+          dark :e3, ring(122, 100, 110, 90).look-(rand*5) if pat[-1]!=0
+        }
+        at{
+        sleep 0.47
+        puts :HIT
+          dark :a3, 127 if pat[-1]!=0
+        }
+      else
+        dark :e3, ring(122, 100, 110, 90).look-(rand*5) if pat[-1]!=0
       end
     end
     glitch_cc corode: 1.0
