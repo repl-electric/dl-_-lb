@@ -886,7 +886,7 @@ def flop(n,*args)
         rocks noise: 0.0
 
         if $pmode != 2
-          if note(n) == note(:c4)
+          if note(n) == note(:c4) && !$triggered
             if $star_size == nil
               $star_size=0.5
             end
@@ -1043,6 +1043,7 @@ def overclock_on(n,*args)
           roots throttle: 1, freq: args_h[:freq]||0.0
           star size: 1.0
           $triggered = true
+          slow_init
           at{
             sleep 2
             unity "/cam0/glitch_s", 0.0
