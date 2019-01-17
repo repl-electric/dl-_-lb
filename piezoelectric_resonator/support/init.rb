@@ -28,7 +28,7 @@ def crash
   star size: 1.5
   sleep 1
   #explode_rocks
-  explode_cube
+  #explode_cube
   unity "/shard", 1.0
   unity "/world/time", 0.025
   sleep 2
