@@ -83,7 +83,8 @@ def eject_cpu_core(k=:pad)
     $end = true
     midi_cc 11,127, port: :iac_bus_1, channel: 1
     end2
-    unity "/lights/up",0.0
+    create_aura -2
+    unity "/lights/up",1.0
     unity "/star/throttle", 1.0
     unity "/camtop/jitter",0.0
     unity "/camtop/phase",0.0
@@ -91,7 +92,7 @@ def eject_cpu_core(k=:pad)
     unity "/camtop/glitch_v", 0.0
     unity "/world/time", 0.3
     star size: 0
-    unity "/lights/end", 6.5
+    unity "/lights/end", 7.5
     sleep 0.125
     unity "/lights/up",0.0
   end
