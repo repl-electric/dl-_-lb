@@ -886,7 +886,8 @@ def flop(n,*args)
         rocks noise: 0.0
 
         if $pmode != 2
-          if note(n) == note(:c4) && !$triggered
+          if note(n) == note(:c4) && $triggered
+            puts :IN?
             if $star_size == nil
               $star_size=0.5
             end
@@ -950,6 +951,26 @@ def flop_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :motion
+          if !$triggered
+            if cc[k] > 0.27
+              vortex throttle: cc[k]+0.1
+              unity "/lights/end", 5.0*cc[k]
+              colorb 4*cc[k]
+              vortex force: 2.5*cc[k]
+              vortex turb: 1.6*cc[k]
+            else
+
+              at{
+            sleep 0.5
+            vortex turb: 0
+            vortex force: 0
+            sleep 5
+            vortex throttle: 0.1
+          }
+              unity "/lights/end", 0
+            colorb 1.0
+          end
+          end
           if $pmode ==0
             at{
           sleep 0.5
@@ -962,8 +983,8 @@ def flop_cc(cc)
           x=cc[:motion]
           sleep 0.5
           #unity "/cube/aura/globalscale", linear_map(0.27,0.5,0.0,1.0,x)
-          unity "/cube/aura/fresnel", linear_map(0.27,0.5,1.4,0,x)
-          unity "/cube/aura/ripple",  linear_map(0.27,0.5,0.0,0.5,x)
+          unity "/cube/aura/fresnel", linear_map(0.0,0.5,1.4,0,x)
+          unity "/cube/aura/ripple",  linear_map(0.0,0.5,0.0,0.5,x)
           #unity "/cube/aura/scalemul", linear_map(0.27,0.5,-0.6,-0.5,x)
 
         }
@@ -1220,14 +1241,22 @@ def perc_machine(pat)
         at{
           sleep 0.25
           dark :e3, ring(122, 100, 110, 90).look-(rand*5) if pat[-1]!=0
+      }
+        if (dice(16)) > 8
+          at{
+          sleep 0.47
+          dark :b3, 60 if pat[-1]!=0
+          sleep 0.43
+          dark :c4, 58+rand if pat[-1]!=0
         }
+        else
         at{
         sleep 0.47
-        puts :hit
         dark :b3, 60 if pat[-1]!=0
         sleep 0.53
         dark :b3, 58 if pat[-1]!=0
         }
+        end
       else
         dark :e3, ring(122, 100, 110, 90).look-(rand*5) if pat[-1]!=0
       end
@@ -1301,7 +1330,6 @@ def perc_machine_old(pat)
         }
         at{
         sleep 0.47
-        puts :HIT
           dark :a3, 127 if pat[-1]!=0
         }
       else

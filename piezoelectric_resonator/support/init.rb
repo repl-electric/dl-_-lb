@@ -524,6 +524,7 @@ def cam(type=:main, f=false)
     create_aura -5
     unity "/cam4"
   elsif type == :chase
+    unity "/lights/up",0.0
     roots throttle: 0.0
     cube aura: 1.47
     unity "/cube/aura/fresnel", 1.5
