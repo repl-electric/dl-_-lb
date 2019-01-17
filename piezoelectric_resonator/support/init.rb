@@ -75,9 +75,9 @@ def slow_init
 end
 def start_init
   if $pmode==0
-    overclock_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0
-    flop_cc motion: 0.5, sat: 0.00, drive: 0.00
-    flip_cc  motion: 0.6
+    overclock_cc motion: 0.6, drive: 0.20, fm: 0.00, mode: 0, skip: true
+    flop_cc motion: 0.5, sat: 0.00, drive: 0.00, skip: true
+    flip_cc  motion: 0.6, skip: true
     resonate_cc amp: 0.85
     overclock_cc amp: 0.8
   end
@@ -108,7 +108,7 @@ def end2
   unity "/enditall",1.0
 end
 def deepbase_init
-  overclock_cc motion: 1.00, drive: 0.30, fm: 0.00, mode: 0
+  overclock_cc motion: 1.00, drive: 0.30, fm: 0.00, mode: 0, skip: true
 end
 def kickviz
   at{
@@ -760,8 +760,8 @@ def init(force=false)
     cam :cube
     roots_init
     fx reverb: 1.00, tube: 0.60
-    flop_cc motion: 0.30,  drive: 0.00
-    flip_cc motion: 0.50, drive: 0.00
+    flop_cc motion: 0.30,  drive: 0.00, skip: true
+    flip_cc motion: 0.50, drive: 0.00, skip: true
     glitch_cc tubes: 0.50, corode: 0.30
     roots swirl: 0.0, drag: 6.0, freq: 0.0, amp: 0.1
     unity "/cube/hit", 0.0
