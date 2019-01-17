@@ -79,9 +79,11 @@ end
 
 def eject_cpu_core(k=:pad)
   case k
-    when :pad
+  when :pad
+    $end = true
     midi_cc 11,127, port: :iac_bus_1, channel: 1
     end2
+    unity "/lights/up",0.0
     unity "/star/throttle", 1.0
     unity "/camtop/jitter",0.0
     unity "/camtop/phase",0.0
@@ -89,7 +91,9 @@ def eject_cpu_core(k=:pad)
     unity "/camtop/glitch_v", 0.0
     unity "/world/time", 0.3
     star size: 0
-    unity "/lights/end", 6.0
+    unity "/lights/end", 6.5
+    sleep 0.125
+    unity "/lights/up",0.0
   end
 end
 
@@ -876,6 +880,7 @@ def flop(n,*args)
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 9})
       nname = SonicPi::Note.new(n).midi_string
+      if ($pmode != 2)
       at{
         sleep 0.5
         vortex throttle: rand*0.5
@@ -897,6 +902,7 @@ def flop(n,*args)
         end
 
         }
+      end
 
       flop_cc args_h
     end
@@ -920,12 +926,12 @@ def flop_on(n,*args)
     end
     if n && ((n != "_") && n != :_)
       if(args_h[:to])
-        puts args_h[:to]
         flop_off n
         n = args_h[:to]
       end
       midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 9})
       if $pmode == 0
+        unity "/lights/end",2.0
         #colorb 1.0
         unity "/color1/b",255/255.0
       end
@@ -951,40 +957,38 @@ def flop_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :motion
-          if !$triggered
+          if !$triggered && ($pmode != 2)
             if cc[k] > 0.27
               vortex throttle: cc[k]+0.1
-              unity "/lights/end", 5.0*cc[k]
+              unity "/lights/end", 20.0*cc[k]
               colorb 4*cc[k]
               vortex force: 2.5*cc[k]
               vortex turb: 1.6*cc[k]
             else
-
               at{
             sleep 0.5
-            vortex turb: 0
-            vortex force: 0
-            sleep 5
+            unity "/cube/aura/ripple", 0.2
+                vortex turb: 0
+                vortex force: 0
+                sleep 5
             vortex throttle: 0.1
-          }
+            #unity "/cube/aura/ripple", 0.0
+              }
               unity "/lights/end", 0
-            colorb 1.0
-          end
+              colorb 1.0
+            end
           end
           if $pmode ==0
             at{
           sleep 0.5
-          #star(size: linear_map(0.2,0.6,-0.08,0.15, cc[:motion])
-               #,life: linear_map(0.2,0.6,-0.02,1.0, cc[:motion])
-          #     )
           rocks noise: (cc[:motion]-0.27)*55,
           freq: (linear_map 0.27, 0.6, 0,0.08, cc[:motion]), rot: 0.0,  orbit: (cc[:motion]-0.27)*20
 
           x=cc[:motion]
           sleep 0.5
           #unity "/cube/aura/globalscale", linear_map(0.27,0.5,0.0,1.0,x)
-          unity "/cube/aura/fresnel", linear_map(0.0,0.5,1.4,0,x)
-          unity "/cube/aura/ripple",  linear_map(0.0,0.5,0.0,0.5,x)
+          unity "/cube/aura/fresnel", linear_map(0.0,0.5,1.5,0,x)
+          unity "/cube/aura/ripple",  linear_map(0.0,0.5,0.0,0.6,x)
           #unity "/cube/aura/scalemul", linear_map(0.27,0.5,-0.6,-0.5,x)
 
         }

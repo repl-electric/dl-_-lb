@@ -38,7 +38,9 @@ end
 
 def recover
   $star_size=2.0
+  $pmode=2
   at{
+
     world time: 0.99
     unity "/cam0/glitch_a", 0.5
     init true
@@ -52,6 +54,7 @@ def recover
     sleep 1
     unity "/cam0/glitch_a", 0.0
     overclock_cc attune: 0.27
+    colorb 1.0
   }
 end
 
@@ -508,6 +511,7 @@ def cam(type=:main, f=false)
     #performance panics
     unity "/eyelids",0
     vortex throttle: 0.0
+    create_aura -2
     unity "/cube",0.0
 
   elsif type == :bird
@@ -750,12 +754,11 @@ def init(force=false)
     roots throttle: 0.0
     rocksinit
     rocks throttle: 1
-    vortex y: 1.25, throttle: 0.2, turb: 0, force: 0
+    vortex y: 1.25, throttle: 0.0, turb: 0, force: 0
     #cube aura: 1.47
     cube rot: 1
     cam :cube
     roots_init
-    vortex throttle: 0.0
     fx reverb: 1.00, tube: 0.60
     flop_cc motion: 0.30,  drive: 0.00
     flip_cc motion: 0.50, drive: 0.00
@@ -769,6 +772,7 @@ def init(force=false)
     unity "/lights/up",1.0
     sleep 0.5
     unity "/lights/up",0.0
+    unity "/lights/end",0.0
 
     colorb 0
     unity "/cube/aura/scalemul", -0.6
@@ -780,5 +784,6 @@ def init(force=false)
       sleep 0.5
       rocks speed: 0.01, orbit: 0.0
     }
+    vortex throttle: 0
   end
 end
