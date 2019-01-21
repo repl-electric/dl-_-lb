@@ -684,9 +684,12 @@ def livecode(thing)
   case thing
   when :begin
     at{
+      unity "/cam0/glitch_a", 0.1
       unity "/say/begin",1.0
       sleep 4
+      unity "/cam0/glitch_v", 0.0
       unity "/say/none",1.0
+      unity "/cam0/glitch_a", 0.0
     }
   when :end
     unity "/say/end",1.0
@@ -779,7 +782,7 @@ def init(force=false)
     create_aura -0.1
     aura fresnel: 1.5, scale: 0.0, wave: 0.01, distort: 1.0
     unity "/fadeout",1.0
-
+    unity "/endshard/throttle",0.0
     at{
       sleep 0.5
       rocks speed: 0.01, orbit: 0.0
