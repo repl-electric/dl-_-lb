@@ -893,10 +893,26 @@ def flop(n,*args)
     if n && ((n != "_") && n != :_)
       midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 9})
       nname = SonicPi::Note.new(n).midi_string
+      if($pmode ==0 && !$triggered && (note(n) == note(:a3)))
+          at{
+            sleep 0.5
+            vortex throttle: 1
+          }
+
+      end
+        if($pmode ==0 && !$triggered && (note(n) == note(:c4)))
+            at{
+              sleep 0.5
+              vortex throttle: 0.2
+            }
+
+        end
+
+
       if ($pmode != 2)
       at{
         sleep 0.5
-        vortex throttle: rand*0.5
+        #vortex throttle: rand*0.5
         rocks throttle: 1.0
         note_weight=linear_map(60,70, 0.0,0.5, note(n))
         rocks noise: 8.0 + note_weight
@@ -968,42 +984,51 @@ def flop_cc(cc)
   cc.keys.each do |k|
     n = case k
         when :motion
-          if cc[:skip]==true
-          if !$triggered && ($pmode != 2)
-            if cc[k] > 0.27
-              vortex throttle: cc[k]+0.1
-              unity "/lights/end", 20.0*cc[k]
-              colorb 4*cc[k]
-              vortex force: 2.5*cc[k]
-              vortex turb: 1.6*cc[k]
+          if cc[:skip] != true
+            if !$triggered && ($pmode != 2)
+              @steps ||= 0
+              if cc[k] > 0.29
+                @steps +=1
+                at{
+                  sleep 0.5
+                  unity "/lights/end", 20.0*cc[k]
+                  colorb 3.5*cc[k]
+              if cc[k] > 0.3
+                vortex force: (1.6*cc[k])+(@steps*@steps)*0.8
+              else
+                vortex force: (1.4*cc[k])+(@steps*@steps)*0.3
+              end
+              vortex turb:  (1.4*cc[k])+(@steps)*0.005
+                }
+              else
+                @steps = 0
+                at{
+                  sleep 0.5
+                  unity "/cube/aura/ripple", 0.2
+                  vortex force: 1.6*cc[k]
+                  vortex turb: 1.6*cc[k]
+                 }
+              end
             else
-              at{
-            sleep 0.5
-            unity "/cube/aura/ripple", 0.2
-            vortex turb: 0
-            vortex force: 0
-            sleep 5
-            vortex throttle: 0.1
-            #unity "/cube/aura/ripple", 0.0
-          }
               unity "/lights/end", 0
               colorb 1.0
             end
-          end
+
           if $pmode == 0
             at{
-          sleep 0.5
-          rocks noise: (cc[:motion]-0.27)*55,
-          freq: (linear_map 0.27, 0.6, 0,0.08, cc[:motion]), rot: 0.0,  orbit: (cc[:motion]-0.27)*20
+            sleep 0.5
+            rocks noise: (cc[:motion]-0.27)*55,
+            freq: (linear_map 0.27, 0.6, 0,0.08, cc[:motion]), rot: 0.0,  orbit: (cc[:motion]-0.27)*20
 
             x=cc[:motion]
             min = cc[:min] || 0.0
-          sleep 0.5
-          #unity "/cube/aura/globalscale", linear_map(0.27,0.5,0.0,1.0,x)
-          unity "/cube/aura/fresnel", linear_map(min,0.5,1.5,0,x)
-          unity "/cube/aura/ripple",  linear_map(min,0.5,0.0,0.6,x)
-          #unity "/cube/aura/scalemul", linear_map(0.27,0.5,-0.6,-0.5,x)
-          }
+            sleep 0.5
+            #unity "/cube/aura/globalscale", linear_map(0.27,0.5,0.0,1.0,x)
+            unity "/cube/aura/fresnel", linear_map(min,0.5,1.5,0,x)
+            unity "/cube/aura/ripple",  linear_map(min,0.5,0.0,0.8,x)
+            puts "min: #{min}"
+            #unity "/cube/aura/scalemul", linear_map(0.27,0.5,-0.6,-0.5,x)
+            }
           end
           end
           1
