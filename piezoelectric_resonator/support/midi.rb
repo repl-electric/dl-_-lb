@@ -81,6 +81,7 @@ def eject_cpu_core(k=:pad)
   case k
   when :pad
     $end = true
+    colorb 1.0
     midi_cc 11,127, port: :iac_bus_1, channel: 1
     end2
     create_aura -2
@@ -90,17 +91,21 @@ def eject_cpu_core(k=:pad)
     unity "/camtop/phase",0.0
     unity "/camtop/glitch_a", 0.0
     unity "/camtop/glitch_v", 0.0
+#    unity "/endshard/throttle",1.0
     unity "/world/time", 0.3
     star size: 0
     unity "/lights/end", 7.5
     sleep 0.125
     unity "/lights/up",0.0
-    sleep 10
+    sleep 10/2.0
+#    unity "/endshard/throttle",0.1
+    sleep 10/2.0
+#    unity "/endshard/throttle",0.02
     unity "/world/time", 0.2
     sleep 1
     unity "/world/time", 0.1
     sleep 2
-    unity "/world/time", 0.05
+    unity "/world/time", 0.1
 
   end
 end
@@ -991,11 +996,12 @@ def flop_cc(cc)
           rocks noise: (cc[:motion]-0.27)*55,
           freq: (linear_map 0.27, 0.6, 0,0.08, cc[:motion]), rot: 0.0,  orbit: (cc[:motion]-0.27)*20
 
-          x=cc[:motion]
+            x=cc[:motion]
+            min = cc[:min] || 0.0
           sleep 0.5
           #unity "/cube/aura/globalscale", linear_map(0.27,0.5,0.0,1.0,x)
-          unity "/cube/aura/fresnel", linear_map(0.0,0.5,1.5,0,x)
-          unity "/cube/aura/ripple",  linear_map(0.0,0.5,0.0,0.6,x)
+          unity "/cube/aura/fresnel", linear_map(min,0.5,1.5,0,x)
+          unity "/cube/aura/ripple",  linear_map(min,0.5,0.0,0.6,x)
           #unity "/cube/aura/scalemul", linear_map(0.27,0.5,-0.6,-0.5,x)
           }
           end
