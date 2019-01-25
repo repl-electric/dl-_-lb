@@ -499,6 +499,7 @@ def cam(type=:main, f=false)
     roots chase: 0.1, force: 1, target: :spiral, drag: 3
   elsif type == :top
     $pmode=2
+    unity "/performance",1.0
     rocks orbit: 1
     roots alive: 1
     roots_chase throttle: 0.0
@@ -509,6 +510,7 @@ def cam(type=:main, f=false)
     unity "/end/shards/throttle",1.0
     create_sea -1
     roots swirl: 0.0, throttle: 0
+    colorb 0.9
     #at{
       #sleep 8
       #unity "/eyelids",1.0
@@ -791,7 +793,7 @@ def init(force=false)
     unity "/endshard/throttle",0.0
     at{
       sleep 0.5
-      rocks speed: 0.01, orbit: 0.0
+      rocks speed: 0.01, orbit: -1.0
     }
     unity "/attune/flow", 1.0
     vortex throttle: 0
