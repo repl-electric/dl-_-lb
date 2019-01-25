@@ -113,7 +113,7 @@ end
 
 def vol(c)
   chunks = 256*2
-  unity "/camtop/zoomin",-90.0
+  unity "/camtop/zoomin",-70.0
   chunks.times{
     volume=flow(0.85,c,chunks).look
     midi_cc 0, volume*127.0, port: :iac_bus_1, channel: 1
