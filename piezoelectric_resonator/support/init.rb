@@ -107,6 +107,12 @@ def end2
   vortex throttle: 0.0
   unity "/enditall",1.0
 end
+def attune
+  world time: 1
+  unity "/attune/flow", 4.5
+  unity "/camtop/zoomin",15.0
+  unity "/attune",1
+end
 def deepbase_init
   overclock_cc motion: 1.00, drive: 0.30, fm: 0.00, mode: 0, skip: true
 end
@@ -787,6 +793,7 @@ def init(force=false)
       sleep 0.5
       rocks speed: 0.01, orbit: 0.0
     }
+    unity "/attune/flow", 1.0
     vortex throttle: 0
   end
 end
