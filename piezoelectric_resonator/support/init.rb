@@ -108,15 +108,11 @@ def end2
   unity "/enditall",1.0
 end
 def attune
-  unity "/camtop/glitch_h", 0.1
-  unity "/camtop/glitch_v", 0.8
   sleep 2
   world time: 1
   unity "/attune/flow", 4.5
   unity "/camtop/zoomin",15.0
   unity "/attune",1
-  unity "/camtop/glitch_h", 0.0
-  unity "/camtop/glitch_v", 0.0
   $pmode = 4
 end
 
