@@ -701,6 +701,7 @@ def livecode(thing)
     }
   when :end
     unity "/say/end",1.0
+    unity "/attune/flow", 6.0
     n=1.0
     unity "/fadeout",-8.0
   when :rescue
