@@ -81,6 +81,7 @@ def eject_cpu_core(k=:pad)
   case k
   when :pad
     $end = true
+    $pmode = 4
     colorb 1.0
     midi_cc 11,127, port: :iac_bus_1, channel: 1
     end2
@@ -118,6 +119,7 @@ def vol(c)
     tick
     sleep 0.125#/2.0
   }
+  fadeout_roots
 end
 
 def fx(cc)
