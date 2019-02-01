@@ -1046,6 +1046,18 @@ def flop_cc(cc)
     if n
       midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 9
     end
+    if @bpm > 127
+      f=(@bpm/127.0)
+      r = if f == 4.0
+            (knit 1,4, 2,4, 3,4,4,4,5,4,6,4,7,4,8,4,9,4,10,4,11,4,12,4,13,4,14,4,15,4,16,4,16,4,18,4,19,4,20,8).look
+          else
+            15
+          end
+      puts r
+      error(speed: 30 + (10*f), radius: r)
+    else
+      error radius: 9, speed: 30
+    end
   end
 end
 
