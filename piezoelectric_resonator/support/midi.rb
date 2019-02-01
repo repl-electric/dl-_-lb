@@ -82,6 +82,7 @@ def eject_cpu_core(k=:pad)
   when :pad
     $end = true
     $pmode = 4
+    unity "/fadeout",1
     colorb 1.0
     midi_cc 11,127, port: :iac_bus_1, channel: 1
     end2

@@ -108,7 +108,10 @@ def end2
   unity "/enditall",1.0
 end
 def attune
-  sleep 2
+  unity "/camptop/arm/rot",4.0
+  unity "/camptop/arm/pos",0.0
+  unity "/camptop/pivot/pos",1.0
+  unity "/camptop/pivot/rot",70.0
   world time: 1
   unity "/attune/flow", 4.5
   unity "/camtop/zoomin",15.0
@@ -514,7 +517,10 @@ def cam(type=:main, f=false)
     end1
     rocks orbit: 0
     unity "/end/shards/throttle",1.0
-    create_sea -1
+    at{
+      sleep 12
+      create_sea -1
+      }
     roots swirl: 0.0, throttle: 0
     colorb 0.9
     #at{
@@ -636,6 +642,10 @@ def color(factor=1)
     unity "/color3/h", rand*factor
     }
   end
+end
+
+def colort(f)
+  unity "/camtop/color1/b", 1.0*f
 end
 
 def cube(*args)
@@ -808,6 +818,27 @@ def init(force=false)
     }
     unity "/attune/flow", 1.0
     vortex throttle: 0
+    unity "/endroots/circle/speed",30.0
+    unity "/endroots/circle/radius",10.0
+  end
+end
+
+def error(*args)
+  opts = resolve_synth_opts_hash_or_array(args)
+
+  if o=opts[:speed]
+    unity "/endroots/circle/speed",o
+  end
+  if o=opts[:radius]
+    unity "/endroots/circle/radius",o
+  end
+
+  if opts[:target] == :circle
+    unity "/endroots/target/circle",1.0
+  else
+    x = (["lt","rb","rt","lb"]-[@error_target])
+    @error_target = x.choose
+    unity "/endroots/target/#{x}",1
   end
 end
 
