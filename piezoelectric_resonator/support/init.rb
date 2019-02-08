@@ -108,6 +108,14 @@ def end2
   unity "/enditall",1.0
 end
 def attune
+  at{
+    sleep 2
+    unity "/attune/noise",1.5
+    sleep 16
+    unity "/attune/noise",1.2
+    sleep 32
+    unity "/attune/noise",1.1
+  }
   unity "/camptop/arm/rot",4.0
   unity "/camptop/arm/pos",0.0
   unity "/camptop/pivot/pos",1.0
@@ -508,6 +516,7 @@ def cam(type=:main, f=false)
     roots chase: 0.1, force: 1, target: :spiral, drag: 3
   elsif type == :top
     $pmode=2
+    create_sea
     unity "/performance",1.0
     rocks orbit: 1
     roots alive: 1
@@ -820,6 +829,7 @@ def init(force=false)
     vortex throttle: 0
     unity "/endroots/circle/speed",30.0
     unity "/endroots/circle/radius",10.0
+    unity "/attune/noise",1.5
   end
 end
 

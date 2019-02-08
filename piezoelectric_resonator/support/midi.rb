@@ -80,8 +80,12 @@ end
 def eject_cpu_core(k=:pad)
   case k
   when :pad
+    unity "/ejectcpu",1
     $end = true
     $pmode = 4
+    #    unity "/attune/noise",200
+    unity "/attune/noise",500
+
     unity "/fadeout",1
     colorb 1.0
     midi_cc 11,127, port: :iac_bus_1, channel: 1
@@ -94,21 +98,24 @@ def eject_cpu_core(k=:pad)
     unity "/camtop/glitch_a", 0.0
     unity "/camtop/glitch_v", 0.0
 #    unity "/endshard/throttle",1.0
-    unity "/world/time", 0.3
+
     star size: 0
     unity "/lights/end", 7.5
     sleep 0.125
+    unity "/ejectcpu",1
     unity "/lights/up",0.0
+    sleep 3
+#    unity "/world/time", 0.3
+
+    sleep 0.125
     sleep 10/2.0
 #    unity "/endshard/throttle",0.1
     sleep 10/2.0
 #    unity "/endshard/throttle",0.02
-    unity "/world/time", 0.2
+#    unity "/world/time", 0.2
     sleep 1
-    unity "/world/time", 0.1
-    sleep 2
-    unity "/world/time", 0.1
-
+#    unity "/world/time", 0.2
+    #    unity ""
   end
 end
 
@@ -121,6 +128,7 @@ def vol(c)
     tick
     sleep 0.125#/2.0
   }
+  unity "/attune/noise", 500
   fadeout_roots
 end
 
@@ -913,7 +921,7 @@ def flop(n,*args)
         end
 
 
-      if ($pmode != 2)
+      if ($pmode != 2 && $pmode != 4)
       at{
         sleep 0.5
         #vortex throttle: rand*0.5
@@ -1030,7 +1038,7 @@ def flop_cc(cc)
             #unity "/cube/aura/globalscale", linear_map(0.27,0.5,0.0,1.0,x)
             unity "/cube/aura/fresnel", linear_map(min,0.5,1.5,0,x)
             unity "/cube/aura/ripple",  linear_map(min,0.5,0.0,0.8,x)
-            puts "min: #{min}"
+            #puts "min: #{min}"
             #unity "/cube/aura/scalemul", linear_map(0.27,0.5,-0.6,-0.5,x)
             }
           end
@@ -1046,17 +1054,22 @@ def flop_cc(cc)
     if n
       midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 9
     end
-    if @bpm > 127
+    if $pmode!=4
+      if @bpm > 127
       f=(@bpm/127.0)
-      r = if f == 4.0
+      error target: :circle
+      unity "/attune/noise",linear_map(1,4,1.6, 4.0, @bpm/127.0)
+      r = if f >= 4.0
+            unity "/attune/noise",5.0
+            unity "/fadeout",0.3
             (knit 1,4, 2,4, 3,4,4,4,5,4,6,4,7,4,8,4,9,4,10,4,11,4,12,4,13,4,14,4,15,4,16,4,16,4,18,4,19,4,20,8).look
           else
             15
           end
-      puts r
       error(speed: 30 + (10*f), radius: r)
-    else
-      error radius: 9, speed: 30
+      else
+        error radius: 9, speed: 27
+      end
     end
   end
 end
@@ -1181,8 +1194,14 @@ def overclock_cc(cc)
         when :amp; 52
         when :solo; 100
         when :oct
+
           f = flow_oct(cc[k])
           if f
+            #puts f
+            colorb linear_map(0,1, 0,-10.0, f)
+            #unity "/fadeout", linear_map(0,1, -4,4.0, f)
+            #star size: linear_map(0,1, 5.0,10.0, f)
+#            colorb 0
             cc[k] = f
           end
           53
