@@ -31,7 +31,7 @@ live_loop :ClockCycle, sync: :unsyncable do; tick
 end
 
 live_loop :MachineInstructions, sync: :unsyncable do; tick
-  with_bpm 127*1 do
+  with_bpm @bpm=(127*1) do
     score = (cycle
       [[_] 8]
       )
