@@ -1055,7 +1055,7 @@ def flop_cc(cc)
       midi_cc n, cc[k]*127.0, port: :iac_bus_1, channel: 9
     end
     if $pmode!=4
-      if @bpm > 127
+      if @bpm && @bpm > 127
       f=(@bpm/127.0)
       error target: :circle
       unity "/attune/noise",linear_map(1,4,1.6, 4.0, @bpm/127.0)
