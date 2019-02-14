@@ -209,7 +209,7 @@ def kal(n,*args)
  end
 
  def kalshot(n,*args)
-     if n
+   if n
     if args && args[0].is_a?(Numeric)
       velocity = args[0]
       args = args[1..-1]
@@ -510,7 +510,8 @@ def voltage(n,*args)
     if(args_h[:mode])
     end
     if n && ((n != "_") && n != :_)
-      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 13})
+      midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 11})
+     # midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 13})
       if $pmode == 0
         at{
           sleep 0.5
@@ -1223,10 +1224,19 @@ def overclock_cc(cc)
             midi_cc 101, 0, port: :iac_bus_1, channel: 5
           end
         when :oct
-
           f = flow_oct(cc[k])
           if f
             #puts f
+            if cc[k] >=12 && $end != true
+              #unity "/camtop/jitter", 0.5
+              unity "/attune/noise",10.0
+              unity "/lights/end", 3.5+(cc[k]*0.01)
+              puts 5.5+(cc[k]*0.01)
+            elsif $end != true
+              unity "/attune/noise",0.01
+              #unity "/camtop/jitter", 0.0
+              unity "/lights/end", 0.02
+            end
             colorb linear_map(0,1, 0,-10.0, f)
             #unity "/fadeout", linear_map(0,1, -4,4.0, f)
             #star size: linear_map(0,1, 5.0,10.0, f)
