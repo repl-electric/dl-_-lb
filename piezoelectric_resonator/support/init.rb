@@ -39,6 +39,7 @@ end
 def recover
   $star_size=2.0
   $pmode=2
+  $end=false
   at{
 
     world time: 0.99
@@ -778,6 +779,7 @@ def init(force=false)
     $zslices=0.0
     $cslices=0.0
     $triggered = false
+    $end = false
     scene 1
     sleep 2
     world :time, 1.0
