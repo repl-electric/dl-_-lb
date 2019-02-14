@@ -1227,13 +1227,13 @@ def overclock_cc(cc)
           f = flow_oct(cc[k])
           if f
             #puts f
-            if cc[k] >=12 && $end != true
+            if cc[k] >=12 && $end == false
               #unity "/camtop/jitter", 0.5
               unity "/attune/noise",10.0
-              unity "/lights/end", 3.5+(cc[k]*0.01)
+              unity "/lights/end", 2.5+(cc[k]*0.01)
               puts 5.5+(cc[k]*0.01)
-            elsif $end != true
-              unity "/attune/noise",0.01
+            elsif $end == false
+              unity "/attune/noise",1.5
               #unity "/camtop/jitter", 0.0
               unity "/lights/end", 0.02
             end
