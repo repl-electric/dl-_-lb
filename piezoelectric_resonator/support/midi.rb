@@ -358,6 +358,18 @@ def resonate(n,*args)
       if pads && !pads.is_a?(Array)
         pads = [pads]
       end
+      if pads == [2] && $pmode == 0
+        at{
+          sleep 0.5
+          unity "/color2/h",1.4+rand*0.1
+          rocks noise: 1
+          sleep 1.5
+          unity "/color2/h",1.7+rand*0.15
+          sleep 1
+          rocks orbit: -0.9
+          defaultcolor
+        }
+      end
       pads.map{|pad|
         if pad == 0
           midi n, velocity, *(args << {port: :iac_bus_1} << {channel: 10})
