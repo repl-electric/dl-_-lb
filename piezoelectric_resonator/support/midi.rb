@@ -1193,6 +1193,23 @@ def overclock_cc(cc)
         when :drive; 51
         when :amp; 52
         when :solo; 100
+        when :sync; 101
+          if (cc[k]==1.0)
+            midi_cc 102, 127, port: :iac_bus_1, channel: 5
+            midi_cc 101, 0, port: :iac_bus_1, channel: 5
+          else
+            midi_cc 102, 0, port: :iac_bus_1, channel: 5
+            midi_cc 101, 127, port: :iac_bus_1, channel: 5
+          end
+
+        when :unsync; 102
+          if (cc[k]==1.0)
+            midi_cc 101, 127, port: :iac_bus_1, channel: 5
+            midi_cc 102, 0, port: :iac_bus_1, channel: 5
+          else
+            midi_cc 102, 127, port: :iac_bus_1, channel: 5
+            midi_cc 101, 0, port: :iac_bus_1, channel: 5
+          end
         when :oct
 
           f = flow_oct(cc[k])
