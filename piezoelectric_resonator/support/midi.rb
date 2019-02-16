@@ -1069,17 +1069,19 @@ def flop_cc(cc)
     end
     if $pmode!=4
       if @bpm && @bpm > 127
-      f=(@bpm/127.0)
-      error target: :circle
-      unity "/attune/noise",linear_map(1,4,1.6, 4.0, @bpm/127.0)
-      r = if f >= 4.0
-            unity "/attune/noise",5.0
-            unity "/fadeout",0.3
-            (knit 1,4, 2,4, 3,4,4,4,5,4,6,4,7,4,8,4,9,4,10,4,11,4,12,4,13,4,14,4,15,4,16,4,16,4,18,4,19,4,20,8).look
+        f=(@bpm/127.0)
+        error target: :circle
+        #unity "/attune/noise",linear_map(1,4,1.6, 4.0, @bpm/127.0)
+        r = if f >= 4.0
+              #unity "/attune/noise",5.0
+              unity "/fadeout",0.3
+              (knit 1,4, 2,4, 3,4,4,4,5,4,6,4,7,4,8,4,9,4,10,4,11,4,12,4,13,4,14,4,15,4,16,4,16,4,18,4,19,4,20,8).look
           else
             15
-          end
-      error(speed: 30 + (10*f), radius: r)
+            end
+        if f>2.0
+          error(speed: 30 + (10*f), radius: r)
+        end
       else
         error radius: 9, speed: 27
       end
@@ -1225,19 +1227,30 @@ def overclock_cc(cc)
           end
         when :oct
           f = flow_oct(cc[k])
-          if f
-            #puts f
-            if cc[k] >=12 && $end == false
+          if true
+            if cc[k] >= 19 && $end == false
+              unity "/lights/end", 2.5+(cc[k]*0.05)
+
+            if @bpm && (@bpm/127.0) >=4
+              unity "/attune/noise",0.1
+            else
+
+              at{
+                sleep 0.5
+                unity "/attune/noise",12.0
+            }
+            end
+            elsif cc[k] >= 12 && $end == false
+              unity "/attune/noise",2
               #unity "/camtop/jitter", 0.5
-              unity "/attune/noise",10.0
-              unity "/lights/end", 2.5+(cc[k]*0.01)
-              puts 5.5+(cc[k]*0.01)
+              unity "/lights/end", 2.5+(cc[k]*0.05)
             elsif $end == false
               unity "/attune/noise",1.5
+              #puts "noise:#{1.5}"
               #unity "/camtop/jitter", 0.0
               unity "/lights/end", 0.02
             end
-            colorb linear_map(0,1, 0,-10.0, f)
+            #colorb linear_map(0,1, 0,-10.0, f)
             #unity "/fadeout", linear_map(0,1, -4,4.0, f)
             #star size: linear_map(0,1, 5.0,10.0, f)
 #            colorb 0
