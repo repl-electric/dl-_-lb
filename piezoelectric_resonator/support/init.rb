@@ -847,7 +847,7 @@ def error(*args)
 
   if opts[:target] == :circle
     unity "/endroots/target/circle",1.0
-  else
+  elsif opts[:target]
     x = (["lt","rb","rt","lb"]-[@error_target])
     @error_target = x.choose
     unity "/endroots/target/#{x}",1
