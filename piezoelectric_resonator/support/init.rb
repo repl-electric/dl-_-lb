@@ -533,6 +533,7 @@ def cam(type=:main, f=false)
       }
     roots swirl: 0.0, throttle: 0
     colorb 0.9
+    unity "/lights/end", 0
     #at{
       #sleep 8
       #unity "/eyelids",1.0
