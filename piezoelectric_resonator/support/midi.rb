@@ -656,7 +656,7 @@ def dark_cc(cc)
       kits = ['c-1','cs-1','d-1','ds-1','e-1','f-1','fs-1','g-1','gs-1', 'a-1', 'as-1',
         'b-1', 'c0', 'cs0', 'd0', 'ds0', 'e0','f0']
       midi kits[cc[k] % kits.count], port: :iac_bus_1, channel: 2
-    when :corode
+    when :corrode
       midi_cc 50, 127*cc[k], port: :iac_bus_1, channel: 2
     when :tubes
       midi_cc 51, 127*cc[k], port: :iac_bus_1, channel: 2
@@ -784,7 +784,7 @@ def glitch_cc(cc)
       kits = ['c-1','cs-1','d-1','ds-1','e-1','f-1','fs-1','g-1','gs-1', 'a-1', 'as-1',
         'b-1', 'c0', 'cs0', 'd0', 'ds0', 'e0','f0']
       midi kits[cc[k] % kits.count], port: :iac_bus_1, channel: 4
-    when :corode
+    when :corrode
       midi_cc 50, 127*cc[k], port: :iac_bus_1, channel: 4
     when :tubes
       midi_cc 51, 127*cc[k], port: :iac_bus_1, channel: 4
@@ -1389,13 +1389,13 @@ def perc_machine(pat)
         dark :e3, ring(122, 100, 110, 90).look-(rand*5) if pat[-1]!=0
       end
     end
-    glitch_cc corode: 1.0
+    glitch_cc corrode: 1.0
     glitch :c3, (ring 65, 60, 60, 60).look if pat[0]!=0
     at{
       sleep 0.25
       glitch :c3, 2.1*(ring 120, 90, 100, 100,    100, 90, 90, 90).look if pat[1]!=0
     }
-    glitch_cc corode: 0.8
+    glitch_cc corrode: 0.8
 
     if spread(7,11).look
       sleep 1
@@ -1414,7 +1414,7 @@ def perc_machine(pat)
         }
     end
 
-    glitch_cc corode: (line 0.8, 0.9, 128).look
+    glitch_cc corrode: (line 0.8, 0.9, 128).look
     #glitch (ring :c3, :a3).look, 30 if spread(7,11).look
 
     sleep 1/4.0
@@ -1464,13 +1464,13 @@ def perc_machine_old(pat)
         dark :e3, ring(122, 100, 110, 90).look-(rand*5) if pat[-1]!=0
       end
     end
-    glitch_cc corode: 1.0
+    glitch_cc corrode: 1.0
     glitch :c3, (ring 65, 60, 60, 60).look if pat[0]!=0
     at{
       sleep 0.25
       glitch :c3, 2.1*(ring 120, 90, 100, 100,    100, 90, 90, 90).look if pat[1]!=0
     }
-    glitch_cc corode: 0.8
+    glitch_cc corrode: 0.8
 
     if spread(7,11).look
       sleep 1
@@ -1489,7 +1489,7 @@ def perc_machine_old(pat)
         }
     end
 
-    glitch_cc corode: (line 0.8, 0.9, 128).look
+    glitch_cc corrode: (line 0.8, 0.9, 128).look
     #glitch (ring :c3, :a3).look, 30 if spread(7,11).look
 
     sleep 1/4.0
