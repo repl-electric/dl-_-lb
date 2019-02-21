@@ -67,7 +67,10 @@ def warm
     :c5, :cs5, :d5, :ds5, :e5, :f5, :fs5, :g5, :gs5, :a5, :as5, :b5,
   ].each{|n|
     midi n,1, sus: 0.125, port: '*', channel: '*'
+    overclock_cc sync: 1
+    overclock :f3
     sleep 0.25
+    overclock_cc sync: 0
     }
 end
 
@@ -103,10 +106,10 @@ def eject_cpu_core(k=:pad)
     unity "/lights/end", 7.5
     sleep 0.125
     unity "/ejectcpu",1
+    sleep 2
     unity "/lights/up",0.0
-    sleep 3
 #    unity "/world/time", 0.3
-
+    sleep 1
     sleep 0.125
     sleep 10/2.0
 #    unity "/endshard/throttle",0.1
@@ -114,6 +117,7 @@ def eject_cpu_core(k=:pad)
 #    unity "/endshard/throttle",0.02
 #    unity "/world/time", 0.2
     sleep 1
+    unity "/lights/up",0.0
 #    unity "/world/time", 0.2
     #    unity ""
   end
