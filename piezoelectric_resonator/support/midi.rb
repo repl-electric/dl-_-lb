@@ -625,18 +625,20 @@ def dark(*args)
         unity "/cube/aura/scalemul",  linear_map(0,127,0.5,0.7,vel)
         #create_aura 4
       end
-      if vel > 121
+      if vel > 121 && $pmode != 2
         slice_cube y: 0.5
       end
       sleep 1/4.0
       unity "/cube/aura/scalemul",  0.0
+      if $pmode != 2
       8.times{|n|
         sleep 0.125
         slice_cube y: (8.0-n)* (2.0/8.0)
         if vel > 121
           #create_aura 4/8.0 * (8.0-n)
         end
-      }
+        }
+      end
 
 
       # 8.times{|n|
