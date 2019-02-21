@@ -1020,8 +1020,8 @@ def flop_cc(cc)
                 @steps +=1
                 at{
                   sleep 0.5
-                  unity "/lights/end", 20.0*cc[k]
-                  colorb 3.5*cc[k]
+                  unity "/lights/end", 18.0*cc[k]
+                  colorb 3.0*cc[k]
               if cc[k] > 0.3
                 vortex force: (1.6*cc[k])+(@steps*@steps)*0.8
               else
