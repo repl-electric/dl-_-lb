@@ -1289,7 +1289,7 @@ def overclock_cc(cc)
                 }
               end
             elsif cc[k] >= 12 && $end == false
-              unity "/attune/noise",2
+              unity "/attune/noise",2.0
               #unity "/camtop/jitter", 0.5
               unity "/lights/end", 2.5+(cc[k]*0.05)
             elsif $end == false
