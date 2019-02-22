@@ -1188,7 +1188,7 @@ def overclock_on(n,*args)
     if n && ((n != "_") && n != :_)
       midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 5})
 
-      if n==:f3
+      if note(n) == note(:f3)
         unity "/lights/end",0.1
       end
       if $pmode==0
