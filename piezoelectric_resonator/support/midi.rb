@@ -123,7 +123,7 @@ def eject_cpu_core(k=:pad)
   end
 end
 
-def adjust
+def unattune
   unity "/ejectcpu",1
   unity "/attune/noise",500
 
@@ -1120,11 +1120,11 @@ def flop_cc(cc)
         error target: :circle
         #unity "/attune/noise",linear_map(1,4,1.6, 4.0, @bpm/127.0)
         r = if f >= 4.0
-              unity "/attune/noise",5.0
+              #unity "/attune/noise",5.0
               unity "/fadeout",0.4
               6
             else
-              (knit 1,4, 2,4, 3,4,4,4,5,4,6,4,7,4,8,4,9,4,10,4,11,4,12,4,13,4,14,4,15,4,16,4,16,4,18,4,19,4,20,8).look
+              (knit 8,4,16,4,6,4,15,4).look
             end
         if f>2.0
           error(speed: 30 + (10*f), radius: r)
@@ -1280,16 +1280,14 @@ def overclock_cc(cc)
           if true
             if cc[k] >= 19 && $end == false
               unity "/lights/end", 2.5+(cc[k]*0.05)
-
-            if @bpm && (@bpm/127.0) >=4
-              unity "/attune/noise",0.1
-            else
-
-              at{
-                sleep 0.5
-                unity "/attune/noise",12.0
-            }
-            end
+              if @bpm && (@bpm/127.0) >=4
+                unity "/attune/noise",0.1
+              else
+                at{
+                 sleep 0.5
+                 unity "/attune/noise",12.0
+                }
+              end
             elsif cc[k] >= 12 && $end == false
               unity "/attune/noise",2
               #unity "/camtop/jitter", 0.5
