@@ -484,6 +484,7 @@ def zoomout
 end
 def cam(type=:main, f=false)
   if type == :exit
+    $active_camera=:exit
     if $pmode !=1 || f
       $pmode=1
       unity "/cubecam/zoomout", 0.0
@@ -502,6 +503,7 @@ def cam(type=:main, f=false)
       }
     end
   elsif type == :main
+    $active_camera=:main
     $pmode=1
     tree height: 1.0
     unity "/cam0"
@@ -516,6 +518,7 @@ def cam(type=:main, f=false)
     roots throttle: 0.0, freq: 0.1, target: :bird, drag: 1.0
     roots chase: 0.1, force: 1, target: :spiral, drag: 3
   elsif type == :top
+    $active_camera=:top
     $pmode=2
     create_sea
     unity "/performance",1.0
@@ -546,11 +549,13 @@ def cam(type=:main, f=false)
     unity "/cube",0.0
 
   elsif type == :bird
+    $active_camera=:bird
     $pmode=3
     rocks orbit: 20.0
     world time: 0.1
     unity "/cam2"
   elsif type == :cube
+    $active_camera=:cube
     $pmode=0
     unity "/cubecam/zoomin", 0.0
     unity "/cubecam/zoomin", 1.0
@@ -559,31 +564,34 @@ def cam(type=:main, f=false)
     create_aura -5
     unity "/cam4"
   elsif type == :chase
-    unity "/lights/up",0.0
-    roots throttle: 0.0
-    cube aura: 1.47
-    unity "/cube/aura/fresnel", 1.5
-    roots_chase throttle: 1.0, drag: 5, amp: 0.026, force: 5, thick: 0.1
-    vortex y: 1.25, throttle: 0.2, turb: 0, force: 0
-    burst 0
-    rocks orbit: 0
-    unity "/cube/hit",1
-    at{
-      sleep 1
-      8.times{|n|
-        world time: (0.1/8) * n+1
-        unity "/cube/hit", (1/8.0)*(8-n)
-        sleep 0.125
+    if $active_camera != :chase
+      $active_camera=:chase
+      unity "/lights/up",0.0
+      roots throttle: 0.0
+      cube aura: 1.47
+      unity "/cube/aura/fresnel", 1.5
+      roots_chase throttle: 1.0, drag: 5, amp: 0.026, force: 5, thick: 0.1
+      vortex y: 1.25, throttle: 0.2, turb: 0, force: 0
+      burst 0
+      rocks orbit: 0
+      unity "/cube/hit",1
+      at{
+        sleep 1
+        8.times{|n|
+          world time: (0.1/8) * n+1
+          unity "/cube/hit", (1/8.0)*(8-n)
+          sleep 0.125
+        }
+        unity "/cube/aura/scalemul", 0.0
+        unity "/cube/aura/wave", 1.0
+        unity "/cube/aura/globalscale", 1
+        #may ring?
+        #roots_chase target: :ring
+        roots_chase target: :cube
       }
-      unity "/cube/aura/scalemul", 0.0
-      unity "/cube/aura/wave", 1.0
-      unity "/cube/aura/globalscale", 1
-      #may ring?
-      #roots_chase target: :ring
-      roots_chase target: :cube
-    }
-    aura fresnel: 1.5, wave: 1.5
-    create_aura
+      aura fresnel: 1.5, wave: 1.5
+      create_aura
+    end
   end
 end
 def defaultcolor
@@ -772,6 +780,7 @@ end
 
 def init(force=false)
   if force || $pmode !=0 #only init once
+    $active_camera=:main
     $pmode=0
     $chase=false
     start_init
