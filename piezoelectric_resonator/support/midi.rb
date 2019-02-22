@@ -123,17 +123,58 @@ def eject_cpu_core(k=:pad)
   end
 end
 
+def adjust
+  unity "/ejectcpu",1
+  unity "/attune/noise",500
+
+  unity "/fadeout",1
+  colorb 1.0
+  end2
+  create_aura -2
+  unity "/lights/up",1.0
+  unity "/star/throttle", 1.0
+  unity "/camtop/jitter",0.0
+  unity "/camtop/phase",0.0
+  unity "/camtop/glitch_a", 0.0
+  unity "/camtop/glitch_v", 0.0
+#    unity "/endshard/throttle",1.0
+
+    star size: 0
+    unity "/lights/end", 7.5
+    sleep 0.125
+    unity "/ejectcpu",1
+    sleep 2
+    unity "/lights/up",0.0
+#    unity "/world/time", 0.3
+    sleep 1
+    sleep 0.125
+    sleep 10/2.0
+#    unity "/endshard/throttle",0.1
+    sleep 10/2.0
+#    unity "/endshard/throttle",0.02
+#    unity "/world/time", 0.2
+    sleep 1
+    unity "/lights/up",0.0
+#    unity "/world/time", 0.2
+    #    unity ""
+
+end
+
 def vol(c)
   chunks = 256*2
   unity "/camtop/zoomin",-70.0
+  @t=false
   chunks.times{
     volume=flow(0.85,c,chunks).look
     midi_cc 0, volume*127.0, port: :iac_bus_1, channel: 1
     tick
     sleep 0.125#/2.0
+    if volume  < 0.1 && !@t
+      unity "/attune/noise", 500
+      fadeout_roots
+      @t=true
+    end
   }
-  unity "/attune/noise", 500
-  fadeout_roots
 end
 
 def fx(cc)
@@ -1079,11 +1120,11 @@ def flop_cc(cc)
         error target: :circle
         #unity "/attune/noise",linear_map(1,4,1.6, 4.0, @bpm/127.0)
         r = if f >= 4.0
-              #unity "/attune/noise",5.0
-              unity "/fadeout",0.3
+              unity "/attune/noise",5.0
+              unity "/fadeout",0.4
+              6
+            else
               (knit 1,4, 2,4, 3,4,4,4,5,4,6,4,7,4,8,4,9,4,10,4,11,4,12,4,13,4,14,4,15,4,16,4,16,4,18,4,19,4,20,8).look
-          else
-            15
             end
         if f>2.0
           error(speed: 30 + (10*f), radius: r)
@@ -1147,6 +1188,9 @@ def overclock_on(n,*args)
     if n && ((n != "_") && n != :_)
       midi_note_on n, velocity, *(args << {port: :iac_bus_1} << {channel: 5})
 
+      if n==:f3
+        unity "/lights/end",0.1
+      end
       if $pmode==0
         if(!$triggered)
           unity "/cam0/glitch_a", 0.5
