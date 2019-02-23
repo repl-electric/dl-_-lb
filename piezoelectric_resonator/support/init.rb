@@ -564,7 +564,7 @@ def cam(type=:main, f=false)
     create_aura -5
     unity "/cam4"
   elsif type == :chase
-    if $active_camera != :chase
+    if $active_camera != :chase && $active_camera != :top
       $active_camera=:chase
       unity "/lights/up",0.0
       roots throttle: 0.0
